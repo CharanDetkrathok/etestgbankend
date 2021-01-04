@@ -2,6 +2,7 @@ package com.et.control.mangement;
 
 import com.et.model.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,27 +27,34 @@ public class ReceiptManagementUpdate extends HttpServlet {
 
         // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
         request.setAttribute("getCounterData", getCounterData);
-        
+
         String receiptStdCode = request.getParameter("receiptStdCode");
         String receiptYear = request.getParameter("receiptYear");
         String receiptSemester = request.getParameter("receiptSemester");
         String receiptPayStatus = request.getParameter("receiptPayStatus");
         String refKey = request.getParameter("refKey");
-        
+
         // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------------- 
         ET_RECEIPT ReceiptData = getReceiptTable.findRefKey(receiptStdCode, receiptYear, receiptSemester, receiptPayStatus, refKey);
         request.setAttribute("ReceiptData", ReceiptData);
-        
+
         boolean checkUpdate;
 
         if (receiptPayStatus.equals("1")) {
+
             checkUpdate = getReceiptTable.updateReceiptPayStatus(ReceiptData, "0");
-            
+
         } else {
             checkUpdate = getReceiptTable.updateReceiptPayStatus(ReceiptData, "1");
         }
 
-        RequestDispatcher rs = request.getRequestDispatcher("ReceiptManagement");
+        request.setAttribute("year", request.getParameter("year"));
+        request.setAttribute("sem", request.getParameter("sem"));
+        request.setAttribute("examdate", request.getParameter("examdate"));
+        request.setAttribute("section", request.getParameter("section"));
+        request.setAttribute("ReceiptData", ReceiptData);
+        
+        RequestDispatcher rs = request.getRequestDispatcher("ReceiptManagementData");
         rs.forward(request, response);
         db.close();
     }

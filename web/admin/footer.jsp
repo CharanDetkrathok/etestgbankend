@@ -5,7 +5,7 @@
             <div class="col-sm-6">
                 Copyright &copy; 2020
             </div>
-            <div class="col-sm-6 text-right">
+            <div class="col-sm-6 text-right" id="hid">
                 Designed by xx
             </div>
         </div>

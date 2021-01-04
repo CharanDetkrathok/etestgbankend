@@ -155,6 +155,21 @@ public class ET_ROW_SEAT_ORDER_TABLE {
             return false;
         }
     }  //end of delete
+    
+    public Boolean chkdeleteToSetSeatRowOrder(String year, String sem, String exdate, String sec) {
+        String sql = "delete from ET_ROW_SEAT_ORDER where  YEAR = ? and SEMESTER = ? ";
+        int chkDelete = db.remove2Val(sql, year, sem);
+        try {
+            if (chkDelete > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }  //end of delete
 
     public Boolean chkdeleteAll(String year, String sem, String exdate) {
         String sql = "delete from ET_ROW_SEAT_ORDER where  YEAR = ? and SEMESTER = ? "
@@ -177,6 +192,19 @@ public class ET_ROW_SEAT_ORDER_TABLE {
         String sql = "select to_char(count(to_number(STD_CODE)))STD_CODE from ET_ROW_SEAT_ORDER where  YEAR = ? and SEMESTER = ? "
                 + "and EXAM_DATE = to_date(?, 'dd/mm/yyyy')  and SECTION_NO = ?";
         Map<String, Object> row = db.querySingle(sql, year, sem, exdate, sec);
+
+        if (row != null) {
+            maxusr = Integer.parseInt((String) row.get("STD_CODE"));
+            return maxusr;
+        } else {
+            return 0;
+        }
+    }//end get max no
+    
+    public int countStudentToSetSeatRowOrder(String year, String sem, String exdate, String sec) {
+        int maxusr = 0;
+        String sql = "select to_char(count(to_number(STD_CODE)))STD_CODE from ET_ROW_SEAT_ORDER where  YEAR = ? and SEMESTER = ? ";
+        Map<String, Object> row = db.querySingle(sql, year, sem);
 
         if (row != null) {
             maxusr = Integer.parseInt((String) row.get("STD_CODE"));

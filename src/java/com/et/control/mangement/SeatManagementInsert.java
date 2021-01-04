@@ -116,12 +116,12 @@ public class SeatManagementInsert extends HttpServlet {
             if (!checkDuplicateRowBuild) {
 
                 boolean checkInsertRowBuild = getBuildRowTable.insert(insertRowBuild); 
-                boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat) ); 
-                if (checkUpdateSumSeat) {                    
-                    System.out.println("เพิ่มข้อมูลเรียบร้อย checkUpdateSumSeat");
-                } else {
-                    System.out.println("มีบางอย่างผิดพลาด checkUpdateSumSeat");
-                }
+//                boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat) ); 
+//                if (checkUpdateSumSeat) {                    
+//                    System.out.println("เพิ่มข้อมูลเรียบร้อย checkUpdateSumSeat");
+//                } else {
+//                    System.out.println("มีบางอย่างผิดพลาด checkUpdateSumSeat");
+//                }
                 
                 if (checkInsertRowBuild) {
                     

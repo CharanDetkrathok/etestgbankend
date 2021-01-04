@@ -34,6 +34,30 @@ public class DateManagementDelete extends HttpServlet {
         // ----- Query วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู ----------------------- 
         ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
 
+        if (request.getParameter("Delete") != null) {
+
+            boolean isDeleteAllDate = getExamDateTable.deleteAll();
+            boolean isDeleteAllSeat = getExamSeatTable.deleteAll();
+
+            if (isDeleteAllDate && isDeleteAllSeat) {
+                System.out.println("--ExamDate-- ลบได้");
+                
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ลบข้อมูลเรียบร้อย');");
+                out.println("location='DateManagement';");
+                out.println("</script>");
+            } else {
+                System.out.println("--ExamDate-- ลบไม่ได้");
+                
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถลบข้อมูลได้!!!');");
+                out.println("location='DateManagement';");
+                out.println("</script>");
+            }
+        }
+
         if (request.getParameter("Year") != null && request.getParameter("Semester") != null && request.getParameter("Exam_Date") != null) { //--- ลบแถวสอบ ---
 
             String Year = request.getParameter("Year");
@@ -72,7 +96,7 @@ public class DateManagementDelete extends HttpServlet {
                 System.out.println("--ExamDate-- ลบไม่ได้");
             }
 
-            boolean deleteResultExamSeat = getExamSeatTable.delete(NEW_EXAM_DATE);
+            boolean deleteResultExamSeat = getExamSeatTable.delete(Year, Semester, NEW_EXAM_DATE);
             if (deleteResultExamSeat) {
                 System.out.println("<<ExamSeat>> ลบได้");
             } else {

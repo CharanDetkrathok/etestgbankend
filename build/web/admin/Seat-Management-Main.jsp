@@ -45,7 +45,7 @@
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
-                                                <b> Summer /${getCounterData.STUDY_YEAR}</b>&nbsp;&nbsp;&nbsp;<font color="#0027FF"><b>รวม ${sumSeat} ที่นั่ง</b></font>
+                                                <b> Summer /${getCounterData.STUDY_YEAR}</b>&nbsp;&nbsp;&nbsp;<font color="#0027FF"><b>จำนวนที่นั่ง ${sumSeat} ที่นั่ง</b></font>
                                             </c:when>
                                             <c:otherwise>
                                                 <b> เทอม ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>&nbsp;&nbsp;&nbsp;<font color="#0027FF"><b>จำนวนที่นั่ง ${sumSeat} ที่นั่ง</b></font>
@@ -54,14 +54,9 @@
                                     </label>
                                     <a class="btn btn-success"  
                                        style="float: right; width: 100px; margin: 0 26px 0 5px; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                       href="SeatManagementInsert?Create=1">
+                                       href="/etestgbackend/SeatManagementInsert?Create=1">
                                         <i class="fa fa-plus-square"></i> เพิ่ม
                                     </a>
-<!--                                    <a class="btn btn-success disabled"  
-                                       style="float: right; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                       href="#">
-                                        <i class="fa fa-save"></i> ดาวน์โหลดไฟล์
-                                    </a>-->
                                     <br>
                                     <hr>
                                 </div>
@@ -71,10 +66,9 @@
                                     <div class="col-12 table-responsive-sm">
 
                                         <table id="datatable" class="table table-striped table-hover table-bordered" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
-                                            <thead class="thead-dark text-center">
+                                            <thead class="text-center"  style="background-color: #004085; color: #fff;">
                                                 <tr>
-                                                    <th scope="col">ปีการศึกษา</th>
-                                                    <th scope="col">ภาคการศึกษา</th>
+                                                    <th scope="col">ลำดับ</th>
                                                     <th scope="col">แถว</th>
                                                     <th scope="col">จำนวนที่นั่ง</th>
                                                     <th scope="col">ห้องสอบ</th>
@@ -88,17 +82,7 @@
                                                 
                                                 <c:forEach items="${BuildRow}" var = "BuildRow" varStatus="count">                                                 
                                                     <tr>
-                                                        <td scope="row">${BuildRow.YEAR}</td>
-                                                        <td>
-                                                            <c:choose>
-                                                                <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
-                                                                    Summer
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    เทอม ${getCounterData.STUDY_SEMESTER}
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </td>
+                                                        <td scope="row">${count.count}</td>
                                                         <td>${BuildRow.ROW_EXAM}</td>
                                                         <td>${BuildRow.SEAT_EXAM}</td>
                                                         <td>${BuildRow.BUILD_NO}</td>                                                        

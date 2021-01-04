@@ -17,8 +17,8 @@
         <meta name="description" content="Ela Admin - HTML5 Admin Template">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="apple-touch-icon" href="https://i.imgur.com/QRAUqs9.png">
-        <link rel="shortcut icon" href="https://i.imgur.com/QRAUqs9.png">
+        <link rel="apple-touch-icon" href="/etestgbackend/admin/images/logo2.png">
+        <link rel="shortcut icon" href="/etestgbackend/admin/images/logo2.png">
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
@@ -124,11 +124,11 @@
                         </li>
                         <li class="menu-title"><i class="menu-icon fa fa-compass"></i> Components</li><!-- /.menu-title -->
                         <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Setting Components</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>จัดการปี/ภาค</a>
                             <ul class="sub-menu children dropdown-menu">                            
-                                <li><i class="fa fa-puzzle-piece"></i><a href="/etestgbackend/GetAdminCounter">Semester/Year</a></li>
-                                <li><i class="fa fa-id-badge"></i></i><a href="/etestgbackend/ShowEditSeat">Files Setting</a></li>
-                                <li><i class="fa fa-bars"></i></i><a href="#">xxxxxxxxxx</a></li>
+                                <li><i class="fa fa-puzzle-piece"></i><a href="/etestgbackend/GetAdminCounter">กำหนดปี/ภาค การศึกษา</a></li>
+                                <!--li><i class="fa fa-id-badge"></i></i><a href="/etestgbackend/ShowEditSeat">Files Setting</a></li>
+                                <li><i class="fa fa-bars"></i></i><a href="#">xxxxxxxxxx</a></li -->
 
 
                             </ul>
@@ -136,37 +136,55 @@
                         <li class="menu-title"><i class="menu-icon fa fa-share"></i> Seat Managements</li><!-- /.menu-title -->
 
                         <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Managements Menu</a>
-                            <ul class="sub-menu children dropdown-menu">
-                                <li>
-                                    <i class="menu-icon fa fa-fort-awesome"></i>
-                                    <a href="/etestgbackend/ShowSeatDetail">Seat Setting</a>
-                                </li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>จัดการรายละเอียดการสอบ</a>
+                            <ul class="sub-menu children dropdown-menu">                                
                                 <li>
                                     <i class="menu-icon fa fa-list-ol"></i>
-                                    <a href="/etestgbackend/SeatManagement">กำหนดแถวทสอบ</a>
+                                    <a href="/etestgbackend/SeatManagement">กำหนดแถวสอบ</a>
                                 </li>
                                 <li>
                                     <i class="menu-icon fa fa-calendar"></i>
-                                    <a href="/etestgbackend/DateManagement">กำหนดวัน และที่นั่งสอบ</a>
+                                    <a href="/etestgbackend/DateManagement">กำหนดวันสอบ</a>
                                 </li>       
                                 <li>
                                     <i class="menu-icon fa fa-money"></i>
                                     <a href="/etestgbackend/ReceiptManagement">ปรับสถานะการชำระเงิน</a>
+                                </li>                                
+                                <li>
+                                    <i class="menu-icon fa fa-list-ul"></i>
+                                    <a href="/etestgbackend/GenerateExamSeat"> จัดที่นั่งสอบ </a>
                                 </li>
+                                <!--<li><i class="menu-icon fa fa-list-ul"></i><a href="/etestgbackend/ShowSeatDetail">จัดที่นั่งสอบ</a></li>-->
+                                <!--<li><i class="menu-icon fa fa-list-ul"></i><a href="/etestgbackend/Checkdigit">CHECKDIGIT</a></li>-->
                                 <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 
                         <li class="menu-title"><i class="menu-icon fa fa-share-square-o"></i> Export Files</li><!-- /.menu-title -->
 
                         <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-files-o"></i>Export Files Menu</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-files-o"></i>จัดการไฟล์</a>
                             <ul class="sub-menu children dropdown-menu">
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="ExportETSTDC">Text Files 1</a></li>
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="GenETSTDC">Text Files 2</a></li>
+                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/ExportETSTDC">ET_STDC</a></li>
+                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/ExportETRU25et">RU25et</a></li>                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
+                            </ul>
+                        </li> 
+
+                        <!-- Report components -->
+                        <li class="menu-title"><i class="menu-icon fa fa-file"></i> Report</li><!-- /.menu-title -->
+                        <li class="menu-item-has-children dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-address-book"></i>รายงาน
+                            </a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-address-card"></i><a href="/etestgbackend/GetRegisReport">รายงานการลงทะเบียน นักศึกษาที่ชำระเงินแล้ว</a></li>
+                                <li><i class="menu-icon fa fa-anchor"></i><a href="/etestgbackend/ShowStdRegisterAll">รายงานลงทะเบียน</a></li>
+                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting101"><span style="font-style: italic; ">พิมพ์สรุปเงินรายวัน</span></a></li>
+                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting102"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมรายวัน</span></a></li>
+                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting103"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมทั้งหมด</span></a></li>
                                 <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 
+                        <!-- End report components -->
+
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </nav>

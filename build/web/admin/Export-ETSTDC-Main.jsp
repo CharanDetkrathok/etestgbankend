@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead">
-                                    <i class="fa fa-puzzle-piece"></i> Export ETSTDC text file.</label>
+                                    <i class="fa fa-puzzle-piece"></i> Export ET_STDC text file.</label>
                                     <br/> 
                                     <hr>
                                 </div>
@@ -48,38 +48,29 @@
                                             <c:otherwise>
                                                 <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
                                             </c:otherwise>
-                                        </c:choose>  </label><br /> <hr></div>
+                                        </c:choose>  
+                                    </label>
+                                    <br/> 
+                                    <hr>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-1"></div>
-                                <div class="col-2" style="margin-left: 15px;">
-                                    <label for="examdate">Select Date:</label>
-
-                                    <select class="form-control"  onfocus='this.size = 5;' onblur='this.size = 1;' 
-                                            onchange='this.size = 1; this.blur();' name="examdate" id="examdate" required="true">
-                                        <option  value="">---select date---</option>
-                                        <c:forEach items = "${getExamDate}"  var = "getExamDate">
-                                            <option value="${getExamDate.EXAM_DATE}">${getExamDate.EXAM_DATE}</option>
-                                        </c:forEach>
+                                <div class="col-3" style="margin-left: 15px;">
+                                    <label for="examdate">เลือก "วัน/เดือน/ปี" ที่เปิดสอบ :</label>
+                                    <select class="form-control" name="examdate" id="examdate" required="true">
+                                        <option  value="0"> ทั้งหมด </option>
                                     </select>
                                 </div>
-                                <div class="col-2">
-                                    <label for="sec">Select Section:</label>
+                                <div class="col-3">
+                                    <label for="sec">เลือก "คาบ" ที่เปิดสอบ :</label>
                                     <select class="form-control" name="section" required="true">
-                                        <option  value="">---select section---</option>
-                                        <option value="0"> -- ALL -- </option>
-                                        <option value="1"> Section 1</option>
-                                        <option value="2"> Section 2</option>
-                                        <option value="3"> Section 3</option>
-                                        <option value="4"> Section 4</option>
+                                        <option value="0"> ทั้งหมด </option>
                                     </select>
-
                                 </div> 
-                            </div>
-                            <div class="row" style="margin-top: 20px;"> 
-                                <div class="col-12" style="text-align: center;">
-                                    <button type="submit" class="btn btn-dark" ><i class="fa fa-save"></i> Generate</button> 
-                                    <button type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancle </button> 
+                                <div class="col-3" style="text-align: center; margin-top: 30px;">
+                                    <button type="submit" class="btn btn-success" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-save"></i> ดาวน์โหลดไฟล์ </button> 
+                                    <button type="reset" class="btn btn-danger" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-close"></i> ยกเลิก </button> 
                                 </div>
                             </div>
                         </div>

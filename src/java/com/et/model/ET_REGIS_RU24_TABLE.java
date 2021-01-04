@@ -94,13 +94,15 @@ public class ET_REGIS_RU24_TABLE {
      
      public List<ET_REGIS_RU24> findBySelectDateAndSection(String year,String sem,String examdate,String sec) {
         List<ET_REGIS_RU24> list = new ArrayList<ET_REGIS_RU24>();
-        String sql = "SELECT YEAR, SEMESTER, STD_CODE, TIME_NO, COURSE_NO, CREDIT, SECTION_NO, "
-                + "TO_CHAR(EXAM_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')EXAM_DATE,"
-                + " PERIOD, BUILD_NO, ROW_EXAM, SEAT_EXAM, STATUS_REGIS, GRADE, SCORE_TOTAL, SCORE_MIDTERM, SCORE_FINAL,"
-                + " CKREGIS, TO_CHAR(INSERT_DATE, 'dd/mm/yyyy HH24:MI:SS', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')INSERT_DATE, "
-                + " INSERT_USER, REF_KEY, REGIS_STATUS  FROM ET_REGIS_RU24 where YEAR = ? and SEMESTER = ? "
-                + " and EXAM_DATE = to_date(?,'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') and SECTION_NO = ? ";
-        List<Map<String, Object>> result = db.queryList(sql,year,sem,examdate,sec);
+        String sql = " SELECT a.YEAR, a.SEMESTER, a.STD_CODE, a.TIME_NO, a.COURSE_NO, a.CREDIT, a.SECTION_NO, "
+                + " TO_CHAR(a.EXAM_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')EXAM_DATE,"
+                 + " a.PERIOD, a.BUILD_NO, a.ROW_EXAM, a.SEAT_EXAM, a.STATUS_REGIS, a.GRADE, a.SCORE_TOTAL, a.SCORE_MIDTERM, a.SCORE_FINAL,"
+                 + " a.CKREGIS, TO_CHAR(a.INSERT_DATE, 'dd/mm/yyyy HH24:MI:SS', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')INSERT_DATE," 
+                 + " a.INSERT_USER, a.REF_KEY, a.REGIS_STATUS  "
+                 + " FROM ET_REGIS_RU24 a,ET_RECEIPT b where A.STD_CODE = B.STD_CODE and A.SEMESTER = B.RECEIPT_SEMESTER "
+                 + " and A.YEAR= B.RECEIPT_YEAR and A.REF_KEY = B.REF_KEY and B.RECEIPT_PAY_STATUS = '1' AND "
+                 + " YEAR = ? and SEMESTER = ? order by trunc(a.INSERT_DATE) asc";
+        List<Map<String, Object>> result = db.queryList(sql,year,sem);
 
         for (Map<String, Object> row : result) {
 
@@ -200,4 +202,5 @@ public class ET_REGIS_RU24_TABLE {
             return 0;
         }
     }//end get max no
+    
 }

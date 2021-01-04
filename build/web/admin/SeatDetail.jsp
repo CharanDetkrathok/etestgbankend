@@ -20,11 +20,19 @@
             <div class="col-lg-12">
                 <div class="card">              
                     <form method="post" action="/etestgbackend/GenerateSeat">
+                        <input type="hidden" name="examdate" value="0">
+                        <input type="hidden" name="sec" value="0">
                         <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
-                         <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
+                        <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead"><i class="fa fa-puzzle-piece"></i> Row Seat Management</label><br /> <hr></div>
+                            <div class="col-12" style="margin-left: 15px;">
+                                <label class="fontvwhead">
+                                    <i class="fa fa-puzzle-piece"></i> จัดที่นั่งสอบ
+                                </label>
+                                <br/>
+                                <hr>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-1"></div>
@@ -42,32 +50,9 @@
                         </div>
                         <div class="row">
                             <div class="col-1"></div>
-                            <div class="col-2" style="margin-left: 15px;">
-                                <label for="examdate">Select Date:</label>
-                                
-                                <select class="form-control"  onfocus='this.size = 5;' onblur='this.size = 1;' 
-                                        onchange='this.size = 1; this.blur();' name="examdate" id="examdate" required="true">
-                                    <option  value="">---select date---</option>
-                                    <c:forEach items = "${getExamDate}"  var = "getExamDate">
-                                        <option value="${getExamDate.EXAM_DATE}">${getExamDate.EXAM_DATE}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="col-2">
-                                <label for="sec">Select Section:</label>
-                                <select class="form-control" name="sec" required="true">
-                                    <option  value="">---select section---</option>
-                                    <option value="0"> -- ALL -- </option>
-                                    <option value="1"> Section 1</option>
-                                    <option value="2"> Section 2</option>
-                                    <option value="3"> Section 3</option>
-                                    <option value="4"> Section 4</option>
-                                </select>
-                            </div> 
-                        </div>
                         <div class="row" style="margin-top: 20px;"> 
                             <div class="col-12" style="text-align: center;">
-                                <button type="submit" class="btn btn-dark" ><i class="fa fa-save"></i> Generate</button> 
+                                <button type="submit" class="btn btn-primary" onclick="return confirm('คุณต้องการ สร้างที่นั่งใช่หรือไม่?');"><i class="fa fa-save"></i> สร้างที่นั่ง </button> 
                                 <button type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancle </button> 
                             </div>
 

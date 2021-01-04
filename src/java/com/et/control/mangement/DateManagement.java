@@ -33,6 +33,17 @@ public class DateManagement extends HttpServlet {
         ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
         List<ET_EXAM_DATE> ExamDate = getExamDateTable.findAll();
         
+        // ----- Query ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว -------------------
+        ET_BUILE_ROW_TABLE getBuildRowTable = new ET_BUILE_ROW_TABLE(db);
+        List<ET_BUILE_ROW> getBuildRow = getBuildRowTable.findAll();
+        
+        // ---- ผลรวมของจำนวนที่นั่งทั้งหมด -------------------------------------------
+        int sumSeat = 0;
+        for (int i = 0; i < getBuildRow.size(); i++) {
+            sumSeat += getBuildRow.get(i).getSEAT_EXAM().intValue();
+        }
+        request.setAttribute("sumSeat", sumSeat);
+        
         // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
         request.setAttribute("getCounterData", getCounterData);
         

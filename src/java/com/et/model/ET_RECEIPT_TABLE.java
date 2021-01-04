@@ -26,6 +26,7 @@ public class ET_RECEIPT_TABLE {
 
         if (row != null) {
             ET_RECEIPT getRow = ET_RECEIPT.builder()
+                    .NAME_THAI((String) row.get("NAME_THAI"))
                     .FISCAL_YEAR((String) row.get("FISCAL_YEAR"))
                     .RECEIPT_NO((String) row.get("RECEIPT_NO"))
                     .STD_CODE((String) row.get("STD_CODE"))
@@ -76,6 +77,14 @@ public class ET_RECEIPT_TABLE {
                     .REF_KEY((String) row.get("REF_KEY"))
                     .REGIS_STATUS((String) row.get("REGIS_STATUS"))
                     .EXPIRE_DATE((String) row.get("EXPIRE_DATE"))
+                    .COURSE_NO((String) row.get("COURSE_NO"))
+                    .CREDIT((BigDecimal) row.get("CREDIT"))
+                    .EXAM_DATE((String) row.get("EXAM_DATE"))
+                    .AMOUNT((String) row.get("AMOUNT"))
+                    .PERIOD((String) row.get("PERIOD"))
+                    .CHECKDIGIT((String) row.get("CHECKDIGIT"))
+                    .PAYMENT_DATE((String) row.get("PAYMENT_DATE"))
+                    .SLIP_RUN_NO((String) row.get("SLIP_RUN_NO"))
                     .build();
 
             return getRow;
@@ -101,6 +110,120 @@ public class ET_RECEIPT_TABLE {
         return list;
     }
     //end find 
+
+    public List<ET_RECEIPT> findAllToDisplay() {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT A.FISCAL_YEAR,A.COUNTER_NO,RECEIPT_NO,A.STD_CODE,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,TO_CHAR(A.RECEIPT_DATE, 'mm/dd/yyyy')RECEIPT_DATE,A.RECEIPT_TIME,A.RECEIPT_PERIOD,"
+                + " A.TOTAL_AMOUNT,A.RECEIPT_TYPE,A.RECEIPT_STATUS,A.REGIONAL_NO,A.CASH_AMOUNT,A.CHEQUE_AMOUNT,A.CREDIT_AMOUNT,A.REGIS_METHOD,A.REGIS_CK,"
+                + " A.NEAR_GRADUATE,A.PAYMENT_CODE,A.ACCOUNT_NUMBER,A.BANK_FEE,A.RECEIPT_PAY_STATUS,A.REGIS_GROUP_NO,TO_CHAR(A.REGIS_DATE, 'mm/dd/yyyy')REGIS_DATE,A.TOTAL_AMOUNT_BANK,"
+                + " A.BANK_VAT,A.BANK_TOTAL,A.NOMATCH_MONEY,TO_CHAR(A.BANK_DATE, 'mm/dd/yyyy')BANK_DATE,A.ADD_PAY,TO_CHAR(A.ADD_BANK_DATE, 'mm/dd/yyyy')ADD_BANK_DATE,A.EXAM_LOCATION_NO,A.WAIVED_NO,WAIVED_CR,A.CASHIER_NO,A.USERID,"
+                + " TO_CHAR(A.UPDATE_DATE, 'mm/dd/yyyy')UPDATE_DATE,A.USERNAME,A.CREDITCARD_TYPE,A.CREDITCARD_FEE,A.POSTAL_AMOUNT,A.PAYMENT_TYPE,A.TIME_NO,A.CHK_GRADUATE_STATUS,A.SAVE_STATUS,"
+                + " TO_CHAR(A.STATUS_B_UPDATE_DATE, 'mm/dd/yyyy')STATUS_B_UPDATE_DATE,A.FACULTY_NO,A.REF_KEY,A.REGIS_STATUS,TO_CHAR(A.EXPIRE_DATE, 'mm/dd/yyyy')EXPIRE_DATE, B.NAME_THAI"
+                + " FROM ET_RECEIPT A"
+                + " LEFT JOIN DBBACH00.VM_STUDENT_MOBILE B"
+                + " ON A.STD_CODE = B.STD_CODE";
+        List<Map<String, Object>> result = db.queryList(sql);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
+
+    public List<ET_RECEIPT> findAllDateAllSection(String year, String secmester) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT DISTINCT A.FISCAL_YEAR,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,A.STD_CODE, A.TOTAL_AMOUNT,"
+                + " A.RECEIPT_STATUS,A.FACULTY_NO, A.REF_KEY,A.RECEIPT_PAY_STATUS,"
+                + " TO_CHAR(A.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT A,ET_REGIS_RU24 B , QR_PAYMENT_CONFIRM_TMB C, DBBACH00.VM_STUDENT_MOBILE D "
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.RECEIPT_SEMESTER = B.SEMESTER AND A.RECEIPT_YEAR = B.YEAR AND A.REF_KEY = B.REF_KEY AND B.STD_CODE = D.STD_CODE  "
+                + " AND  TO_NUMBER(A.TOTAL_AMOUNT) !=  TO_NUMBER(C.AMOUNT)"
+                + " AND A.RECEIPT_SEMESTER = ? AND A.RECEIPT_YEAR = ? ORDER BY D.NAME_THAI ASC";
+        List<Map<String, Object>> result = db.queryList(sql, secmester, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
+
+    public List<ET_RECEIPT> findAllSectionByDate(String year, String secmester, String examDate) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT DISTINCT A.FISCAL_YEAR,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,A.STD_CODE, A.TOTAL_AMOUNT,"
+                + " A.RECEIPT_STATUS,A.FACULTY_NO, A.REF_KEY,A.RECEIPT_PAY_STATUS,"
+                + " TO_CHAR(A.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT A,ET_REGIS_RU24 B , QR_PAYMENT_CONFIRM_TMB C, DBBACH00.VM_STUDENT_MOBILE D "
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.RECEIPT_SEMESTER = B.SEMESTER AND A.RECEIPT_YEAR = B.YEAR AND A.REF_KEY = B.REF_KEY AND B.STD_CODE = D.STD_CODE  "
+                + " AND A.TOTAL_AMOUNT !=  C.AMOUNT AND B.EXAM_DATE = TO_DATE(?, 'mm/dd/yyyy')"
+                + " AND A.RECEIPT_SEMESTER = ? AND A.RECEIPT_YEAR = ? ORDER BY D.NAME_THAI ASC";
+        List<Map<String, Object>> result = db.queryList(sql, examDate, secmester, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
+
+    public List<ET_RECEIPT> findReceiptDetail(String year, String secmester, String stdCode, String RefKey) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT  A.YEAR,A.SEMESTER,A.STD_CODE,A.COURSE_NO,A.CREDIT,"
+                + " (TO_CHAR(A.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
+                + " TO_CHAR(C.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE"
+                + " FROM ET_REGIS_RU24 A, DBBACH00.VM_STUDENT_MOBILE B, ET_RECEIPT C"
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.STD_CODE = C.STD_CODE AND A.REF_KEY = C.REF_KEY AND A.YEAR = ? AND A.SEMESTER = ? AND A.STD_CODE = ? AND A.REF_KEY = ? ";
+        List<Map<String, Object>> result = db.queryList(sql, year, secmester, stdCode, RefKey);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
+
+    public List<ET_RECEIPT> findAllDateBySection(String year, String secmester, String section) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT DISTINCT A.FISCAL_YEAR,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,A.STD_CODE, A.TOTAL_AMOUNT,"
+                + " A.RECEIPT_STATUS,A.FACULTY_NO, A.REF_KEY,A.RECEIPT_PAY_STATUS,"
+                + " TO_CHAR(A.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT A,ET_REGIS_RU24 B , QR_PAYMENT_CONFIRM_TMB C, DBBACH00.VM_STUDENT_MOBILE D "
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.RECEIPT_SEMESTER = B.SEMESTER AND A.RECEIPT_YEAR = B.YEAR AND A.REF_KEY = B.REF_KEY AND B.STD_CODE = D.STD_CODE  "
+                + " AND A.TOTAL_AMOUNT !=  C.AMOUNT AND B.SECTION_NO = ?"
+                + " AND A.RECEIPT_SEMESTER = ? AND A.RECEIPT_YEAR = ? ORDER BY D.NAME_THAI ASC";
+        List<Map<String, Object>> result = db.queryList(sql, section, secmester, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
+
+    public List<ET_RECEIPT> findByDateBySection(String year, String secmester, String examDate, String section) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT DISTINCT A.FISCAL_YEAR,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,A.STD_CODE, A.TOTAL_AMOUNT,"
+                + " A.RECEIPT_STATUS,A.FACULTY_NO, A.REF_KEY,A.RECEIPT_PAY_STATUS,"
+                + " TO_CHAR(A.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT A,ET_REGIS_RU24 B , QR_PAYMENT_CONFIRM_TMB C, DBBACH00.VM_STUDENT_MOBILE D "
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.RECEIPT_SEMESTER = B.SEMESTER AND A.RECEIPT_YEAR = B.YEAR AND A.REF_KEY = B.REF_KEY AND B.STD_CODE = D.STD_CODE  "
+                + " AND A.TOTAL_AMOUNT !=  C.AMOUNT AND B.SECTION_NO = ? AND B.EXAM_DATE = TO_DATE(?, 'mm/dd/yyyy')"
+                + " AND A.RECEIPT_SEMESTER = ? AND A.RECEIPT_YEAR = ? ORDER BY D.NAME_THAI ASC";
+        List<Map<String, Object>> result = db.queryList(sql, section, examDate, secmester, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find
 
     public List<ET_RECEIPT> findAllExamDate() {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
@@ -182,72 +305,13 @@ public class ET_RECEIPT_TABLE {
             return false;
         }
 
-    }//end of insert
-
-    public Boolean update(ET_RECEIPT objval) {
-        String sql = "update ET_RECEIPT set"
-                + "FISCAL_YEAR=?, COUNTER_NO=?, RECEIPT_NO=?, STD_CODE=?, RECEIPT_YEAR=?, RECEIPT_SEMESTER=?,"
-                + "TO_DATE(RECEIPT_DATE, 'mm/dd/yyyy hh24:mi:ss')RECEIPT_DATE=?,"
-                + "RECEIPT_TIME=?, RECEIPT_PERIOD=?, TOTAL_AMOUNT=?, RECEIPT_TYPE=?, RECEIPT_STATUS=?,"
-                + "REGIONAL_NO=?, CASH_AMOUNT=?, CHEQUE_AMOUNT=?, CREDIT_AMOUNT=?, REGIS_METHOD=?,"
-                + "REGIS_CK=?, NEAR_GRADUATE=?, PAYMENT_CODE=?, ACCOUNT_NUMBER=?, BANK_FEE=?,"
-                + "RECEIPT_PAY_STATUS=?, REGIS_GROUP_NO=?, TO_DATE(REGIS_DATE, 'mm/dd/yyyy hh24:mi:ss')REGIS_DATE=?, TOTAL_AMOUNT_BANK=?, BANK_VAT=?,"
-                + "BANK_TOTAL=?, NOMATCH_MONEY=?, TO_DATE(BANK_DATE, 'mm/dd/yyyy hh24:mi:ss')BANK_DATE=?, ADD_PAY=?, TO_DATE(ADD_BANK_DATE, 'mm/dd/yyyy hh24:mi:ss')ADD_BANK_DATE=?,"
-                + "EXAM_LOCATION_NO=?, WAIVED_NO=?, WAIVED_CR=?, CASHIER_NO=?, USERID=?,"
-                + "UPDATE_DATE=?, USERNAME=?, CREDITCARD_TYPE=?, CREDITCARD_FEE=?, POSTAL_AMOUNT=?,"
-                + "PAYMENT_TYPE=?, TIME_NO=?, CHK_GRADUATE_STATUS=?, SAVE_STATUS=?, STATUS_B_UPDATE_DATE=?,"
-                + "FACULTY_NO=?, REF_KEY=?, REGIS_STATUS=?, TO_DATE(EXPIRE_DATE, 'mm/dd/yyyy')EXPIRE_DATE=?"
-                + "where STD_CODE=? AND RECEIPT_YEAR=? AND RECEIPT_SEMESTER=? AND RECEIPT_PAY_STATUS=? AND REF_KEY = ?";
-        int chkUpdate = db.update(sql, objval.getFISCAL_YEAR(), objval.getCOUNTER_NO(), objval.getRECEIPT_NO(),
-                objval.getSTD_CODE(), objval.getRECEIPT_YEAR(), objval.getRECEIPT_SEMESTER(), objval.getRECEIPT_DATE(),
-                objval.getRECEIPT_TIME(), objval.getRECEIPT_PERIOD(), objval.getTOTAL_AMOUNT(), objval.getRECEIPT_TYPE(),
-                objval.getRECEIPT_STATUS(), objval.getREGIONAL_NO(), objval.getCASH_AMOUNT(), objval.getCHEQUE_AMOUNT(),
-                objval.getCREDIT_AMOUNT(), objval.getREGIS_METHOD(), objval.getREGIS_CK(), objval.getNEAR_GRADUATE(),
-                objval.getPAYMENT_CODE(), objval.getACCOUNT_NUMBER(), objval.getBANK_FEE(), objval.getRECEIPT_PAY_STATUS(),
-                objval.getREGIS_GROUP_NO(), objval.getREGIS_DATE(), objval.getTOTAL_AMOUNT_BANK(), objval.getBANK_VAT(),
-                objval.getBANK_TOTAL(), objval.getNOMATCH_MONEY(), objval.getBANK_DATE(), objval.getADD_PAY(), objval.getADD_BANK_DATE(),
-                objval.getEXAM_LOCATION_NO(), objval.getWAIVED_NO(), objval.getWAIVED_CR(), objval.getCASHIER_NO(), objval.getUSERID(),
-                objval.getUPDATE_DATE(), objval.getUSERNAME(), objval.getCREDITCARD_TYPE(), objval.getCREDITCARD_FEE(), objval.getPOSTAL_AMOUNT(),
-                objval.getPAYMENT_TYPE(), objval.getTIME_NO(), objval.getCHK_GRADUATE_STATUS(), objval.getSAVE_STATUS(), objval.getSTATUS_B_UPDATE_DATE(),
-                objval.getFACULTY_NO(), objval.getREF_KEY(), objval.getREGIS_STATUS(), objval.getEXPIRE_DATE(), objval.getSTD_CODE(), objval.getRECEIPT_YEAR(),
-                objval.getRECEIPT_SEMESTER(), objval.getRECEIPT_PAY_STATUS(), objval.getREF_KEY());
-        try {
-            return chkUpdate > 0;
-
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
+    }//end of insert    
 
     public Boolean updateReceiptPayStatus(ET_RECEIPT objval, String changeReceiptPayStatus) {
-        String sql = "UPDATE ET_RECEIPT SET "
-                + "FISCAL_YEAR=?, COUNTER_NO=?, RECEIPT_NO=?, STD_CODE=?, RECEIPT_YEAR=?, RECEIPT_SEMESTER=?,"
-                + "RECEIPT_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS'),"
-                + "RECEIPT_TIME=?, RECEIPT_PERIOD=?, TOTAL_AMOUNT=?, RECEIPT_TYPE=?, RECEIPT_STATUS=?,"
-                + "REGIONAL_NO=?, CASH_AMOUNT=?, CHEQUE_AMOUNT=?, CREDIT_AMOUNT=?, REGIS_METHOD=?,"
-                + "REGIS_CK=?, NEAR_GRADUATE=?, PAYMENT_CODE=?, ACCOUNT_NUMBER=?, BANK_FEE=?,"
-                + "RECEIPT_PAY_STATUS=?, REGIS_GROUP_NO=?, REGIS_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS'), TOTAL_AMOUNT_BANK=?, BANK_VAT=?,"
-                + "BANK_TOTAL=?, NOMATCH_MONEY=?, BANK_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS'), ADD_PAY=?, ADD_BANK_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS'),"
-                + "EXAM_LOCATION_NO=?, WAIVED_NO=?, WAIVED_CR=?, CASHIER_NO=?, USERID=?,"
-                + "UPDATE_DATE=?, USERNAME=?, CREDITCARD_TYPE=?, CREDITCARD_FEE=?, POSTAL_AMOUNT=?,"
-                + "PAYMENT_TYPE=?, TIME_NO=?, CHK_GRADUATE_STATUS=?, SAVE_STATUS=?, STATUS_B_UPDATE_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS'),"
-                + "FACULTY_NO=?, REF_KEY=?, REGIS_STATUS=?, EXPIRE_DATE=TO_DATE(?,'mm/dd/yyyy HH24:MI:SS')"
+        String sql = "UPDATE ET_RECEIPT SET RECEIPT_PAY_STATUS = ?"
                 + "WHERE STD_CODE=? AND RECEIPT_YEAR=? AND RECEIPT_SEMESTER=? AND RECEIPT_PAY_STATUS=? AND REF_KEY = ?";
-        int chkUpdate = db.update(sql, objval.getFISCAL_YEAR(), objval.getCOUNTER_NO(), objval.getRECEIPT_NO(),
-                objval.getSTD_CODE(), objval.getRECEIPT_YEAR(), objval.getRECEIPT_SEMESTER(), objval.getRECEIPT_DATE(),
-                objval.getRECEIPT_TIME(), objval.getRECEIPT_PERIOD(), objval.getTOTAL_AMOUNT(), objval.getRECEIPT_TYPE(),
-                objval.getRECEIPT_STATUS(), objval.getREGIONAL_NO(), objval.getCASH_AMOUNT(), objval.getCHEQUE_AMOUNT(),
-                objval.getCREDIT_AMOUNT(), objval.getREGIS_METHOD(), objval.getREGIS_CK(), objval.getNEAR_GRADUATE(),
-                objval.getPAYMENT_CODE(), objval.getACCOUNT_NUMBER(), objval.getBANK_FEE(), changeReceiptPayStatus,
-                objval.getREGIS_GROUP_NO(), objval.getREGIS_DATE(), objval.getTOTAL_AMOUNT_BANK(), objval.getBANK_VAT(),
-                objval.getBANK_TOTAL(), objval.getNOMATCH_MONEY(), objval.getBANK_DATE(), objval.getADD_PAY(), objval.getADD_BANK_DATE(),
-                objval.getEXAM_LOCATION_NO(), objval.getWAIVED_NO(), objval.getWAIVED_CR(), objval.getCASHIER_NO(), objval.getUSERID(),
-                objval.getUPDATE_DATE(), objval.getUSERNAME(), objval.getCREDITCARD_TYPE(), objval.getCREDITCARD_FEE(), objval.getPOSTAL_AMOUNT(),
-                objval.getPAYMENT_TYPE(), objval.getTIME_NO(), objval.getCHK_GRADUATE_STATUS(), objval.getSAVE_STATUS(), objval.getSTATUS_B_UPDATE_DATE(),
-                objval.getFACULTY_NO(), objval.getREF_KEY(), objval.getREGIS_STATUS(), objval.getEXPIRE_DATE(), 
-                objval.getSTD_CODE(), objval.getRECEIPT_YEAR(),
-                objval.getRECEIPT_SEMESTER(), objval.getRECEIPT_PAY_STATUS(), objval.getREF_KEY());
+        int chkUpdate = db.update(sql, changeReceiptPayStatus, objval.getSTD_CODE(), objval.getRECEIPT_YEAR(), objval.getRECEIPT_SEMESTER(),
+                objval.getRECEIPT_PAY_STATUS(), objval.getREF_KEY());
         try {
             return chkUpdate > 0;
 
@@ -284,4 +348,245 @@ public class ET_RECEIPT_TABLE {
             return 0;
         }
     }//end get max no
+
+    // ------------------------REPORT ----------------------------------------------
+    /* public List<ET_RECEIPT> findAllReceipt(String sem, String year) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = " SELECT DISTINCT a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE , "
+                + " TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE"
+                + " ,D.NAME_THAI,c.REF_KEY,A.RECEIPT_NO,"
+                + " TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
+                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,ET_REGIS_RU24 c , DBBACH00.VM_STUDENT_MOBILE d "
+                + " where A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID and B.STD_CODE = C.STD_CODE and B.SEMESTER = C.SEMESTER and B.YEAR = C.YEAR "
+                + " and B.QRID = C.REF_KEY and C.STD_CODE = D.STD_CODE "
+                + " and A.RECEIPT_PAY_STATUS = '1' and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? ";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }*/
+    //end find 
+    public List<ET_RECEIPT> findAllReceipt(String sem, String year) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,to_char(a.SLIP_NO,'fm000000')SLIP_RUN_NO, "
+                + "  TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE ,D.NAME_THAI, "
+                + "  A.RECEIPT_NO, TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
+                + "  FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,  DBBACH00.VM_STUDENT_MOBILE d "
+                + "  where A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER  "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID AND B.STD_CODE = D.STD_CODE   "
+                + " and A.RECEIPT_PAY_STATUS = '1' and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? ";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findAllReceiptSelectSection(String sem, String year, String sec) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,to_char(a.SLIP_NO,'fm000000')SLIP_RUN_NO  , "
+                + " TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE"
+                + " ,D.NAME_THAI,c.REF_KEY "
+                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,ET_REGIS_RU24 c, DBBACH00.VM_STUDENT_MOBILE d"
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID and B.STD_CODE = C.STD_CODE and B.SEMESTER = C.SEMESTER and B.YEAR = C.YEAR "
+                + " and B.QRID = C.REF_KEY  and C.STD_CODE = D.STD_CODE  "
+                + " and a.RECEIPT_PAY_STATUS = '1' and a.RECEIPT_SEMESTER = ? and a.RECEIPT_YEAR = ? and C.SECTION_NO = ?";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, sec);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findBySelectDate(String sem, String year, String examdate) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY,  "
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,to_char(a.SLIP_NO,'fm000000')SLIP_RUN_NO  , "
+                + " TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE"
+                + " ,D.NAME_THAI, A.RECEIPT_NO, TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
+                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b, DBBACH00.VM_STUDENT_MOBILE d"
+                + " where A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID  and B.STD_CODE = D.STD_CODE"
+                + " and A.RECEIPT_PAY_STATUS = '1' and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? "
+                + " and  trunc(B.INSERT_DATE) = TO_DATE(?,'dd/mm/yyyy','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, examdate);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findBySelectDateAndSection(String sem, String year, String sec, String examdate) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY,  "
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE  ,to_char(a.SLIP_NO,'fm000000')SLIP_RUN_NO , "
+                + " TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE"
+                + " ,D.NAME_THAI,c.REF_KEY , TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
+                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,ET_REGIS_RU24 c, DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and B.STD_CODE = C.STD_CODE and B.SEMESTER = C.SEMESTER and B.YEAR = C.YEAR "
+                + " and A.REF_KEY = B.QRID and B.QRID = c.REF_KEY  and C.STD_CODE = D.STD_CODE"
+                + " and A.RECEIPT_PAY_STATUS = '1' and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ?  and C.SECTION_NO = ? "
+                + " and trunc(B.INSERT_DATE) = TO_DATE(?,'dd/mm/yyyy','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, sec, examdate);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findReceiptSelectStdApproove(String sem, String year, String stdcode) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
+                + "TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE , "
+                + "TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE "
+                + ",D.NAME_THAI,C.COURSE_NO,C.CREDIT,"
+                + "(TO_CHAR(C.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || C.SECTION_NO  || ')' )EXAM_DATE "
+                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,ET_REGIS_RU24 c, DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID and B.STD_CODE = C.STD_CODE and B.SEMESTER = C.SEMESTER and B.YEAR = C.YEAR "
+                + " and B.QRID = C.REF_KEY  and C.STD_CODE = D.STD_CODE   "
+                + " and a.RECEIPT_PAY_STATUS = '1' and a.RECEIPT_SEMESTER = ? and a.RECEIPT_YEAR = ? and C.STD_CODE = ?";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, stdcode);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findReceiptSelectStdAll(String sem, String year, String stdcode) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, "
+                + "a.REF_KEY, TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE,"
+                + "TO_CHAR(C.INSERT_DATE , 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE  "
+                + ",D.NAME_THAI,C.COURSE_NO,C.CREDIT, "
+                + "(TO_CHAR(C.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || C.SECTION_NO  || ')' )EXAM_DATE "
+                + " FROM ET_RECEIPT a,ET_REGIS_RU24 c, DBBACH00.VM_STUDENT_MOBILE d  where  A.STD_CODE = c.STD_CODE "
+                + " and A.RECEIPT_SEMESTER = c.SEMESTER  and A.RECEIPT_YEAR = c.year and A.REF_KEY = C.REF_KEY and C.STD_CODE = D.STD_CODE "
+                + " and a.RECEIPT_SEMESTER = ? and a.RECEIPT_YEAR = ? and C.STD_CODE = ?";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, stdcode);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    // regis all --------------------------------------------------
+    public List<ET_RECEIPT> findRegisterAll(String sem, String year) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT DISTINCT a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT,"
+                + " a.RECEIPT_STATUS,a.FACULTY_NO, a.REF_KEY,"
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT a,ET_REGIS_RU24 b , DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.REF_KEY and b.STD_CODE = D.STD_CODE "
+                + " and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ?";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findRegisterByDateAndSection(String sem, String year, String sec, String examdate) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT,"
+                + " a.RECEIPT_STATUS,a.FACULTY_NO, a.REF_KEY,"
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT a,ET_REGIS_RU24 b , DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.REF_KEY and b.STD_CODE = D.STD_CODE "
+                + " and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ?  and b.SECTION_NO = ? "
+                + " and trunc(B.INSERT_DATE) = TO_DATE(?,'dd/mm/yyyy','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, sec, examdate);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+
+    public List<ET_RECEIPT> findRegisterByDate(String sem, String year, String examdate) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT,"
+                + " a.RECEIPT_STATUS,a.FACULTY_NO, a.REF_KEY,"
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT a,ET_REGIS_RU24 b , DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.REF_KEY and b.STD_CODE = D.STD_CODE "
+                + " and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? "
+                + " and trunc(B.INSERT_DATE) = TO_DATE(?,'dd/mm/yyyy','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, examdate);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+
+    public List<ET_RECEIPT> findRegisterBySection(String sem, String year, String sec) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT,"
+                + " a.RECEIPT_STATUS,a.FACULTY_NO, a.REF_KEY,"
+                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT a,ET_REGIS_RU24 b , DBBACH00.VM_STUDENT_MOBILE d "
+                + " where  A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
+                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.REF_KEY and b.STD_CODE = D.STD_CODE "
+                + " and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? and b.SECTION_NO = ? ";
+        List<Map<String, Object>> result = db.queryList(sql, sem, year, sec);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+
+    public List<ET_RECEIPT> findCheckdigit(String stdcode,String fiscalyear,String repNumcourse,String total,String sem, String year, String refkey) {
+        List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
+        String sql = "SELECT  to_char(DIPSTD01.GET_UIC(? ,?,'567',?,'1',?),'fm0000')CHECKDIGIT"
+                + " from et_receipt  WHERE std_code = ? "
+                + " and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ? and  REF_KEY = ?";
+        List<Map<String, Object>> result = db.queryList(sql, stdcode,fiscalyear,repNumcourse,total,stdcode,sem,year,refkey);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+
+    // ------------------------END REPORT ----------------------------------------------
 }

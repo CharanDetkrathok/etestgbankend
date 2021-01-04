@@ -28,4 +28,8 @@ public class ET_REP_SLIP {
     private String TOTAL_AMOUNT;
     private String INSERT_DATE_TIME;
     private String DATE_GENERATED;
+    private BigDecimal SLIP_NO;
+    private String run_no;
+    private String REF_KEY;
+    private String CHECKDIGIT;
 }

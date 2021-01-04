@@ -16,22 +16,17 @@ public class ReceiptManagement extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         Database db = new Database();
-        
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
-        
-        // ----- Query สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------- 
-        ET_RECEIPT_TABLE getReceiptTable = new ET_RECEIPT_TABLE(db);
-        List<ET_RECEIPT> ReceiptData = getReceiptTable.findAll();  
-        
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+
+        ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
+        List<ET_EXAM_DATE> getExamDate = getExamDateTable.findAllExamDate();
+
         request.setAttribute("getCounterData", getCounterData);
+        request.setAttribute("getExamDate", getExamDate);
         
-        // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------------- 
-        request.setAttribute("ReceiptData", ReceiptData);
-        
-        RequestDispatcher rs = request.getRequestDispatcher("admin/Receipt-Management.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("admin/Receipt-Management-Main.jsp");
         rs.forward(request, response);
         db.close();
     }

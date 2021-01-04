@@ -1,0 +1,41 @@
+@media print {
+
+    table.gridtable     { page-break-after: auto; }
+    table.gridtable   tr    { page-break-inside:avoid;page-break-after: auto; }
+    table.gridtable   td    { page-break-inside:avoid; page-break-after:auto }
+    table.gridtable   thead { display:table-header-group }
+    table.gridtable   tfoot { display:table-footer-group }
+
+    html, body{
+        margin-left: -250px;  
+        height:100%;
+        width:100%;
+        font-size: 18px;
+        font-family: 'Times New Roman';
+        page-break-before: always;
+    }        
+    #hid {
+        display: none;
+    }
+    #left-panel {
+        display: none;
+    }        
+    .top-right {
+        display: none;
+    }
+    .header {
+        display: none;
+    }
+    table {
+        table-layout: auto;
+        width: 950px; 
+    }       
+}
+
+@page {
+    size: auto;
+}
+
+
+
+

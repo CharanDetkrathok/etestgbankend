@@ -187,4 +187,24 @@ public class ET_BUILE_ROW_TABLE {
             return 0;
         }
     }//end get max no
+    
+    public List<ET_BUILE_ROW> findRowAndSeat(String Year, String Semester) {
+        List<ET_BUILE_ROW> list = new ArrayList<ET_BUILE_ROW>();
+        String sql = "SELECT YEAR,SEMESTER,BUILD_NO,ROW_EXAM,SEAT_EXAM,"
+                + "TO_CHAR(UPDATE_DATE, 'mm/dd/yyyy HH24:mm:ss')UPDATE_DATE,"
+                + "TO_CHAR(INSERT_DATE, 'mm/dd/yyyy HH24:mm:ss')INSERT_DATE ,INSERT_USER,"
+                + "UPDATE_USER "
+                + "FROM  ET_BUILE_ROW  "
+                + "WHERE YEAR = ? AND SEMESTER =?"
+                + "ORDER BY ROW_EXAM ASC";
+                
+       List<Map<String, Object>> result = db.queryList(sql, Year, Semester);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
 }

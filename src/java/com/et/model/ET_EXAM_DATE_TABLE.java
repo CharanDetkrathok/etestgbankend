@@ -104,6 +104,41 @@ public class ET_EXAM_DATE_TABLE {
         return list;
     }
     //end find 
+    
+    public List<ET_EXAM_DATE> findBylistForChangeSeatExam(String year, String secmester, String examDate, String section) {
+        List<ET_EXAM_DATE> list = new ArrayList<ET_EXAM_DATE>();
+        String sql = "SELECT YEAR,SEMESTER,"
+                + "TO_CHAR(EXAM_DATE, 'mm/dd/yyyy')EXAM_DATE,"
+                + "TO_CHAR(INSERT_DATE, 'mm/dd/yyyy')INSERT_DATE ,"
+                + "TO_CHAR(UPDATE_DATE, 'mm/dd/yyyy')UPDATE_DATE ,"
+                + "PERIOD, INSERT_USER,UPDATE_USER "
+                + "FROM  ET_EXAM_DATE  "
+                + "WHERE YEAR = ? AND SEMESTER = ? AND EXAM_DATE = TO_DATE( ?, 'mm/dd/yyyy' ) AND PERIOD = ?";
+        List<Map<String, Object>> result = db.queryList(sql, year, secmester, examDate, section);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
+    
+    public List<ET_EXAM_DATE> findExamDateReport() {
+        List<ET_EXAM_DATE> list = new ArrayList<ET_EXAM_DATE>();
+        String sql = "SELECT  distinct(TO_CHAR(EXAM_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI'))EXAM_DATE "
+                + "FROM  ET_EXAM_DATE order by to_date(EXAM_DATE,'DD-MM-YYYY') asc ";
+       // String sql = "SELECT distinct(trunc(EXAM_DATE)),TO_CHAR(EXAM_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')EXAM_DATE FROM  ET_EXAM_DATE ";
+
+        List<Map<String, Object>> result = db.queryList(sql);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list;
+    }
+    //end find 
 
     public ET_EXAM_DATE findCounterData() {
         String sql = "SELECT * FROM ET_EXAM_DATE";
@@ -138,7 +173,6 @@ public class ET_EXAM_DATE_TABLE {
         int chkUpdate = db.update(sql);
         try {
             return chkUpdate > 0;
-
         } catch (Exception e) {
             return false;
         }
@@ -169,6 +203,22 @@ public class ET_EXAM_DATE_TABLE {
         try {
             if (chkDelete > 0) {
                 return true;             
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }  //end of delete
+    
+        
+    public Boolean deleteAll() {
+        String sql = "DELETE FROM ET_EXAM_DATE";
+        int chkDelete = db.remove(sql);
+        try {
+            if (chkDelete > 0) {
+                return true;
             } else {
                 return false;
             }

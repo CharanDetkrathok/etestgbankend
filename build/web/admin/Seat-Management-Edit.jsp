@@ -62,7 +62,7 @@
                             <div class="container-fluid" style="padding: 10px 60px;">
                                 <div class="col-12">
                                     <!--FORM แก้ไขข้อมูล-->
-                                    <form action="SeatManagementUpdate" method="POST">
+                                    <form action="/etestgbackend/SeatManagementUpdate" method="POST">
                                         <div class="row">
                                             <div class="col-12 form-group">
                                                 <input type="text" class="form-control" name="sumSeat" value="${sumSeat}" hidden="true">
@@ -70,13 +70,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-6 form-group">
-                                                <label for=""><b>ปีการศึกษา</b> <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>
-                                                <input type="number" class="form-control" name="year" placeholder="กรอก ปีการศึกษา" value="${getCounterData.STUDY_YEAR}" hidden="true">
-                                                <input class="form-control" value="${getCounterData.STUDY_YEAR}" disabled="true">
+                                                <input type="number" class="form-control" name="year" value="${getCounterData.STUDY_YEAR}" hidden="true">
                                             </div>
-                                            <div class="col-6 form-group">
-                                                <label for=""><b>ภาคการศึกษา</b></label>                                                
-                                                <select class="form-control" name="semester" required="true">
+                                            <div class="col-6 form-group">       
+                                                <select class="form-control" name="semester" hidden="true">
                                                     <c:choose>
                                                         <c:when test = "${getCounterData.STUDY_SEMESTER == '1'}">
                                                             <option selected="true" value="1">เทอม 1</option>
@@ -109,10 +106,8 @@
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 <label for=""><b>กำหนดจำนวนที่นั่งสอบ/แถว</b> <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>                                                
-                                                <input value="${BuildRow.SEAT_EXAM}" type="number" class="form-control" name="seat_exam" 
-                                                       placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" 
-                                                       onKeyPress="if (this.value.length == 3)
-                                                                   return false;" required="true">
+                                                <input value="${BuildRow.SEAT_EXAM}" type="number" min="1" class="form-control" name="seat_exam" 
+                                                       placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length == 3)return false;" required="true">
                                             </div>
                                             <div class="col-6 form-group" style="margin-top: 32px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 

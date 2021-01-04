@@ -39,6 +39,11 @@ public class ET_REP_SLIP_TABLE {
                     .TOTAL_AMOUNT((String) row.get("TOTAL_AMOUNT"))
                     .INSERT_DATE_TIME((String) row.get("INSERT_DATE_TIME"))
                     .DATE_GENERATED((String) row.get("DATE_GENERATED"))
+                    .SLIP_NO((BigDecimal) row.get("SLIP_NO"))
+                    .run_no((String) row.get("RUN_NO"))
+                    .REF_KEY((String) row.get("REF_KEY"))
+                    .CHECKDIGIT((String) row.get("CHECKDIGIT"))
+                   // .SLIP((String) row.get("CHECKDIGIT"))
                     .build();
             /* user.setXxtthh((Integer) row.get("USERID"));
              user.setUsersname((String) row.get("USERNAME"));
@@ -76,7 +81,7 @@ public class ET_REP_SLIP_TABLE {
                 + " and A.REF_KEY = B.REF_KEY and B.REF_KEY = C.QRID "
                 + " and B.RECEIPT_SEMESTER = C.SEMESTER and B.RECEIPT_YEAR = c.year and "
                 + " c.STD_CODE = ? and c.SEMESTER = ? and c.year = ? "
-                + " and C.QRID = ? and b.RECEIPT_PAY_STATUS = '1'";
+                + " and C.QRID = ? and b.RECEIPT_PAY_STATUS = '1' order by a.EXAM_DATE asc";
         List<Map<String, Object>> result = db.queryList(sql, stdid, sem, year, refkey);
 
         for (Map<String, Object> row : result) {
@@ -112,4 +117,75 @@ public class ET_REP_SLIP_TABLE {
 
     }
 
+    public ET_REP_SLIP genSlipRunNo(String stdid, String sem, String year, String refkey) {
+        String sql = " SELECT  to_char(request_slipno.nextval,'fm00000')run_no  "
+                + " from et_receipt "
+                + " WHERE STD_CODE = ? and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ?  and REF_KEY = ? ";
+        Map<String, Object> row = db.querySingle(sql, stdid, sem, year, refkey);
+
+        return setAltmodel(row);
+
+    }
+
+    public ET_REP_SLIP findSlipRunNo(String stdid, String sem, String year, String refkey) {
+        String sql = "SELECT to_char(slip_no,'fm00000')run_no  "
+                + " from et_receipt "
+                + " WHERE STD_CODE = ? and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ?  and REF_KEY = ? ";
+        Map<String, Object> row = db.querySingle(sql, stdid, sem, year, refkey);
+
+        return setAltmodel(row);
+    }
+
+    /*  public ET_REP_SLIP findCheckdigit(String stdid, String repno, String amount, String sem, String year, String refkey,String fisyear) {
+       // String sql = " SELECT to_char(DIPSTD01.GET_UIC('" + stdid +"' ,'" + fisyear +"','567','" + repno +"','1','" + new BigDecimal(amount)+"'),'fm0000')CHECKDIGIT  "
+                String sql = " SELECT to_char(DIPSTD01.GET_UIC('6306043677','2564','567','3','1','600.00'),'fm0000')CHECKDIGIT "
+                + " from et_receipt "
+                + " WHERE STD_CODE = ? and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ?  and REF_KEY = ? ";
+        Map<String, Object> row = db.querySingle(sql, stdid, sem, year, refkey, fisyear);
+
+        return setAltmodel(row);
+
+    }  */
+    public boolean insert(ET_REP_SLIP obj) {
+        // int colorNo = getColorNo();
+        String sql = "insert into ET_RECEIPT(YEAR,SEMESTER,EXAM_DATE,PERIOD,INSERT_DATE) "
+                + " values(?,?,TO_DATE(?, 'mm/dd/yyyy hh24:mi:ss'),?,sysdate)";
+
+        String[] genCol = {"EXAM_DATE"};
+        int chk = db.insertRc(genCol, sql);
+
+        try {
+            if (chk > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+    }//end of insert
+
+    public Boolean update(ET_REP_SLIP obj) {
+        String sql = "update ET_RECEIPT set SLIP_NO = ? "
+                + " where STD_CODE = ? and REF_KEY = ? and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ? ";
+        int chkUpdate = db.update(sql, obj.getSLIP_NO(), obj.getSTD_CODE(), obj.getREF_KEY(),
+                obj.getSEMESTER(), obj.getYEAR());
+        try {
+            return chkUpdate > 0;
+
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    public ET_REP_SLIP findCheckdigit(String stdcode, String fiscalyear, String repNumcourse, String total, String sem, String year, String refkey) {
+        String sql = "SELECT  to_char(DIPSTD01.GET_UIC(? ,?,'567',?,'1',?),'fm0000')CHECKDIGIT"
+                + " from et_receipt  WHERE std_code = ? "
+                + " and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ? and  REF_KEY = ?";
+        Map<String, Object> row = db.querySingle(sql, stdcode, fiscalyear, repNumcourse, total, stdcode, sem, year, refkey);
+
+        return setAltmodel(row);
+    }
 }

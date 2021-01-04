@@ -1,3 +1,4 @@
+<%@page import="java.util.Base64"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 
@@ -219,8 +220,8 @@
             }
             @page 
             {
-                size:  auto;   /* auto is the initial value */
-                margin: 10mm;  /* this affects the margin in the printer settings */
+                size:  auto;    
+                margin: 200mm;
             }
         </style>
     </head>
@@ -246,7 +247,7 @@
                             />
                         <p class="bill-head-1-center">มหาวิทยาลัยรามคำแหง</p>
                         <p class="bill-head-2-center">ใบเสร็จรับเงิน การลงทะเบียนสอบทางอิเล็กทรอนิกส์</p>
-                        <p class="bill-head-3-center">เลขประจำตัวผู้เสียภาษี ${getProfile.CITIZEN_ID}</p>
+                        <p class="bill-head-3-center">เลขประจำตัวผู้เสียภาษี 099 4000 193483</p>
                     </td>
 
                     <td align="right" style="width: 333px;">            
@@ -274,7 +275,7 @@
                         <p class="bill-head-left-text">
                             <b>วันที่</b>
                             <span style="font-size: 22px" id="register-date">
-                                &nbsp;&nbsp;${getHeaderRepSlip.INSERT_DATE} (${sem})</span
+                                &nbsp;&nbsp;${getHeaderRepSlip.INSERT_DATE} (1)</span
                             >
                         </p>
                         <p class="bill-head-left-text">
@@ -292,12 +293,12 @@
                     <td align="right" style="width: 350px">
                         <p class="bill-head-right">
                             <b style="margin: 5px 79px 0 0;">เครื่องที่/ปีงบประมาณ</b>
-                            <span style="margin: 0 0 0 0; font-size: 22px" id="register-machine-fiscal-year" > 560/${subYear}</span>
+                            <span style="margin: 0 0 0 0; font-size: 22px" id="register-machine-fiscal-year" > 567/${subYear}</span>
                         </p>
                         <p class="bill-head-right-text">
                             <b>เลขที่</b>
                             <span style="margin: 2px 0 0 75px; font-size: 22px" id="register-number">
-                                ${subrefkey}</span
+                                ${sliprunno}</span
                             >
                         </p>
                         <p class="bill-head-right-text">
@@ -362,12 +363,46 @@
                     </tr>
                 </thead>
                 <tbody style="border: 1px solid black; font-family: 'Times New Roman', Times, serif;">
-                    <c:forEach items="${arrAmount}"   begin="0" varStatus="loop" end="${noColAmount}" var="noColAmount">
-                        <tr>
-                            <td class="bg-color-border" id="total-price">${arrAmount[loop.index]}</td>                          
-                        </tr>
-                    </c:forEach>
-                        
+                    <tr>
+                        <td class="bg-color-border" id="total-price">${tmpTotal}</td>    
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+                    <tr>
+                        <td class="bg-color-border" id="total-price">&nbsp;</td> 
+                    </tr>
+
                 </tbody>
 
                 <!-- ไว้ด้านนอก <tbody> เพื่อแสดงการ "รับเงิน" -->
@@ -411,7 +446,7 @@
                             </td>
                         </tr> 
                     </c:forEach>
-                       <c:forEach  begin="1" end="${chkColAmount}" varStatus="loop">
+                    <c:forEach  begin="1" end="${chkColAmount}" varStatus="loop">
                         <tr>
                             <td class="bg-color-border-data" id="subject">&nbsp; </td>
                             <td class="bg-color-border-data" id="credit">&nbsp; </td>
@@ -449,20 +484,57 @@
             </pre>
             <p style="margin: -25px 0 0 80px; font-size: 12px;">ต้องแสดงเอกสารฉบับนี้เมื่อเข้าสอบ หรือเมื่อต้องการติดต่อกับมหาวิทยาลัยทุกครั้ง</p>
             <p style="margin: 5px 0 0 50px; font-size: 12px;">หากมีการปลอมแปลงใบเสร็จรับเงิน จะดำเนินการตามข้อบังคับมหาวิทยาลัยว่าด้วยวินัยนักศึกษา</p>
-            <pre style="margin: -15px 120px 0 0; float: right; font-size: 12px;">
-        ..................................................................................................
-                                (นางทดสอบ ระบบเท่านั้น)
-                        นักวิชาการเงินและบัญชีชำนาญการ
-
-        <span style="font-size: 16px;">ผู้รับเงิน (ผู้รับมอบอำนาจจากอธิการบดี)</span>
-            </pre>
+            <pre style="margin: -50px 120px 0 0; float: right; font-size: 12px;">
+            <font style="margin: -13px -108px; float: right; font-size: 16px;">${chkDigit}</font>
             <img
-                src="https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Fwww.ru.ac.th%2Fth%2F&chs=180x180&choe=UTF-8&chld=L|2"
+                src="images/icons/signature.png"
+                alt="ลายเซ็นการเงิน"
+                style="width: 35px; float: right; margin-right: 100px; margin-top: -21px;"
+                />
+        ..................................................................................................
+                              (นางสาวทิวาภรณ์ สิงห์ประทาน)
+                            นักวิชาการเงินและบัญชีปฏิบัติการ
+
+        <span style="font-size: 16px;"> &nbsp;&nbsp;ผู้รับเงิน (ผู้รับมอบอำนาจจากอธิการบดี)</span>
+            </pre>
+            <%
+
+                String stdcode = request.getParameter("STD_CODE");
+                if (stdcode == null) {
+                    stdcode = "6207500064";
+                }
+                String sem = request.getParameter("sem");
+                if (sem == null) {
+                    sem = "1";
+                }
+                String year = request.getParameter("refkey");;
+                if (year == null) {
+                    year = "2563";
+                }
+                String refkey = request.getParameter("refkey");
+                if (refkey == null) {
+                    refkey = "DRKEE201003235900615";
+                }
+
+                String codecheck = request.getParameter("codecheck");
+                if (codecheck == null) {
+                    codecheck = "0000";
+                }
+                String encodedString = Base64.getEncoder().encodeToString(stdcode.getBytes());
+                // out.print("encode" + encodedString);
+
+                byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+                String decodedString = new String(decodedBytes);
+
+                //  out.print("decode" + decodedString);
+%> 
+            <img
+                src="https://chart.googleapis.com/chart?cht=qr&chl=http://sevkn.ru.ac.th:8888/etestgbackend/VerifySlipt.jsp?stdcode=${getHeaderRepSlip.STD_CODE}&sem=${sem}&year=${year}&refkey=${refkey}&chs=180x180&choe=UTF-8&chld=L|2"
                 alt="qr code"
-                style="width: 100px; float: right; margin: -13px -390px;"
+                style="width: 100px; margin: -205px 0 20px 870px;"
                 />
             <br /><br />
-            <p style="margin: 38px 0 10px 10px; font-size: 12px;">
+            <p style="margin: -45px 0 10px 10px; font-size: 12px;">
                 กองคลัง สำนักงานอธิการบดี
             </p>
         </div>
@@ -472,7 +544,7 @@
             วิธีชำระเงิน Payment Method &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :   QR Code (นักศึกษาชำระ)
             วันชำระ Payment Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:   ${getHeaderRepSlip.INSERT_DATE_TIME}
             วันที่พิมพ์ Printed Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:   ${getHeaderRepSlip.DATE_GENERATED}
-            หมายเหตุ Remark &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:   1. เอกสารฉบับนี้ออกด้วยระบบคอมพิวเตอร์จะต้องไม่มีรอยแก้ไข ขูด ขีด ฆ่ายกเว้น เจ้าหน้าที่ผู้รับเงินได้ลงลายมือชื่อ
+            หมายเหตุ Remark &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:   1. เอกสารฉบับนี้ออกด้วยระบบคอมพิวเตอร์จะต้องไม่มีรอยแก้ไข ขูด ขีดฆ่ายกเว้น เจ้าหน้าที่ผู้รับเงินได้ลงลายมือชื่อ
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กำกับแก้ไขไว้ทุกแห่ง
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. ใบเสร็จรับเงินฉบับนี้ผู้รับเงินลงลายมือชื่อด้วยลายเซ็นอิเล็กทรอนิกส์ ซึ่งได้รับอนุมัติจากกรมบัญชีกลางตามหนังสือ
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กค 0422.3/ว.130 ลงวันที่ 19 พ.ย. 2556
@@ -480,8 +552,8 @@
             </pre
             >
         </div>
-        <div  id="printPageButton" style="text-align:center;">   
-            <button type="button" class="btn btn-primary" onClick="window.print();">&nbsp;<i class="fa fa-print"></i>&nbsp;&nbsp;&nbsp;พิมพ์ใบคำร้องขอสอบซ้ำซ้อน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <div  id="printPageButton" style="text-align:center; padding-bottom: 50px;">   
+            <button type="button" class="btn" onClick="window.print();">&nbsp;<i class="fa fa-print"></i>&nbsp;&nbsp;&nbsp;พิมพ์ใบเสร็จรับเงิน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         </div>
     </body>
 </html>

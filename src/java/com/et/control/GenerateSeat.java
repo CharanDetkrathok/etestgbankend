@@ -29,8 +29,8 @@ public class GenerateSeat extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         //stmt 
-        String examdate = request.getParameter("examdate");
-        String sec = request.getParameter("sec");
+        String examdate = "0";//request.getParameter("examdate");
+        String sec = "0";//request.getParameter("sec");
         String year = request.getParameter("year");
         String sem = request.getParameter("sem");
 
@@ -77,9 +77,9 @@ public class GenerateSeat extends HttpServlet {
                 tmpStdCourse.clear();
                 sectionT.clear();
                 getRu24Std = null;
-                chkInsert = getRowSeatOrderTable.countStudent(year, sem, examdate, tmpSec);
+                chkInsert = getRowSeatOrderTable.countStudentToSetSeatRowOrder(year, sem, examdate, tmpSec);
                 if (chkInsert > 0) {
-                    chkDelSeatOrder = getRowSeatOrderTable.chkdelete(year, sem, examdate, tmpSec);
+                    chkDelSeatOrder = getRowSeatOrderTable.chkdeleteToSetSeatRowOrder(year, sem, examdate, tmpSec);
                     db.commit();
                 }
                 getRu24Std = getRu24Table.findBySelectDateAndSection(year, sem, examdate, tmpSec);
@@ -92,10 +92,10 @@ public class GenerateSeat extends HttpServlet {
                     }
                     tmpnumRowSeat.add(getBuildRow.get(chkrow).getROW_EXAM() + (stdcount));
                     tmpStdnumSeat.add(et_regis_ru24.getSTD_CODE());
-                    sectionT.add(et_regis_ru24.getPERIOD());
+                    sectionT.add(et_regis_ru24.getSECTION_NO().toString());
                     tmpStdCradit.add(et_regis_ru24.getCREDIT().toString());
                     tmpStdCourse.add(et_regis_ru24.getCOURSE_NO());
-                    // ExamDate.add(et_regis_ru24.)
+                    ExamDate.add(et_regis_ru24.getEXAM_DATE());
                     stdcount++;
                 }
                 if (tmpnumRowSeat != null) {
@@ -106,7 +106,7 @@ public class GenerateSeat extends HttpServlet {
                         AddSeatOrder.setSEMESTER(sem);
                         AddSeatOrder.setROW_SEAT(tmpnumRowSeat.get(i));
                         AddSeatOrder.setSTD_CODE(tmpStdnumSeat.get(i));
-                        AddSeatOrder.setEXAM_DATE(examdate);
+                        AddSeatOrder.setEXAM_DATE(ExamDate.get(i));
                         AddSeatOrder.setSECTION_NO(sectionT.get(i));
                         AddSeatOrder.setCREDIT(new BigDecimal(tmpStdCradit.get(i)));
                         AddSeatOrder.setCOURSE_NO(tmpStdCourse.get(i));
@@ -126,9 +126,9 @@ public class GenerateSeat extends HttpServlet {
             }
 
         } else {
-            chkInsert = getRowSeatOrderTable.countStudent(year, sem, examdate, sec);
+            chkInsert = getRowSeatOrderTable.countStudentToSetSeatRowOrder(year, sem, examdate, sec);
             if (chkInsert > 0) {
-                chkDelSeatOrder = getRowSeatOrderTable.chkdelete(year, sem, examdate, sec);
+                chkDelSeatOrder = getRowSeatOrderTable.chkdeleteToSetSeatRowOrder(year, sem, examdate, sec);
                 db.commit();
             }
             getRu24Std = getRu24Table.findBySelectDateAndSection(year, sem, examdate, sec);
@@ -140,10 +140,10 @@ public class GenerateSeat extends HttpServlet {
                 }
                 tmpnumRowSeat.add(getBuildRow.get(chkrow).getROW_EXAM() + (stdcount));
                 tmpStdnumSeat.add(et_regis_ru24.getSTD_CODE());
-                sectionT.add(et_regis_ru24.getPERIOD());
+                sectionT.add(et_regis_ru24.getSECTION_NO().toString());
                 tmpStdCradit.add(et_regis_ru24.getCREDIT().toString());
                 tmpStdCourse.add(et_regis_ru24.getCOURSE_NO());
-                // ExamDate.add(et_regis_ru24.)
+                ExamDate.add(et_regis_ru24.getEXAM_DATE());
                 stdcount++;
             }
             if (tmpnumRowSeat != null) {
@@ -154,7 +154,7 @@ public class GenerateSeat extends HttpServlet {
                     AddSeatOrder.setSEMESTER(sem);
                     AddSeatOrder.setROW_SEAT(tmpnumRowSeat.get(i));
                     AddSeatOrder.setSTD_CODE(tmpStdnumSeat.get(i));
-                    AddSeatOrder.setEXAM_DATE(examdate);
+                    AddSeatOrder.setEXAM_DATE(ExamDate.get(i));
                     AddSeatOrder.setSECTION_NO(sectionT.get(i));
                     AddSeatOrder.setCREDIT(new BigDecimal(tmpStdCradit.get(i)));
                     AddSeatOrder.setCOURSE_NO(tmpStdCourse.get(i));
@@ -173,11 +173,16 @@ public class GenerateSeat extends HttpServlet {
             }
         }
 
-        request.setAttribute("tmpnumRowSeat", tmpnumRowSeat);
-        request.setAttribute("getRu24Std", getRu24Std);
-        request.setAttribute("getBuildRow", getBuildRow);
-        RequestDispatcher rs = request.getRequestDispatcher("admin/ShowSeatDetail.jsp");
-        rs.forward(request, response);
+//        request.setAttribute("tmpnumRowSeat", tmpnumRowSeat);
+//        request.setAttribute("getRu24Std", getRu24Std);
+//        request.setAttribute("getBuildRow", getBuildRow);
+//        RequestDispatcher rs = request.getRequestDispatcher("admin/ShowSeatDetail.jsp");
+//        rs.forward(request, response);
+        PrintWriter out = response.getWriter();
+        out.println("<script type=\"text/javascript\">");
+        out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
+        out.println("location='ExportETRU25et';");
+        out.println("</script>");
 
         db.close();
         /* PrintWriter out = response.getWriter();

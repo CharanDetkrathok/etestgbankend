@@ -47,152 +47,68 @@ public class ExportETSTDC extends HttpServlet {
 
         } else if (CheckExportText.equals("FindExport")) {
 
+            String YEAR = request.getParameter("year");
+            String SEMESTER = request.getParameter("sem");
             String examdate = request.getParameter("examdate");
             String section = request.getParameter("section");
 
             EXPORT_ET_STDC_TABLE getExportET_STDC = new EXPORT_ET_STDC_TABLE(db);
+            List<EXPORT_ET_STDC> ExportET_STDC = null;
 
             ArrayList<ET_STDC> lists = new ArrayList<ET_STDC>();
 
-            if (section.equals("0")) { //--- ค้นข้อมูลทั้งหมด
+            ExportET_STDC = getExportET_STDC.findExportEtSTDCAll(YEAR, SEMESTER); // --- ค้นข้อมูลทั้งหมด ทุก วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
+            System.err.println(ExportET_STDC);
+            // นับจำนวน นศ. 
+            int countStudents = 0;
+            if (!ExportET_STDC.isEmpty()) {
 
-                List<EXPORT_ET_STDC> ExportET_STDC = getExportET_STDC.findExportEtSTDCAllSection(examdate);
+                for (int i = 0; i < ExportET_STDC.size(); i++) {
+                    ET_STDC et_stdc = new ET_STDC();
 
-                if (!ExportET_STDC.isEmpty()) {
+                    String EXAM_DATE = ExportET_STDC.get(i).getEXAM_DATE();
 
-                    for (int i = 0; i < ExportET_STDC.size(); i++) {
-                        ET_STDC et_stdc = new ET_STDC();
+                    String ROW_SEAT;
+                    if (ExportET_STDC.get(i).getROW_SEAT().length() == 2) {
+                        ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT().substring(0, 1) + '0' + ExportET_STDC.get(i).getROW_SEAT().substring(1);
+                    } else {
+                        ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT();
+                    }
+                    
+                    // นับจำนวน นศ. 
+                    countStudents++;
+                    
+                    et_stdc.setStdc_year(ExportET_STDC.get(i).getYEAR());
+                    et_stdc.setStdc_std_semester(ExportET_STDC.get(i).getSEMESTER());
+                    et_stdc.setStdc_std_code(ExportET_STDC.get(i).getSTD_CODE());
+                    et_stdc.setStdc_std_course_code(ExportET_STDC.get(i).getCOURSE_NO() + "   ");
+                    et_stdc.setStdc_credit("0" + ExportET_STDC.get(i).getCREDIT() + " ");
+                    et_stdc.setStdc_section("02 ");
+                    et_stdc.setApp_date_etest_dd(EXAM_DATE);
+                    et_stdc.setApp_period_etest(ExportET_STDC.get(i).getSECTION_NO() + " ");
+                    et_stdc.setApp_bld("SKB802");
+                    et_stdc.setApp_row(ROW_SEAT);
+                    et_stdc.setEtest_status(" e-  ");
+                    et_stdc.setStdc_score_tot("000 ");
+                    et_stdc.setStdc_score_M("000 ");
+                    et_stdc.setStdc_score_F("000 ");
+                    et_stdc.setStdc_score_chsum("0000");
 
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 
-                        final String TEMP_OLD_FORMAT = "dd/MM/yyyy";
-                        final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
-                        String TEMP_OldDateString = ExportET_STDC.get(i).getEXAM_DATE();
-                        String TEMP_EXAM_DATE;
+                    lists.add(et_stdc);
+                }//end for
 
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
-                        SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
-                        Date temp_d = temp_sdf.parse(TEMP_OldDateString);
-                        temp_sdf.applyPattern(TEMP_NEW_FORMAT);
-                        TEMP_EXAM_DATE = temp_sdf.format(temp_d);
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
-                        LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE).minus(543, ChronoUnit.YEARS);
-
-                        //--- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการลบ
-                        final String OLD_FORMAT = "yyyy-MM-dd";
-                        final String NEW_FORMAT = "ddMMyy";
-                        String oldDateString = TEMP_EXAM_DATEe.toString();
-                        String NEW_EXAM_DATE;
-
-                        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-                        Date d = sdf.parse(oldDateString);
-                        sdf.applyPattern(NEW_FORMAT);
-                        NEW_EXAM_DATE = sdf.format(d);
-
-                        String ROW_SEAT;
-                        if (ExportET_STDC.get(i).getROW_SEAT().length() == 2) {
-                            ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT().substring(0, 1) + '0' + ExportET_STDC.get(i).getROW_SEAT().substring(1);
-                        } else {
-                            ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT();
-                        }
-
-                        et_stdc.setStdc_year(ExportET_STDC.get(i).getYEAR());
-                        et_stdc.setStdc_std_semester(ExportET_STDC.get(i).getSEMESTER());
-                        et_stdc.setStdc_std_code(ExportET_STDC.get(i).getSTD_CODE());
-                        et_stdc.setStdc_std_course_code(ExportET_STDC.get(i).getCOURSE_NO() + "   ");
-                        et_stdc.setStdc_credit("0" + ExportET_STDC.get(i).getCREDIT() + " ");
-                        et_stdc.setStdc_section("02 ");
-                        et_stdc.setApp_date_etest_dd(NEW_EXAM_DATE);
-                        et_stdc.setApp_period_etest(ExportET_STDC.get(i).getSECTION_NO() + " ");
-                        et_stdc.setApp_bld("SKB802");
-                        et_stdc.setApp_row(ROW_SEAT);
-                        et_stdc.setEtest_status(" e-  ");
-                        et_stdc.setStdc_score_tot("000 ");
-                        et_stdc.setStdc_score_M("000 ");
-                        et_stdc.setStdc_score_F("000 ");
-                        et_stdc.setStdc_score_chsum("0000");
-
-                        lists.add(et_stdc);
-                    }//end for
-
-                } else {
-
-                    PrintWriter out = response.getWriter();
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('วันที่สอบ หรือ คาบสอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
-                    out.println("location='ExportETSTDC';");
-                    out.println("</script>");
-
-                }
             } else {
+                
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('วันที่สอบ หรือ คาบสอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
+                out.println("location='ExportETSTDC';");
+                out.println("</script>");
 
-                List<EXPORT_ET_STDC> ExportET_STDC = getExportET_STDC.findExportEtSTDC(examdate, section);
-
-                if (!ExportET_STDC.isEmpty()) {
-
-                    for (int i = 0; i < ExportET_STDC.size(); i++) {
-
-                        ET_STDC et_stdc = new ET_STDC();
-
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 
-                        final String TEMP_OLD_FORMAT = "dd/MM/yyyy";
-                        final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
-                        String TEMP_OldDateString = ExportET_STDC.get(i).getEXAM_DATE();
-                        String TEMP_EXAM_DATE;
-
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
-                        SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
-                        Date temp_d = temp_sdf.parse(TEMP_OldDateString);
-                        temp_sdf.applyPattern(TEMP_NEW_FORMAT);
-                        TEMP_EXAM_DATE = temp_sdf.format(temp_d);
-                        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
-                        LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE).minus(543, ChronoUnit.YEARS);
-
-                        //--- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการลบ
-                        final String OLD_FORMAT = "yyyy-MM-dd";
-                        final String NEW_FORMAT = "ddMMyy";
-                        String oldDateString = TEMP_EXAM_DATEe.toString();
-                        String NEW_EXAM_DATE;
-
-                        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-                        Date d = sdf.parse(oldDateString);
-                        sdf.applyPattern(NEW_FORMAT);
-                        NEW_EXAM_DATE = sdf.format(d);
-
-                        String ROW_SEAT;
-                        if (ExportET_STDC.get(i).getROW_SEAT().length() == 2) {
-                            ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT().substring(0, 1) + '0' + ExportET_STDC.get(i).getROW_SEAT().substring(1);
-                        } else {
-                            ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT();
-                        }
-
-                        et_stdc.setStdc_year(ExportET_STDC.get(i).getYEAR());
-                        et_stdc.setStdc_std_semester(ExportET_STDC.get(i).getSEMESTER());
-                        et_stdc.setStdc_std_code(ExportET_STDC.get(i).getSTD_CODE());
-                        et_stdc.setStdc_std_course_code(ExportET_STDC.get(i).getCOURSE_NO() + "   ");
-                        et_stdc.setStdc_credit("0" + ExportET_STDC.get(i).getCREDIT() + " ");
-                        et_stdc.setStdc_section("02 ");
-                        et_stdc.setApp_date_etest_dd(NEW_EXAM_DATE);
-                        et_stdc.setApp_period_etest(ExportET_STDC.get(i).getSECTION_NO() + " ");
-                        et_stdc.setApp_bld("SKB802");
-                        et_stdc.setApp_row(ROW_SEAT);
-                        et_stdc.setEtest_status(" e-  ");
-                        et_stdc.setStdc_score_tot("000 ");
-                        et_stdc.setStdc_score_M("000 ");
-                        et_stdc.setStdc_score_F("000 ");
-                        et_stdc.setStdc_score_chsum("0000");
-                      
-                        lists.add(et_stdc);
-                    }//end for
-
-                } else {
-                    PrintWriter out = response.getWriter();
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('วันที่สอบ หรือ คาบสอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
-                    out.println("location='ExportETSTDC';");
-                    out.println("</script>");
-                }
             }
-
+            // นับจำนวน นศ. 
+            System.out.println("countStudents => "+ countStudents);
+            
             if (!lists.isEmpty()) {
 
                 response.setContentType("text/plain");

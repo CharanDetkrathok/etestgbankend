@@ -87,7 +87,7 @@ public class DateManagementInsert extends HttpServlet {
             boolean checkDuplicateExamSeat = getExamSeatTable.checkDuplicate(NEW_EXAM_DATE);
 
             boolean checkInsertExamSeat = false;
-            boolean checkInsertExamDate = false;;
+            boolean checkInsertExamDate = false;
 
             if (!checkDuplicateExamDate || !checkDuplicateExamSeat) {
 

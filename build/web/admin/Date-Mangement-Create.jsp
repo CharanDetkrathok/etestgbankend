@@ -62,34 +62,24 @@
                             <div class="container-fluid" style="padding: 10px 60px;">
                                 <div class="col-12">
                                     <!--FORM เพิ่มข้อมูล-->
-                                    <form action="DateManagementInsert" method="POST">
+                                    <form action="/etestgbackend/DateManagementInsert" method="POST">
                                         <div class="row">
                                             <div class="col-6 form-group">
-                                                <label for=""><b>ปีการศึกษา</b> <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>
-                                                <input type="number" class="form-control" name="year" placeholder="กรอก ปีการศึกษา" value="${getCounterData.STUDY_YEAR}"
-                                                       onKeyPress="if (this.value.length == 4)
-                                                                   return false;" required="true">
+                                                <input type="number" class="form-control" name="year" value="${getCounterData.STUDY_YEAR}" hidden="true">
                                             </div>
-                                            <div class="col-6 form-group">
-                                                <label for=""><b>ภาคการศึกษา</b></label>                                                
-                                                <select class="form-control" name="semester" required="true">
+                                            <div class="col-6 form-group">       
+                                                <select class="form-control" name="semester" hidden="true">
                                                     <c:choose>
                                                         <c:when test = "${getCounterData.STUDY_SEMESTER == '1'}">
                                                             <option selected="true" value="1">เทอม 1</option>
-                                                            <option value="2">เทอม 2</option>
-                                                            <option value="3">ภาคฤดูร้อน</option>
                                                         </c:when>
                                                         <c:when test = "${getCounterData.STUDY_SEMESTER == '2'}">
-                                                            <option value="1">เทอม 1</option>
                                                             <option selected="true" value="2">เทอม 2</option>
-                                                            <option value="3">ภาคฤดูร้อน</option>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <option value="1">เทอม 1</option>
-                                                            <option value="2">เทอม 2</option>
                                                             <option selected="true" value="3">ภาคฤดูร้อน</option>
                                                         </c:otherwise>
-                                                    </c:choose>   
+                                                    </c:choose>         
                                                 </select>
                                             </div>
                                         </div>
@@ -106,8 +96,7 @@
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 <label for="">จำนวนที่นั่งสอบทั้งหมด</label>
-                                                <input type="hidden" name="seat_exam" value="${BuildRow.SEAT_EXAM}">
-                                                <input type="text" class="form-control" placeholder="รวม ${BuildRow.SEAT_EXAM} ที่นั่ง" disabled="true">
+                                                <input type="number" class="form-control" name="seat_exam" min="1" placeholder="รวม ${BuildRow.SEAT_EXAM} ที่นั่ง" required="true">
                                             </div>
                                             <div class="col-6 form-group" style="margin-top: 32px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 

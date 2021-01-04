@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -34,30 +35,47 @@ public class GetSlipt extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-     /*   String stdcode = "6290508511";
-        String refkey = "DRKEE200917235900231";
-        String sem = "3";
-        String year = "2562";*/
+        /*    String stdcode = "6207500064";
+         String refkey = "DRKEE201003235900615";
+         String sem = "1";
+        String year = "2563";*/
+        // String tmpstdcode = "NjMwMTAwMzI1NA==";
+        String tmpstdcode = request.getParameter("stdcode");
+        byte[] decodedtmpstdcode = Base64.getDecoder().decode(tmpstdcode);
+        String stdcode = new String(decodedtmpstdcode);
 
-        String stdcode = request.getParameter("stdcode");
-        String refkey = request.getParameter("refkey");
-        String sem = request.getParameter("sem");
-        String year = request.getParameter("year");
+        String tmprefkey = request.getParameter("refkey");
+        byte[] decodedtmprefkey = Base64.getDecoder().decode(tmprefkey);
+        String refkey = new String(decodedtmprefkey);
+
+        String tmpsem = request.getParameter("sem");
+        byte[] decodedtmpsem = Base64.getDecoder().decode(tmpsem);
+        String sem = new String(decodedtmpsem);
+
+        String tmpyear = request.getParameter("year");
+        byte[] decodedtmpyear = Base64.getDecoder().decode(tmpyear);
+        String year = new String(decodedtmpyear);
+
         //tmp stmt
+        String getfiscal = "";
+        String gsubStrfiscal = "";
         String tmpSem = "";
         String tmpYear = "";
         String subYear = "";
         String subrefkey = "";
         int sumCredit = 0;
         int cntCourse = 0;
+        String chkDigit = "";
         String total = "";
         String slipNo = "";
         String strTotalThai = "";
         String tmpTotal = "";
         String[] tempSplitTotal = null;
         int noColAmount = 12;
+        boolean checkupdaterepno = false;
+
         ArrayList<String> arrAmount = new ArrayList<String>();
-       // ArrayList<String> arrRepSlip = new ArrayList<String>();
+        // ArrayList<String> arrRepSlip = new ArrayList<String>();
 
         //call db
         Database db = new Database();
@@ -69,82 +87,131 @@ public class GetSlipt extends HttpServlet {
         List<ET_REP_SLIP> getRepSlip = null;
         ET_REP_SLIP getHeaderRepSlip = null;
         ET_REP_SLIP getMockSlip = null;
+        ET_REP_SLIP checkSlipNo = null;
+        ET_REP_SLIP getSlipNo = null;
+        ET_REP_SLIP getCheckdigit = null;
+        String sliprunno = "000000";
 
-        List<ET_COUNTER_ADMIN> getEtCounter = getEtCounterTable.findAll();
-        if (getEtCounter != null) {
-            for (ET_COUNTER_ADMIN i : getEtCounter) {
-                tmpSem = i.getSTUDY_SEMESTER();
-                tmpYear = i.getSTUDY_YEAR();
-            }
-            if (tmpSem.equals(sem) && tmpYear.equals(year) && !stdcode.equals("") && !refkey.equals("")) {
-                //getMockSlip = getSlipTable.mockSlip();
-                getProfile = getProfileTable.findByStdProfile(stdcode);
-                getHeaderRepSlip = getSlipTable.findByHeaderSlip(stdcode, sem, year, refkey);
-                getRepSlip = getSlipTable.findListRegisSlip(stdcode, sem, year, refkey);
-                subYear = year.substring(2);
-                subrefkey = refkey.substring(15);
+        //checkSlipNo = getSlipTable.findSlipRunNo(stdcode, sem, year, refkey);
+        /* if (checkSlipNo.getRun_no().toString() == null) {
 
-          //      HashMap<String, String> tmparr = new HashMap<String, String>();
-                if (getRepSlip != null && getHeaderRepSlip != null) {
-                    for (ET_REP_SLIP j : getRepSlip) {
-                        arrAmount.add(j.getTOTAL_AMOUNT());
-                        sumCredit = sumCredit + Integer.parseInt(j.getCREDIT().toString());
-                        total = j.getTOTAL_AMOUNT();
-                        tmpTotal = j.getAMOUNT();
-                        cntCourse++;
-
-                        //arrRepSlip.addAll();
-                    }
-
-                    int chkColAmount = 0; 
-                    chkColAmount = (noColAmount - cntCourse);
-                    int chkRowSlip = 0;
-                    if (cntCourse > 0) {
-                       
-                        for (int i = 0; i <= chkColAmount; i++) {
-                            arrAmount.add("&nbsp;");
-                        }
-                       // chkRowSlip = chkColAmount -1;
-                       /* for (int i = 0; i < chkColAmount; i++) {
-                            getRepSlip.add(getMockSlip);
-                        }*/
-                    }
-
-                    strTotalThai = ThaiBaht(tmpTotal);
-                    slipNo = refkey.substring(15);
-                    tempSplitTotal = total.split("[.]");
-                    String tmp = tempSplitTotal[0];
-
-                    request.setAttribute("getProfile", getProfile);
-                    request.setAttribute("getRepSlip", getRepSlip);
-                    request.setAttribute("getHeaderRepSlip", getHeaderRepSlip);
-                    request.setAttribute("slipNo", slipNo);
-                    request.setAttribute("sem", sem);
-                    request.setAttribute("year", year);
-                    request.setAttribute("subYear", subYear);
-                    request.setAttribute("subrefkey", subrefkey);
-                    request.setAttribute("arrAmount", arrAmount);
-                    request.setAttribute("tmpTotal", tmp);
-                    request.setAttribute("sumCredit", sumCredit);
-                    request.setAttribute("cntCourse", cntCourse);
-                    request.setAttribute("sumCredit", sumCredit);
-                    request.setAttribute("strTotalThai", strTotalThai);
-                    request.setAttribute("noColAmount", noColAmount);
-                    request.setAttribute("chkColAmount", chkColAmount);
-                    RequestDispatcher rs = request.getRequestDispatcher("repSlipt.jsp");
-                    rs.forward(request, response);
+            getSlipNo = getSlipTable.genSlipRunNo(stdcode, sem, year, refkey);
+            if (getSlipNo != null) {
+                sliprunno = getSlipNo.getRun_no();
+                ET_REP_SLIP AddSlipNo = new ET_REP_SLIP();
+                AddSlipNo.setSLIP_NO(new BigDecimal(sliprunno));
+                AddSlipNo.setSTD_CODE((stdcode));
+                AddSlipNo.setSEMESTER((sem));
+                AddSlipNo.setYEAR((year));
+                AddSlipNo.setREF_KEY((refkey));
+                checkupdaterepno = getSlipTable.update(AddSlipNo);
+                if (checkupdaterepno) {
+                     db.commit();
                 } else {
-                    RequestDispatcher rs = request.getRequestDispatcher("err.jsp");
-                    rs.forward(request, response);
+                    response.sendRedirect("err.jsp");
                 }
 
             } else {
-                RequestDispatcher rs = request.getRequestDispatcher("err.jsp");
-                rs.forward(request, response);
+                response.sendRedirect("err.jsp");
             }
         } else {
-            RequestDispatcher rs = request.getRequestDispatcher("err.jsp");
-            rs.forward(request, response);
+            sliprunno = checkSlipNo.getRun_no().toString();
+        }*/
+        checkSlipNo = getSlipTable.findSlipRunNo(stdcode, sem, year, refkey);
+        if (checkSlipNo != null) {
+            sliprunno = checkSlipNo.getRun_no();
+
+            List<ET_COUNTER_ADMIN> getEtCounter = getEtCounterTable.findAll();
+            if (getEtCounter != null) {
+                for (ET_COUNTER_ADMIN i : getEtCounter) {
+                    tmpSem = i.getSTUDY_SEMESTER();
+                    tmpYear = i.getSTUDY_YEAR();
+                    getfiscal = i.getFISCAL_YEAR();
+                }
+                if (tmpSem.equals(sem) && tmpYear.equals(year) && !stdcode.equals("") && !refkey.equals("")) {
+                    //getMockSlip = getSlipTable.mockSlip();
+                    getProfile = getProfileTable.findByStdProfile(stdcode);
+                    getHeaderRepSlip = getSlipTable.findByHeaderSlip(stdcode, sem, year, refkey);
+                    getRepSlip = getSlipTable.findListRegisSlip(stdcode, sem, year, refkey);
+                    int tempYear;
+                    tempYear = Integer.parseInt(getfiscal.substring(2));
+                    subYear = String.valueOf(tempYear);
+                    subrefkey = refkey.substring(15);
+
+                    //      HashMap<String, String> tmparr = new HashMap<String, String>();
+                    if (getRepSlip != null && getHeaderRepSlip != null) {
+                        for (ET_REP_SLIP j : getRepSlip) {
+                            arrAmount.add("200");
+                            sumCredit = sumCredit + Integer.parseInt(j.getCREDIT().toString());
+                            total = j.getTOTAL_AMOUNT();
+                            tmpTotal = j.getAMOUNT();
+                            cntCourse++;
+
+                            //arrRepSlip.addAll();
+                        }
+
+                        int chkColAmount = 0;
+                        chkColAmount = (noColAmount - cntCourse);
+                        int chkRowSlip = 0;
+                        if (cntCourse > 0) {
+
+                            for (int i = 0; i <= chkColAmount; i++) {
+                                arrAmount.add("&nbsp;");
+                            }
+                            // chkRowSlip = chkColAmount -1;
+                            /* for (int i = 0; i < chkColAmount; i++) {
+                            getRepSlip.add(getMockSlip);
+                        }*/
+                        }
+
+                        strTotalThai = ThaiBaht(tmpTotal);
+                        slipNo = refkey.substring(15);
+                        tempSplitTotal = total.split("[.]");
+                        String tmp = tempSplitTotal[0];
+                        String repNumcourse = Integer.toString(cntCourse);
+
+                        getCheckdigit = getSlipTable.findCheckdigit(stdcode, getfiscal, repNumcourse, tmpTotal, sem, year, refkey);
+                        if (getCheckdigit != null) {
+                            chkDigit = getCheckdigit.getCHECKDIGIT();
+                        }
+
+                        request.setAttribute("getProfile", getProfile);
+                        request.setAttribute("chkDigit", chkDigit);
+                        request.setAttribute("getRepSlip", getRepSlip);
+                        request.setAttribute("getfiscal", getfiscal);
+                        request.setAttribute("sliprunno", sliprunno);
+                        request.setAttribute("refkey", refkey);
+                        request.setAttribute("getHeaderRepSlip", getHeaderRepSlip);
+                        request.setAttribute("slipNo", slipNo);
+                        request.setAttribute("sem", sem);
+                        request.setAttribute("year", year);
+                        request.setAttribute("subYear", subYear);
+                        request.setAttribute("subrefkey", subrefkey);
+                        request.setAttribute("arrAmount", arrAmount);
+                        request.setAttribute("tmpTotal", tmp);
+                        request.setAttribute("sumCredit", sumCredit);
+                        request.setAttribute("cntCourse", cntCourse);
+                        request.setAttribute("sumCredit", sumCredit);
+                        request.setAttribute("strTotalThai", strTotalThai);
+                        request.setAttribute("noColAmount", noColAmount);
+                        request.setAttribute("chkColAmount", chkColAmount);
+                        RequestDispatcher rs = request.getRequestDispatcher("repSlipt.jsp");
+                        rs.forward(request, response);
+                    } else {
+                        response.sendRedirect("err.jsp");
+                    }
+
+                } else {
+                    //RequestDispatcher rs = request.getRequestDispatcher("err.jsp");
+                    //rs.forward(request, response);
+                    response.sendRedirect("err.jsp");
+
+                }
+            } else {
+                response.sendRedirect("err.jsp");
+            }
+        } else {
+            response.sendRedirect("err.jsp");
         }
 
         // String getToken = generateNewToken(); 

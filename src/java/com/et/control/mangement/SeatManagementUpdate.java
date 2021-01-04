@@ -95,12 +95,12 @@ public class SeatManagementUpdate extends HttpServlet {
             boolean checkRowBuild = getBuildRowTable.update(updateRowBuild);
             PrintWriter out = response.getWriter();
 
-            boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
-            if (checkUpdateSumSeat) {
-                System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
-            } else {
-                System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
-            }
+//            boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
+//            if (checkUpdateSumSeat) {
+//                System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
+//            } else {
+//                System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
+//            }
             
             if (checkRowBuild) {
                 System.out.println("แก้ไขสำเร็จ");

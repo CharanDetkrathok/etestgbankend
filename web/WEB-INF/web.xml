@@ -45,10 +45,6 @@
         <servlet-class>com.et.control.GenerateSeat</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GenETSTDC</servlet-name>
-        <servlet-class>com.et.control.genfiles.GenETSTDC</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>SeatManagement</servlet-name>
         <servlet-class>com.et.control.mangement.SeatManagement</servlet-class>
     </servlet>
@@ -96,10 +92,66 @@
         <servlet-name>ExportETSTDC</servlet-name>
         <servlet-class>com.et.control.genfiles.ExportETSTDC</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>GenETSTDC</servlet-name>
-        <url-pattern>/GenETSTDC</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>ExportETRU25et</servlet-name>
+        <servlet-class>com.et.control.genfiles.ExportETRU25et</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRegisReport</servlet-name>
+        <servlet-class>com.et.reports.GetRegisReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetStdRegisSelectReport</servlet-name>
+        <servlet-class>com.et.reports.GetStdRegisSelectReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowStdRegisterAll</servlet-name>
+        <servlet-class>com.et.reports.ShowStdRegisterAll</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRegisterSelectReport</servlet-name>
+        <servlet-class>com.et.reports.GetRegisterSelectReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetSelectStudentRegis</servlet-name>
+        <servlet-class>com.et.reports.GetSelectStudentRegis</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DateManagementUpdate</servlet-name>
+        <servlet-class>com.et.control.mangement.DateManagementUpdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReceiptManagementData</servlet-name>
+        <servlet-class>com.et.control.mangement.ReceiptManagementData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReceiptManagementDetail</servlet-name>
+        <servlet-class>com.et.control.mangement.ReceiptManagementDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Checkdigit</servlet-name>
+        <servlet-class>com.et.control.Checkdigit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerateExamSeat</servlet-name>
+        <servlet-class>com.et.control.mangement.GenerateExamSeat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckSlipt</servlet-name>
+        <servlet-class>com.et.slip.CheckSlipt</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RepETesting101</servlet-name>
+        <servlet-class>com.et.control.mangement.RepETesting101</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RepETesting102</servlet-name>
+        <servlet-class>com.et.control.mangement.RepETesting102</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RepETesting103</servlet-name>
+        <servlet-class>com.et.control.mangement.RepETesting103</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -183,6 +235,66 @@
     <servlet-mapping>
         <servlet-name>ExportETSTDC</servlet-name>
         <url-pattern>/ExportETSTDC</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportETRU25et</servlet-name>
+        <url-pattern>/ExportETRU25et</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRegisReport</servlet-name>
+        <url-pattern>/GetRegisReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetStdRegisSelectReport</servlet-name>
+        <url-pattern>/GetStdRegisSelectReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowStdRegisterAll</servlet-name>
+        <url-pattern>/ShowStdRegisterAll</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRegisterSelectReport</servlet-name>
+        <url-pattern>/GetRegisterSelectReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetSelectStudentRegis</servlet-name>
+        <url-pattern>/GetSelectStudentRegis</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DateManagementUpdate</servlet-name>
+        <url-pattern>/DateManagementUpdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReceiptManagementData</servlet-name>
+        <url-pattern>/ReceiptManagementData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReceiptManagementDetail</servlet-name>
+        <url-pattern>/ReceiptManagementDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Checkdigit</servlet-name>
+        <url-pattern>/Checkdigit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateExamSeat</servlet-name>
+        <url-pattern>/GenerateExamSeat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckSlipt</servlet-name>
+        <url-pattern>/CheckSlipt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RepETesting101</servlet-name>
+        <url-pattern>/RepETesting101</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RepETesting102</servlet-name>
+        <url-pattern>/RepETesting102</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RepETesting103</servlet-name>
+        <url-pattern>/RepETesting103</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
