@@ -27,7 +27,7 @@
             height:100%;
             width:100%;
             font-size: 20px;
-            font-family: 'Times New Roman';
+            font-family: 'Sarabun', sans-serif;
         }        
         #hid {
             display: none;
@@ -75,7 +75,7 @@
                     <button type="button"  onclick="history.back()" class="btn btn-warning"
                             style=" 
                             border-radius: 0; box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5); color: #000;
-                            font-family: Verdana,Arial,sans-serif !important;
+                            font-family: 'Sarabun', sans-serif !important;
                             ">
                         <i class="fa fa-backward"></i> กลับไปก่อนหน้า </button>
                 </div>
@@ -85,7 +85,7 @@
                     <button type="button" class="btn btn-info" 
                             style=" 
                             border-radius: 0; box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5); color: #000;
-                            font-family: Verdana,Arial,sans-serif !important;
+                            font-family: 'Sarabun', sans-serif !important;
                             "
                             onClick="window.print();"
                             value="Print">

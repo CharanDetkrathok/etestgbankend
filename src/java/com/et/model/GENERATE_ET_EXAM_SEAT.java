@@ -19,6 +19,7 @@ public class GENERATE_ET_EXAM_SEAT {
     private BigDecimal SECTION_NO;
     private BigDecimal CREDIT;
     private String COURSE_NO;
+    private BigDecimal COUNT_SEAT_THIS_ROW;
     private String STATUS_COURSE;
     private String RECEIPT_PAY_STATUS;
     private String CHECH_DUPLICATE_REF_KEY;
