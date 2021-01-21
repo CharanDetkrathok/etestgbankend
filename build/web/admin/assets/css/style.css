@@ -1337,7 +1337,9 @@ header .form-inline {
     float: left;
     padding: 1.25em;
     position: relative;
-    width: 100%; }
+    width: 100%;
+    box-shadow: 1px 1px 20px rgba(0,0,0,0.3);
+  }
   .card h4 {
     font-size: 1.1rem; }
   .card .user-header .media img {

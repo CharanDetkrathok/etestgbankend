@@ -41,8 +41,9 @@
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
-                                        <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
+                                    <label style="font-size: 1.5vw;">
+                                        <i class="fa fa-warning" style="color: red;"></i> 
+                                        ปี/ภาคการศึกษาปัจจุบัน 
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
                                                 <b> Summer /${getCounterData.STUDY_YEAR}</b>
@@ -55,19 +56,13 @@
                                     <br/><hr>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-3"></div>
-                                <div class="row" style="margin-top: 20px;"> 
-                                    <div class="col-12" style="text-align: center;">
-                                        <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ สร้างที่นั่งใช่หรือไม่?');"
-                                                style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 25px; font-size: 18px;">
-                                            <i class="fa fa-address-card-o"></i> สร้างที่นั่งสอบ 
-                                        </button> 
-                                        <button type="reset" class="btn btn-danger"
-                                                style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 50px; font-size: 18px;">
-                                            <i class="fa fa-close"></i> ยกเลิก 
-                                        </button> 
-                                    </div>
+                            <div class="row text-center" style="display: block;  align-items: center; justify-content: center; margin-top: 20px;"> 
+                                <div class="col-12 text-center" style="text-align: center;">
+                                    <h3 style="color: #000;">คลิกที่ปุ่มเพื่อ จัดแถวและที่นั่งสำหรับสอบ</h3><br>
+                                    <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ สร้างที่นั่งใช่หรือไม่?');"
+                                            style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 25px; font-size: 18px;">
+                                        <i class="fa fa-address-card-o"></i> สร้างที่นั่งสอบ 
+                                    </button> 
                                 </div>
                             </div>
                         </div>

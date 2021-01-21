@@ -90,12 +90,12 @@ public class GenerateExamSeat extends HttpServlet {
 
                 ttt++;
             }
-//            System.out.println("countStudents => "+countStudents);
-//            PrintWriter out = response.getWriter();
-//            out.println("<script type=\"text/javascript\">");
-//            out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
-//            out.println("location='ExportETRU25et';");
-//            out.println("</script>");
+            System.out.println("countStudents => "+countStudents);
+            PrintWriter out = response.getWriter();
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
+            out.println("location='GenerateExamSeat';");
+            out.println("</script>");
         } else {
 
             RequestDispatcher rs = request.getRequestDispatcher("admin/Generate-Exam-Seat.jsp");
@@ -105,8 +105,6 @@ public class GenerateExamSeat extends HttpServlet {
         db.close();
 
     }
-    // version 2 จะต้อง query ตาราง ET_BUILE_ROW มาก่อนเพื่อเรียงตามแถว และจำนวนต่อแถว
-    // version นี้ทำไปก่อนเพราะที่นั่งเกิน
 
     public void setExamSeat(String year, String semester, int countSeatRow, GENERATE_ET_EXAM_SEAT students, List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert) throws ParseException {
 
@@ -121,42 +119,26 @@ public class GenerateExamSeat extends HttpServlet {
         String Course = students.getCOURSE_NO();
         String StatusCourse = "O";
 
-//        System.out.println("count => " + count);
-//        System.out.println("Year => " + Year);
-//        System.out.println("Semester => " + Semester);
-//        System.out.println("RowSeat => " + RowSeat);
-//        System.out.println("StdCode => " + StdCode);
-//        System.out.println("ExamDate => " + ExamDate);
-//        System.out.println("Section => " + Section);
-//        System.out.println("Credit => " + Credit);
-//        System.out.println("Course => " + Course);
-//        System.out.println("StatusCourse => " + StatusCourse);
+        boolean insetSeat = false;
         for (int i = 0; i < buileRow.size(); i++) {
 
-            for (int j = 0; j < buileRow.get(i).getSEAT_EXAM().intValue(); j++) {
+            int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester, changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
 
-                int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester, changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
+            if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
+//                System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + " คาบที่ " + Section + " เต็ม ");                
+            } else {
+                countSeatThisRow += 1;
+                RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
+//                System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + countSeatThisRow + " คาบที่ " + Section);
+                insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode, ExamDate, Section, Credit, Course, StatusCourse);
+            }
 
-                System.out.println("i => " + i);
-                System.out.println("j => " + j);                
-                System.out.println("countSeatThisRow => " + countSeatThisRow);
-                System.out.println("buileRow.get(i).getSEAT_EXAM().intValue() => " + buileRow.get(i).getSEAT_EXAM().intValue());
-
-                if (countSeatThisRow > buileRow.get(i).getSEAT_EXAM().intValue()) {
-                    System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + " คาบที่ " + Section + " เต็ม ");
-                    break;
-                } else {
-                     countSeatThisRow+=1;
-                    System.out.println("แถว " + buileRow.get(i).getROW_EXAM() +  (countSeatThisRow+=1) + " คาบที่ " + Section);
-//                    boolean insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, String.valueOf(tempSeat2), StdCode, ExamDate, Section, Credit, Course, StatusCourse);
-                    break;
-                }
+            if (insetSeat) {
+                break;
             }
 
         }
 
-//        RowSeat = buileRow.get(0).getROW_EXAM() + "" + count;
-//        boolean insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode, ExamDate, Section, Credit, Course, StatusCourse);
     }
 
     public String changeFormatDate(String Exam_Date) throws ParseException {

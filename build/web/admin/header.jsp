@@ -48,6 +48,9 @@
             html,body {
                 font-family: 'Sarabun', sans-serif;
             }
+            aside.left-panel {
+                box-shadow: 5px 1px 10px rgba(0,0,0,0.3);
+            }
             #weatherWidget .currentDesc {
                 color: #ffffff!important;
             }
@@ -132,10 +135,6 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>จัดการปี/ภาค</a>
                             <ul class="sub-menu children dropdown-menu">                            
                                 <li><i class="fa fa-puzzle-piece"></i><a href="/etestgbackend/GetAdminCounter">กำหนดปี/ภาค การศึกษา</a></li>
-                                <!--li><i class="fa fa-id-badge"></i></i><a href="/etestgbackend/ShowEditSeat">Files Setting</a></li>
-                                <li><i class="fa fa-bars"></i></i><a href="#">xxxxxxxxxx</a></li -->
-
-
                             </ul>
                         </li> 
                         <li class="menu-title"><i class="menu-icon fa fa-share"></i> Seat Managements</li><!-- /.menu-title -->
@@ -159,9 +158,6 @@
                                     <i class="menu-icon fa fa-list-ul"></i>
                                     <a href="/etestgbackend/GenerateExamSeat"> จัดที่นั่งสอบ </a>
                                 </li>
-                                <!--<li><i class="menu-icon fa fa-list-ul"></i><a href="/etestgbackend/ShowSeatDetail">จัดที่นั่งสอบ</a></li>-->
-                                <!--<li><i class="menu-icon fa fa-list-ul"></i><a href="/etestgbackend/Checkdigit">CHECKDIGIT</a></li>-->
-                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 
                         <li class="menu-title"><i class="menu-icon fa fa-share-square-o"></i> Export Files</li><!-- /.menu-title -->
@@ -203,7 +199,7 @@
             <header id="header" class="header">
                 <div class="top-left">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="./"><img src="/etestgbackend/admin/images/logo.png" alt="Logo"></a>
+                        <a class="navbar-brand" href="/etestgbackend/admin/main.jsp"><img src="/etestgbackend/admin/images/logo.png" alt="Logo"></a>
                         <a class="navbar-brand hidden" href="./"><img src="/etestgbackend/admin/images/logo2.png" alt="Logo"></a>
                         <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
                     </div>
@@ -213,7 +209,7 @@
 
                         <div class="user-area dropdown float-right">
                             <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                ${user.USER_NAME} &nbsp; <img class="user-avatar rounded-circle" src="/etestgbackend/admin/images/admin.jpg" alt="User Avatar"> 
+                                ${user.USER_NAME} &nbsp; <img class="user-avatar rounded-circle" src="/etestgbackend/admin/images/logo2.png" alt="User Avatar"> 
                             </a>
 
                             <div class="user-menu dropdown-menu">
