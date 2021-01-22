@@ -11,6 +11,16 @@
 
 <jsp:include page="header.jsp" />
 
+<style>
+    .card-body {
+        height: 30vw; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
+
 <!-- /#header -->
 <!-- Content -->
 <div class="content">
@@ -32,14 +42,14 @@
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead">
                                     <i class="fa fa-puzzle-piece"></i> Export RU25et text file.</label>
-                                    <br/> 
-                                    <hr>
+                                    <br/>                                     
                                 </div>
                             </div>
+                            <hr>                            
                             <div class="row">
                                 <div class="col-1"></div>
-                                <div class="col-11" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
+                                <div class="col-11 fontvwhead-2" style="margin-left: 15px;">
+                                    <label style="font-size: 1.5vw;">
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -50,29 +60,20 @@
                                             </c:otherwise>
                                         </c:choose>  
                                     </label>
-                                    <br/> 
-                                    <hr>
+                                    <br/>                                    
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-1"></div>
-                                <div class="col-3" style="margin-left: 15px;">
-                                    <label for="examdate">เลือก "วัน/เดือน/ปี" ที่เปิดสอบ :</label>
-                                    <select class="form-control" name="examdate" id="examdate" required="true">
-                                        <option  value="0"> ทั้งหมด </option>
-                                    </select>
+                            <hr>
+                            <br/>
+                            <div class="row text-center" style="display: block;  align-items: center; justify-content: center; margin-top: 20px;"> 
+                                <div class="col-12 text-center" style="text-align: center;">
+                                    <h3 style="color: #000;">คลิกที่ปุ่มเพื่อ ดาวน์โหลดไฟล์ RU25et </h3><br>
+                                    <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ ดาวน์โหลดไฟล์ RU25et ใช่หรือไม่?');"
+                                            style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 25px; font-size: 18px;">
+                                        <i class="fa fa-save"></i> ดาวน์โหลดไฟล์ RU25et 
+                                    </button> 
                                 </div>
-                                <div class="col-3">
-                                    <label for="sec">เลือก "คาบ" ที่เปิดสอบ :</label>
-                                    <select class="form-control" name="section" required="true">
-                                        <option value="0"> ทั้งหมด </option>
-                                    </select>
-                                </div> 
-                                <div class="col-3" style="text-align: center; margin-top: 30px;">
-                                    <button type="submit" class="btn btn-success" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-save"></i> ดาวน์โหลดไฟล์ </button> 
-                                    <button type="reset" class="btn btn-danger" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-close"></i> ยกเลิก </button> 
-                                </div>
-                            </div>
+                            </div>                            
                         </div>
                     </form>
                 </div>

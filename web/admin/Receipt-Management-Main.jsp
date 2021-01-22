@@ -10,7 +10,18 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card-body {
+        height: 30vw; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    label {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 <!-- /#header -->
 <!-- Content -->
 <div class="content">
@@ -33,14 +44,14 @@
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead">
                                         <i class="fa fa-puzzle-piece"></i> ปรับสถานะการชำระเงินของนักศึกษา </label>
-                                    <br/> 
-                                    <hr>
+                                    <br/>
                                 </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
+                                    <label style="font-size: 1.5vw;">
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -52,20 +63,19 @@
                                         </c:choose>  
                                     </label>
                                     <br/> 
-                                    <hr>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-1"></div>
-                                <div class="col-3" style="margin-left: 15px;">
+                            <hr>
+                            <br/> 
+                            <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                                <div class="col-3" style="">
                                     <label for="examdate">เลือก "วัน/เดือน/ปี" ที่เปิดสอบ :</label>
-                                    <select class="form-control" name="examdate" id="examdate" required="true">
+                                    <select class="form-control" name="examdate" id="examdate" required="true" style="height: 50px;">
                                         <option  value="0"> ทั้งหมด </option>
                                     </select>
                                 </div>
-                                <div class="col-3" style="text-align: center; margin-top: 30px;">
-                                    <button type="submit" class="btn btn-success" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-check"></i> ตกลง </button> 
-                                    <button type="reset" class="btn btn-warning" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;"><i class="fa fa-close"></i> ยกเลิก </button> 
+                                <div class="col-3" style="text-align: center; margin-top: 35px;">
+                                    <button type="submit" class="btn btn-success" style="height: 50px; width: 100%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-check"></i> ตกลง </button> 
                                 </div>
                             </div>
                         </div>

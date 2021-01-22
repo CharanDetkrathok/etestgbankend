@@ -10,7 +10,17 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card .card-body {
+        height: 100%;
+    }
+    label {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 
 <!-- /#header -->
 <!-- Content -->
@@ -42,7 +52,7 @@
 
                         <div class="row">
                             <div class="col-12" style="margin-left: 15px;">
-                                <label style="font-size: 1vw;">
+                                <label style="font-size: 1.5vw;">
                                     <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                     <c:choose>
                                         <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -90,11 +100,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-6 form-group">
-                                                <label for=""><b>ห้องที่ทำการจัดสอบ</b></label>
+                                                <label for="">ห้องที่ทำการจัดสอบ</label>
                                                 <input value="${BuildRow.BUILD_NO}" type="text" style="text-transform:uppercase" class="form-control" name="build_no" placeholder="กรอก ห้องที่ทำการจัดสอบ เช่น SKB801" required="true">
                                             </div>
                                             <div class="col-6 form-group">
-                                                <label for=""><b>แถวสอบ</b></label>
+                                                <label for="">แถวสอบ</label>
                                                 <select class="form-control" name="row_exam" required="true">
                                                     <option selected="true" value="${BuildRow.ROW_EXAM}"> --- แถว ${BuildRow.ROW_EXAM} มี ${BuildRow.SEAT_EXAM} ที่นั่ง --- </option>
                                                     <c:forEach items="${getBuildRoww}" var = "BuildRow" varStatus="count">
@@ -105,11 +115,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-6 form-group">
-                                                <label for=""><b>กำหนดจำนวนที่นั่งสอบ/แถว</b> <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>                                                
+                                                <label for="">กำหนดจำนวนที่นั่งสอบ/แถว <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>                                                
                                                 <input value="${BuildRow.SEAT_EXAM}" type="number" min="1" class="form-control" name="seat_exam" 
                                                        placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length == 3)return false;" required="true">
                                             </div>
-                                            <div class="col-6 form-group" style="margin-top: 32px;">        
+                                            <div class="col-6 form-group" style="margin-top: 35px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 
                                                         onclick="return confirm('คุณต้องการ แก้ไขข้อมูลใช่หรือไม่?');"  
                                                         style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"

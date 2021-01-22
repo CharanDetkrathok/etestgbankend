@@ -4,7 +4,18 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card-body {
+        height: 30vw; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    label, b, table, .col-md-6 {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 <!-- /#header -->
 <!-- Content -->
 <div class="content">

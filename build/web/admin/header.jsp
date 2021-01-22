@@ -96,6 +96,9 @@
                 max-height: 200px;
                 overflow-x: hidden;
             }
+            .li-line-buttom {
+                border-bottom: 1px solid #ccc;
+            }
         </style>
 
         <script>
@@ -134,7 +137,9 @@
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>จัดการปี/ภาค</a>
                             <ul class="sub-menu children dropdown-menu">                            
-                                <li><i class="fa fa-puzzle-piece"></i><a href="/etestgbackend/GetAdminCounter">กำหนดปี/ภาค การศึกษา</a></li>
+                                <li class="li-line-buttom"><i class="fa fa-puzzle-piece"></i>
+                                    <a href="/etestgbackend/GetAdminCounter">กำหนดปี/ภาค การศึกษา</a>
+                                </li>
                             </ul>
                         </li> 
                         <li class="menu-title"><i class="menu-icon fa fa-share"></i> Seat Managements</li><!-- /.menu-title -->
@@ -142,19 +147,19 @@
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>จัดการรายละเอียดการสอบ</a>
                             <ul class="sub-menu children dropdown-menu">                                
-                                <li>
+                                <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-list-ol"></i>
                                     <a href="/etestgbackend/SeatManagement">กำหนดแถวสอบ</a>
                                 </li>
-                                <li>
+                                <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-calendar"></i>
                                     <a href="/etestgbackend/DateManagement">กำหนดวันสอบ</a>
                                 </li>       
-                                <li>
+                                <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-money"></i>
                                     <a href="/etestgbackend/ReceiptManagement">ปรับสถานะการชำระเงิน</a>
                                 </li>                                
-                                <li>
+                                <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-list-ul"></i>
                                     <a href="/etestgbackend/GenerateExamSeat"> จัดที่นั่งสอบ </a>
                                 </li>
@@ -165,22 +170,37 @@
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-files-o"></i>จัดการไฟล์</a>
                             <ul class="sub-menu children dropdown-menu">
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/ExportETSTDC">ET_STDC</a></li>
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/ExportETRU25et">RU25et</a></li>                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
+                                    <a href="/etestgbackend/ExportETSTDC">ET_STDC</a>
+                                </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
+                                    <a href="/etestgbackend/ExportETRU25et">RU25et</a>
+                                </li>                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 
 
                         <!-- Report components -->
                         <li class="menu-title"><i class="menu-icon fa fa-file"></i> Report</li><!-- /.menu-title -->
                         <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-address-book"></i>รายงาน
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                                <i class="menu-icon fa fa-address-book"></i>รายงาน
                             </a>
                             <ul class="sub-menu children dropdown-menu">
-                                <li><i class="menu-icon fa fa-address-card"></i><a href="/etestgbackend/GetRegisReport">รายงานการลงทะเบียน นักศึกษาที่ชำระเงินแล้ว</a></li>
-                                <li><i class="menu-icon fa fa-anchor"></i><a href="/etestgbackend/ShowStdRegisterAll">รายงานลงทะเบียน</a></li>
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting101"><span style="font-style: italic; ">พิมพ์สรุปเงินรายวัน</span></a></li>
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting102"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมรายวัน</span></a></li>
-                                <li><i class="menu-icon fa fa-file-text"></i><a href="/etestgbackend/RepETesting103"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมทั้งหมด</span></a></li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-address-card"></i>
+                                    <a href="/etestgbackend/GetRegisReport">รายงานการลงทะเบียน นักศึกษาที่ชำระเงินแล้ว</a>
+                                </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-anchor"></i>
+                                    <a href="/etestgbackend/ShowStdRegisterAll">รายงานลงทะเบียน</a>
+                                </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
+                                    <a href="/etestgbackend/RepETesting101"><span style="font-style: italic; ">พิมพ์สรุปเงินรายวัน</span></a>
+                                </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
+                                    <a href="/etestgbackend/RepETesting102"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมรายวัน</span></a>
+                                </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
+                                    <a href="/etestgbackend/RepETesting103"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมทั้งหมด</span></a>
+                                </li>
                                 <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 

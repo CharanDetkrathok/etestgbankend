@@ -4,7 +4,18 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" /> 
-
+<style>
+    .card-body {
+        height: 100%; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    label, b, td, .col-md-6 {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 <!-- Content -->
 <div class="content">
     <!-- Animated -->
@@ -22,12 +33,16 @@
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
                                     <label class="fontvwhead">
-                                        <i class="fa fa-address-book-o"></i> รายงานการลงทะเบียน</label><br /> <hr></div>
+                                        <i class="fa fa-address-book-o"></i> รายงานการลงทะเบียน
+                                    </label>
+                                    <br/>                                     
+                                </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
+                                    <label style="font-size: 1.5vw;">
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน 
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -36,7 +51,9 @@
                                             <c:otherwise>
                                                 <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
                                             </c:otherwise>
-                                        </c:choose>  </label><br>
+                                        </c:choose>  
+                                    </label>
+                                    <br>
                                     วันที่ <label style="font-size: 1vw;">
                                         <c:choose>
                                             <c:when test = "${examdate eq '0'}">
@@ -57,19 +74,17 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </label>
-                                    <br /> <hr>
-
+                                    <br />                                     
                                 </div>
-
-
                             </div>
+                            <hr>
 
-                            <div class="row">
+                            <div class="row ml-1">
                                 <div class="col-12">
 
                                     <table id="datatable" class="display table-striped-md btn-table table-hover" style="width:100%">
                                         <thead>
-                                            <tr class="bg-primary" style="font-weight: bold;color: white;">
+                                            <tr class="bg-primary" style="color: white;">
                                                 <th>#NO.</th>
                                                 <th>รหัสนักศึกษา</th>
                                                 <th>ชื่อ - สกล</th>

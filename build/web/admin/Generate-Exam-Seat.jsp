@@ -10,7 +10,15 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card-body {
+        height: 30vw; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 <!-- /#header -->
 <!-- Content -->
 <div class="content">
@@ -34,10 +42,10 @@
                                     <label class="fontvwhead">
                                         <i class="fa fa-puzzle-piece"></i> จัดที่นั่งสอบ
                                     </label>
-                                    <br/>
-                                    <hr>
+                                    <br/>                                    
                                 </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11" style="margin-left: 15px;">
@@ -53,9 +61,11 @@
                                             </c:otherwise>
                                         </c:choose>  
                                     </label>
-                                    <br/><hr>
+                                    <br/>
                                 </div>
                             </div>
+                            <hr>
+                            <br/>
                             <div class="row text-center" style="display: block;  align-items: center; justify-content: center; margin-top: 20px;"> 
                                 <div class="col-12 text-center" style="text-align: center;">
                                     <h3 style="color: #000;">คลิกที่ปุ่มเพื่อ จัดแถวและที่นั่งสำหรับสอบ</h3><br>

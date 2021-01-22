@@ -10,7 +10,18 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card-body {
+        height: 30vw; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    label {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 
 <!-- /#header -->
 <!-- Content -->
@@ -42,7 +53,7 @@
 
                         <div class="row">
                             <div class="col-12" style="margin-left: 15px;">
-                                <label style="font-size: 1vw;">
+                                <label style="font-size: 1.5vw;">
                                     <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                     <c:choose>
                                         <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -102,7 +113,7 @@
                                                 <label for="">กำหนดจำนวนที่นั่งสอบ</label>
                                                 <input type="number" class="form-control" name="seat_exam" min="1" value="${SeatExam}" placeholder="รวม ${SeatExam} ที่นั่ง" required="true">
                                             </div>
-                                            <div class="col-6 form-group" style="margin-top: 32px;">        
+                                            <div class="col-6 form-group" style="margin-top: 35px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 
                                                         onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');"  
                                                         style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"

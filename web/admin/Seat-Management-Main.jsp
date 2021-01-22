@@ -9,7 +9,17 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" />
-
+<style>
+    .card .card-body {
+        height: 100%;
+    }
+    label {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 
 <!-- /#header -->
 <!-- Content -->
@@ -41,7 +51,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
+                                    <label style="font-size: 1.2vw;">
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -65,7 +75,7 @@
                                 <div class="container-fluid" style="padding: 30px 10px;">
                                     <div class="col-12 table-responsive-sm">
 
-                                        <table id="datatable" class="table table-striped table-hover table-bordered" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+                                        <table id="datatable" class="table table-hover table-bordered" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
                                             <thead class="text-center"  style="background-color: #004085; color: #fff;">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>

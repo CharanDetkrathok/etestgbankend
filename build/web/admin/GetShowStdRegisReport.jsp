@@ -4,7 +4,18 @@
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp" /> 
-
+<style>
+    .card-body {
+        height: 100%; 
+        /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
+    }
+    label, b, table, .col-md-6 {
+        font-size: 1.2vw;
+    }
+    hr {
+        border-top: 1px solid #999;        
+    }
+</style>
 <!-- Content -->
 <div class="content">
     <!-- Animated -->
@@ -20,13 +31,17 @@
                     <form method="post" action="/etestgbackend/EditCounter" >
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead">
-                                        <i class="fa fa-puzzle-piece"></i> แสดงข้อมูลลงทะเบียนนักศึกษา </label></div>
+                                <div class="col-12" style="margin-left: 15px;">
+                                    <label class="fontvwhead">
+                                        <i class="fa fa-puzzle-piece"></i> แสดงข้อมูลลงทะเบียนนักศึกษา 
+                                    </label>
+                                </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11" style="margin-left: 15px;">
-                                    <label style="font-size: 1vw;">
+                                    <label style="font-size: 1.5vw;">
                                         <i class="fa fa-warning" style="color: red;"></i> ปี/ภาคการศึกษาปัจจุบัน 
                                         <c:choose>
                                             <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
@@ -35,11 +50,14 @@
                                             <c:otherwise>
                                                 <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
                                             </c:otherwise>
-                                        </c:choose>  </label><br /> <hr></div>
+                                        </c:choose>  
+                                    </label>
+                                    <br/>                                     
+                                </div>
                             </div>
-
+                            <hr>
                             <!-- main  -->
-                            <div class="row"> 
+                            <div class="row ml-1"> 
                                 <div class="col-md-5">
                                     <div class="row"> 
                                         <div class="col-md-6">
@@ -67,7 +85,7 @@
                                     </div>
                                     <table class="table table-striped-sm table-responsive-sm">
                                         <thead>
-                                            <tr class="bg-primary" style="font-weight: bold;color: white;">
+                                            <tr class="bg-primary" style="color: white;">
                                                 <th scope="col">#No</th>
                                                 <th scope="col">วิชา</th>
                                                 <th scope="col">หน่วยกิต</th>
