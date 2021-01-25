@@ -41,6 +41,44 @@ public class RepETesting101 extends HttpServlet {
 
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("sem");
+
+            // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
+            REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
+            List<REP_ETEST101> repETest = getRepETest101.findRepETest101(YEAR, SEMESTER);
+                        
+            // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
+            ArrayList<REP_ETEST101> repETest101 = new ArrayList<REP_ETEST101>();
+            
+            if (!repETest.isEmpty()) {
+                
+                for (int i = 0; i < repETest.size(); i++) {
+
+                    REP_ETEST101 tempRepETest101 = new REP_ETEST101();
+                    tempRepETest101.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
+
+                    repETest101.add(tempRepETest101);
+                    
+                }
+
+                request.setAttribute("YEAR", YEAR);
+                request.setAttribute("SEMESTER", SEMESTER);
+                request.setAttribute("registerDate", repETest101);
+
+                RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting101-Selector.jsp");
+                rs.forward(request, response);
+
+            } else {
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ปี,ภาค ที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
+                out.println("location='/etestgbackend/RepETesting101';");
+                out.println("</script>");
+            }
+
+        } else if (request.getParameter("sumittt") != null) {
+
+            String YEAR = request.getParameter("year");
+            String SEMESTER = request.getParameter("sem");
             String registerDate = changeDateUnitedStateFormate(request.getParameter("registerDate"));
 
             // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
@@ -89,19 +127,18 @@ public class RepETesting101 extends HttpServlet {
                     }
 
                     tempRepETest101.setSLIP_NO("567/" + tempSlip_No);
-                    
+
                     // รวมเงินแต่ละคน
                     totalAmount += Integer.parseInt(tempRepETest101.getAMOUNT());
                     tempRepETest101.setTOTAL_AMOUNT(String.valueOf(totalAmount));
                     // เพิ่มข้อมูลที่จัดเรียงใหม่ลง Lists
                     repETest101.add(tempRepETest101);
 
-                    
                 }
 
                 System.out.println(repETest101);
                 System.out.println(totalAmount);
-                
+
                 request.setAttribute("registerDate", changeDateThaiFormate2(registerDate));
                 request.setAttribute("repETest101", repETest101);
 
@@ -112,7 +149,7 @@ public class RepETesting101 extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('วันที่สอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
-                out.println("location='/etestgbackend';");
+                out.println("location='/etestgbackend/RepETesting101';");
                 out.println("</script>");
             }
 
@@ -179,7 +216,7 @@ public class RepETesting101 extends HttpServlet {
 
         return NEW_EXAM_DATE;
     }
-    
+
     public String changeDateThaiFormate2(String Exam_Date) throws ParseException {
 
         //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 

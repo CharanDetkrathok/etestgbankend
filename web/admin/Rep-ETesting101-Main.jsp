@@ -37,8 +37,6 @@
             <div class="col-lg-12">
                 <div class="card">              
                     <form method="post" action="/etestgbackend/RepETesting101?sumitt=1">
-                        <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
-                        <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
@@ -70,16 +68,16 @@
                             <hr>
                             <br/>
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
-                                <div class="col-3" style="">
-                                    <label for="examdate">เลือก วัน/เดือน/ปี :</label>
-                                    <select class="form-control" name="registerDate" required="true" style="height: 50px;">
-                                        <c:forEach items="${registerDate}" var = "registerDate" varStatus="count">
-                                            <option  value="${registerDate.RECEIPT_DATE}"> ${registerDate.RECEIPT_DATE} </option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="col-2" style="">
+                                    <label style="margin-left: 10px; font-size: 1.2vw;">ปีการศึกษา :</label><br>
+                                    <input type="text" name="year" value="${getCounterData.STUDY_YEAR}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
                                 </div>
-                                <div class="col-3" style="text-align: center; margin-top: 35px;">
-                                    <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ ออกรายงาน REP-eTest101 ใช่หรือไม่?');"
+                                <div class="col-2" style="">
+                                    <label style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา :</label><br>
+                                    <input type="text" name="sem" value="${getCounterData.STUDY_SEMESTER}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
+                                </div>
+                                <div class="col-2" style="text-align: center; margin-top: 35px;">
+                                    <button type="submit" class="btn btn-success"
                                             style="height: 50px; width: 100%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
                                         <i class="fa fa-file-excel-o"></i>&nbsp; REP-Etest101 
                                     </button>

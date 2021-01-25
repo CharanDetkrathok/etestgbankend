@@ -58,35 +58,20 @@
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
                                 <div class="col-2">
                                     <label for="fiscalyear" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ปี ปัจจุบัน : </label> 
-                                    <select class="form-control" name="fiscalyear" id="year" required="true" style="height: 50px;">
-                                        <option value="2563">2563</option>
-                                        <option value="2564">2564</option>
-                                        <option value="2565">2565</option>
-                                        <option value="2566">2566</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="fiscalyear" id="year" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.FISCAL_YEAR}">
                                 </div>
                                 <div class="col-2">
                                     <label for="year" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ปีการศึกษา : </label> 
-                                    <select class="form-control" name="year" id="year" required="true" style="height: 50px;">
-                                        <option value="2562">2562</option>
-                                        <option value="2563">2563</option>
-                                        <option value="2564">2564</option>
-                                        <option value="2565">2565</option>
-                                        <option value="2566">2566</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="year" id="year" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.STUDY_YEAR}">
                                 </div>
                                 <div class="col-2">
                                     <label for="sem" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา : </label> 
-                                    <select class="form-control" name="sem" id="sem" required="true" style="height: 50px;">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">summer</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="sem" id="year" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.STUDY_SEMESTER}">
                                 </div>
                                 <div class="col-2">
                                     <label for="bt" class="fontvw" >&nbsp;</label>
                                     <br/> 
-                                    <button type="submit" class="btn btn-success" style="height: 50px; width: 100%; font-size: 1.2vw;">
+                                    <button type="submit" class="btn btn-success" style="height: 50px; width: 100%; font-size: 1.2vw;  border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
                                         <i class="fa fa-save"></i> บันทึก
                                     </button>
                                 </div>
