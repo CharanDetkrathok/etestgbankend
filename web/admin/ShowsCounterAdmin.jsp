@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <form method="post" action="/etestgbackend/EditCounter" >
+                    <form method="post" action="/etestgbackend/EditCounter">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
@@ -58,7 +58,7 @@
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
                                 <div class="col-2">
                                     <label for="fiscalyear" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ปี ปัจจุบัน : </label> 
-                                    <input type="text" class="form-control" name="fiscalyear" id="year" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.FISCAL_YEAR}">
+                                    <input type="text" class="form-control" name="fiscalyear" id="fiscalyear" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.FISCAL_YEAR}">
                                 </div>
                                 <div class="col-2">
                                     <label for="year" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ปีการศึกษา : </label> 
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-2">
                                     <label for="sem" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา : </label> 
-                                    <input type="text" class="form-control" name="sem" id="year" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.STUDY_SEMESTER}">
+                                    <input type="text" class="form-control" name="sem" id="sem" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.STUDY_SEMESTER}">
                                 </div>
                                 <div class="col-2">
                                     <label for="bt" class="fontvw" >&nbsp;</label>
@@ -91,4 +91,5 @@
     <div class="clearfix"></div>
     <!-- Footer -->
     <!-- Footer -->
+   
     <jsp:include page="footer.jsp" />

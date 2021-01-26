@@ -29,7 +29,8 @@ public class RepETesting102 extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+
         Database db = new Database();
         // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
@@ -39,6 +40,44 @@ public class RepETesting102 extends HttpServlet {
         request.setAttribute("getCounterData", getCounterData);
 
         if (request.getParameter("sumitt") != null) {
+
+            String YEAR = request.getParameter("year");
+            String SEMESTER = request.getParameter("sem");
+
+            // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
+            REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
+            List<REP_ETEST101> repETest = getRepETest101.findRepETest101(YEAR, SEMESTER);
+
+            // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
+            ArrayList<REP_ETEST101> repETest101 = new ArrayList<REP_ETEST101>();
+
+            if (!repETest.isEmpty()) {
+
+                for (int i = 0; i < repETest.size(); i++) {
+
+                    REP_ETEST101 tempRepETest101 = new REP_ETEST101();
+                    tempRepETest101.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
+
+                    repETest101.add(tempRepETest101);
+
+                }
+
+                request.setAttribute("YEAR", YEAR);
+                request.setAttribute("SEMESTER", SEMESTER);
+                request.setAttribute("registerDate", repETest101);
+
+                RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting102-Selector.jsp");
+                rs.forward(request, response);
+
+            } else {
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ปี,ภาค ที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
+                out.println("location='/etestgbackend/RepETesting102';");
+                out.println("</script>");
+            }
+
+        } else if (request.getParameter("sumittt") != null) {
 
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("sem");
@@ -99,8 +138,8 @@ public class RepETesting102 extends HttpServlet {
 
                 }
 
-                System.out.println(repETest101);
-                System.out.println(totalAmount);
+                request.setAttribute("YEAR", YEAR);
+                request.setAttribute("SEMESTER", SEMESTER);
 
                 request.setAttribute("registerDate", changeDateThaiFormate2(registerDate));
                 request.setAttribute("repETest101", repETest101);
@@ -112,7 +151,7 @@ public class RepETesting102 extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('วันที่สอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
-                out.println("location='/etestgbackend';");
+                out.println("location='/etestgbackend/RepETesting102';");
                 out.println("</script>");
             }
 

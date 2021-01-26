@@ -68,14 +68,15 @@
                             <hr>
                             <br/> 
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
-                                <div class="col-3" style="">
-                                    <label for="examdate">เลือก "วัน/เดือน/ปี" ที่เปิดสอบ :</label>
-                                    <select class="form-control" name="examdate" id="examdate" required="true" style="height: 50px;">
-                                        <option  value="0"> ทั้งหมด </option>
-                                    </select>
-                                </div>
-                                <div class="col-3" style="text-align: center; margin-top: 35px;">
-                                    <button type="submit" class="btn btn-success" style="height: 50px; width: 100%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"><i class="fa fa-check"></i> ตกลง </button> 
+                                <input type="hidden" class="form-control" name="examdate" id="examdate" value="0">
+                                <div class="col-12" style="text-align: center;">
+                                    <label for="sec">ปรับสถานะการชำระเงินของนักศึกษา <b style="font-style: italic;">ทั้งที่ทำการชำระเงินเรียบร้อยแล้ว</b> และ <b style="font-style: italic;">ยังไม่ชำระเงิน</b></label><br>
+                                    <br>
+                                    <h3 style="color: #000;">คลิกที่ปุ่มเพื่อดูรายละเอียด</h3>
+                                    <br>
+                                    <button type="submit" class="btn btn-success" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 35px; font-size: 18px;">
+                                        <i class="fa fa-money"></i> ปรับสถานะการชำระเงิน 
+                                    </button> 
                                 </div>
                             </div>
                         </div>

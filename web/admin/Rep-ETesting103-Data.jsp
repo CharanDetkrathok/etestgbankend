@@ -45,7 +45,10 @@
             table-layout: auto;
             width: 950px; 
             font-size: 20px;
-        }       
+        }     
+        footer, footer-inner bg-white, .site-footer{
+            display: none;
+        }
     }
 
     @page {
@@ -111,11 +114,11 @@
                                 <h6 class="text-center mb-2">
                                     รายงานสรุปการรับเงินลงทะเบียน e-Testing ประจำภาค 
                                     <c:choose>
-                                        <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
-                                            Summer /${getCounterData.STUDY_YEAR}
+                                        <c:when test = "${SEMESTER == '3'}">
+                                            Summer /${YEAR}
                                         </c:when>
                                         <c:otherwise>
-                                            ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}
+                                            ${SEMESTER}/${YEAR}
                                         </c:otherwise>
                                     </c:choose> 
                                 </h6>

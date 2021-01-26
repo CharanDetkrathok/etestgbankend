@@ -75,8 +75,8 @@
                                 <div class="container-fluid" style="padding: 30px 10px;">
                                     <div class="col-12 table-responsive-sm">
 
-                                        <table id="datatable" class="table table-hover table-bordered" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
-                                            <thead class="text-center"  style="background-color: #004085; color: #fff;">
+                                        <table id="datatable" class="table table-hover" style="border: none; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+                                            <thead class="text-center"  style="background-color: #002752; color: #fff; border: none; font-weight: normal;">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">แถว</th>

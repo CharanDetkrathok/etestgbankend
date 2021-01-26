@@ -31,9 +31,14 @@
                     <form method="post" action="/etestgbackend/GetStdRegisSelectReport" >
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12" style="margin-left: 15px;"><label class="fontvwhead"><i class="fa fa-puzzle-piece"></i> รายงานการลงทะเบียน</label><br /> <hr></div>
+                                <div class="col-12" style="margin-left: 15px;">
+                                    <label class="fontvwhead">
+                                        <i class="fa fa-puzzle-piece"></i> รายงานการลงทะเบียน
+                                    </label>
+                                    <br/>                                     
+                                </div>
                             </div>
-
+                            <hr>
                             <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
                             <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
                             <div class="row">
@@ -48,42 +53,26 @@
                                             <c:otherwise>
                                                 <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
                                             </c:otherwise>
-                                        </c:choose>  </label><br /> <hr></div>
-
-
-                            </div>
-
-                            <div class="row" style="display: flex;  align-items: center; justify-content: center;">
-                                <div class="col-2" style="margin-left: 15px;">
-                                    <label for="examdate">Select Date:</label>
-                                    <select class="form-control"  name="examdate" id="examdate" required="true" style="height: 50px;">
-                                        <option >---select date---</option>
-                                        <option  value="0">----- ทั้งหมด -----</option>
-                                        <c:forEach items = "${getTMBData}"  var = "getTMBData">
-                                            <option value="${getTMBData.INSERT_DATE}">${getTMBData.INSERT_DATE}</option>
-                                        </c:forEach>
-                                    </select>
+                                        </c:choose>  
+                                    </label>
+                                    <br/>                                    
                                 </div>
-                                <div class="col-2">
-                                    <label for="sec">Select Section:</label>
-                                    <select class="form-control" name="sec" required="true" style="height: 50px;">
-                                        <option  value="">---select section---</option>
-                                        <option value="0">----- ทั้งหมด -----</option>
-                                        <option value="1"> Section 1</option>
-                                        <option value="2"> Section 2</option>
-                                        <option value="3"> Section 3</option>
-                                        <option value="4"> Section 4</option>
-                                    </select>
-                                </div> 
-                                <div class="col-3">
-                                    <label for="sec">:</label><br>
-                                    <button type="submit" class="btn btn-success" style="height: 50px; width: 55%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
-                                        <i class="fa fa-check"></i> ตกลง
+                            </div>
+                            <hr>
+                            <br>
+                            <div class="row" style="display: flex;  align-items: center; justify-content: center;">
+                                <input type="hidden" class="form-control"  name="examdate" id="examdate" value="0">
+                                <input type="hidden" class="form-control" name="sec" id="sec" value="0">                                
+                                <div class="col-12 text-center" style="text-align: center;">
+                                    <label for="sec">รายงานการลงทะเบียน ของนักศึกษา ที่ทำการ <b style="font-style: italic;">ชำระเงินเรียบร้อยแล้ว</b></label><br>
+                                    <br>
+                                    <h3 style="color: #000;">คลิกที่ปุ่มเพื่อดูรายละเอียด</h3>
+                                    <br>
+                                    <button type="submit" class="btn btn-success" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff; padding: 15px 35px; font-size: 18px;">
+                                        <i class="fa fa-money"></i> รายงานชำระเงิน
                                     </button>  
                                 </div>
-
                             </div>
-
                         </div>
                     </form>
                 </div>

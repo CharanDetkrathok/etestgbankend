@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Rep-ETesting102-Main
-    Created on : Oct 27, 2020, 9:29:18 AM
+    Document   : Rep-ETesting103-Main
+    Created on : Jan 26, 2021, 11:08:23 AM
     Author     : Sammy Guergachi <sguergachi at gmail.com>
 --%>
 
@@ -36,13 +36,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">              
-                    <form method="post" action="/etestgbackend/RepETesting102?sumitt=1">
+                    <form method="post" action="/etestgbackend/RepETesting103?sumitt=1">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
                                     <label class="fontvwhead">
                                         <i class="fa fa-file-excel-o"></i>                                         
-                                        รายงานสรุปการรับเงินลงทะเบียนรวมรายวัน (REP-Etest102)
+                                        รายงานสรุปการรับเงินลงทะเบียนรวมรายวัน (REP-Etest103)
                                     </label>
                                     <br/>                                    
                                 </div>
@@ -80,7 +80,7 @@
                                 <div class="col-2" style="text-align: center; margin-top: 35px;">
                                     <button type="submit" class="btn btn-success"
                                             style="height: 50px; width: 100%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
-                                        <i class="fa fa-file-excel-o"></i>&nbsp; REP-Etest102 
+                                        <i class="fa fa-file-excel-o"></i>&nbsp; REP-Etest103 
                                     </button>
                                 </div>                                
                             </div>

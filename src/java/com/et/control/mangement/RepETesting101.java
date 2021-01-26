@@ -45,19 +45,19 @@ public class RepETesting101 extends HttpServlet {
             // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
             REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
             List<REP_ETEST101> repETest = getRepETest101.findRepETest101(YEAR, SEMESTER);
-                        
+
             // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
             ArrayList<REP_ETEST101> repETest101 = new ArrayList<REP_ETEST101>();
-            
+
             if (!repETest.isEmpty()) {
-                
+
                 for (int i = 0; i < repETest.size(); i++) {
 
                     REP_ETEST101 tempRepETest101 = new REP_ETEST101();
                     tempRepETest101.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
 
                     repETest101.add(tempRepETest101);
-                    
+
                 }
 
                 request.setAttribute("YEAR", YEAR);
@@ -136,8 +136,8 @@ public class RepETesting101 extends HttpServlet {
 
                 }
 
-                System.out.println(repETest101);
-                System.out.println(totalAmount);
+                request.setAttribute("YEAR", YEAR);
+                request.setAttribute("SEMESTER", SEMESTER);
 
                 request.setAttribute("registerDate", changeDateThaiFormate2(registerDate));
                 request.setAttribute("repETest101", repETest101);

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Rep-ETesting102-Main
-    Created on : Oct 27, 2020, 9:29:18 AM
+    Document   : Rep-ETesting102-Selector
+    Created on : Jan 26, 2021, 10:29:46 AM
     Author     : Sammy Guergachi <sguergachi at gmail.com>
 --%>
 
@@ -36,7 +36,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">              
-                    <form method="post" action="/etestgbackend/RepETesting102?sumitt=1">
+                    <form method="post" action="/etestgbackend/RepETesting102?sumittt=1">
+                        <input type="hidden" name="year" value="${YEAR}">
+                        <input type="hidden" name="sem" value="${SEMESTER}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
@@ -69,21 +71,25 @@
                             <hr>
                             <br/>
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
-                                <div class="col-2" style="">
-                                    <label style="margin-left: 10px; font-size: 1.2vw;">ปีการศึกษา :</label><br>
-                                    <input type="text" name="year" value="${getCounterData.STUDY_YEAR}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
+                                <div class="col-3" style="">
+                                    <label for="examdate">เลือก วัน/เดือน/ปี :</label>
+                                    <select class="form-control" name="registerDate" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0;">
+                                        <c:forEach items="${registerDate}" var = "registerDate" varStatus="count">
+                                            <option  value="${registerDate.RECEIPT_DATE}"> ${registerDate.RECEIPT_DATE} </option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                                <div class="col-2" style="">
-                                    <label style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา :</label><br>
-                                    <input type="text" name="sem" value="${getCounterData.STUDY_SEMESTER}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
-                                </div>
-                                <div class="col-2" style="text-align: center; margin-top: 35px;">
-                                    <button type="submit" class="btn btn-success"
-                                            style="height: 50px; width: 100%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
+                                <div class="col-6" style="text-align: center; margin: 32px 0 0 -50px; padding: 0 0 0 0;">
+                                    <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ ออกรายงาน REP-eTest102 ใช่หรือไม่?');"
+                                            style="height: 50px; width: 40%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
                                         <i class="fa fa-file-excel-o"></i>&nbsp; REP-Etest102 
                                     </button>
+                                    <a type="button" href="/etestgbackend/RepETesting102" class="btn btn-warning"
+                                            style="height: 50px; width: 40%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000; padding-top: 13px;">
+                                        <i class="fa fa-backward"></i> &nbsp; กลับ 
+                                    </a>
                                 </div>                                
-                            </div>
+                            </div>                            
                         </div>
                     </form>
                 </div>

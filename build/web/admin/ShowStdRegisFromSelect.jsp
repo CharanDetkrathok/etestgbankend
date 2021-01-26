@@ -10,7 +10,7 @@
         /*background: linear-gradient(90deg, rgba(253,187,45,0.5) 0%, rgba(13,145,147,0.5) 100%);*/
     }
     label, b, td, .col-11 {
-        font-size: 1.2vw;
+        font-size: 1.1vw;
     }
     hr {
         border-top: 1px solid #999;        
@@ -78,25 +78,25 @@
                         <div class="row">
                             <div class="col-12">
 
-                                <table id="datatable" class="display table-striped-sm table-hover" style="width:100%">
-                                    <thead>
-                                        <tr class="bg-primary" style="font-weight: bold;color: white;">
-                                            <th>#NO.</th>
+                                <table id="datatable" class="table table-hover" style="border: none; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+                                    <thead class="text-center" style="background-color: #002752; color: #fff; border: none; font-weight: normal;">
+                                        <tr>
+                                            <th>ลำดับ</th>
                                             <th>รหัสนักศึกษา</th>
                                             <th>ชื่อ - สกล</th>
                                             <th>วันที่ลงทะเบียน</th>
                                             <th>เงินลงทะเบียน</th>
                                             <th>วันที่ชำระเงิน</th>
                                             <th>เลขที่ใบเสร็จ</th>
-                                            <th>Action</th>
+                                            <th>รายละเอียด</th>
                                         </tr>
                                     </thead>
-                                    <tbody> 
+                                    <tbody class="text-center"> 
                                         <c:forEach items="${getRecieptDataList}" var="getRecieptDataList" begin="0" end="${cnt}" varStatus="loop">
                                             <tr>
                                                 <td><c:out value="${loop.count}"/></td>
                                                 <td>${getRecieptDataList.STD_CODE}</td>
-                                                <td>${getRecieptDataList.NAME_THAI}</td>
+                                                <td class="text-left">${getRecieptDataList.NAME_THAI}</td>
                                                 <td>${getRecieptDataList.REGIS_DATE}</td>
                                                 <td>${getRecieptDataList.TOTAL_AMOUNT}</td>
                                                 <td>${getRecieptDataList.PAYMENT_DATE}</td>
@@ -104,8 +104,9 @@
                                                 
                                                 <td>
                                                     <a type="button" class="btn btn-info" 
-                                                       href="/etestgbackend/GetSelectStudentRegis?srcVal=1&sem=${getCounterData.STUDY_SEMESTER}&year=${getCounterData.STUDY_YEAR}&stdcode=${getRecieptDataList.STD_CODE}&refkey=${getRecieptDataList.REF_KEY}">
-                                                        <i class="fa fa-eye"></i> View 
+                                                       href="/etestgbackend/GetSelectStudentRegis?srcVal=1&sem=${getCounterData.STUDY_SEMESTER}&year=${getCounterData.STUDY_YEAR}&stdcode=${getRecieptDataList.STD_CODE}&refkey=${getRecieptDataList.REF_KEY}"
+                                                       style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
+                                                        <i class="fa fa-eye"></i> รายละเอียด 
                                                     </a>
                                                 </td>
                                             </tr>
@@ -124,7 +125,8 @@
                         <div class="p-3">
                             <div class="row" style="margin-top: 20px;"> 
                                 <div class="col-12" style="text-align: center;">
-                                    <a href="/etestgbackend/GetRegisReport" type="button" class="btn btn-danger">
+                                    <a href="/etestgbackend/GetRegisReport" type="button" class="btn btn-warning"
+                                       style="height: 50px; width: 20%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000; padding-top: 13px;">
                                         <i class="fa fa-backward"></i> กลับสู่หน้ารายงานหลัก </a> 
                                 </div>
                             </div>

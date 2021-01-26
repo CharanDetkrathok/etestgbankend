@@ -71,8 +71,8 @@
                                 <div class="container-fluid" style="padding: 30px 10px;">
                                     <div class="col-12 table-responsive-sm">
 
-                                        <table id="datatable" class="table table-hover table-bordered" style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
-                                            <thead class="text-center" style="background-color: #004085; color: #fff;">
+                                        <table id="datatable" class="table table-hover" style="border: none; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+                                            <thead class="text-center" style="background-color: #002752; color: #fff; border: none; font-weight: normal;">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสุล</th>
@@ -88,7 +88,7 @@
                                                 <c:forEach items="${ReceiptData}" var = "ReceiptData" varStatus="count">                                                 
                                                     <tr>
                                                         <td scope="row">${count.count}</td>
-                                                        <td>${ReceiptData.NAME_THAI}</td>
+                                                        <td class="text-left">${ReceiptData.NAME_THAI}</td>
                                                         <td>${ReceiptData.STD_CODE}</td>
                                                         <td>
                                                             <c:choose>
@@ -147,7 +147,8 @@
                     <div class="row"> 
                         <div class="col-12" style="text-align: center; padding-bottom: 50px;">
                             <label for="bt" class="fontvw" >&nbsp;</label><br /> 
-                            <button type="button"  onclick="location = 'ReceiptManagement';" class="btn btn-warning">
+                            <button type="button"  onclick="location = 'ReceiptManagement';" class="btn btn-warning"
+                                    style="height: 50px; width: 20%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000; padding-top: 10px;">
                                 <i class="fa fa-backward"></i> กลับไปก่อนหน้า </button> <label id="demo" ></label>               
                         </div>
                     </div>

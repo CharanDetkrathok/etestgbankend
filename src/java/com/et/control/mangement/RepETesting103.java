@@ -3,9 +3,12 @@ package com.et.control.mangement;
 import com.et.model.Database;
 import com.et.model.ET_COUNTER_ADMIN;
 import com.et.model.ET_COUNTER_ADMIN_TABLE;
+import com.et.model.REP_ETEST101;
+import com.et.model.REP_ETEST101_TABLE;
 import com.et.model.REP_ETEST103;
 import com.et.model.REP_ETEST103_TABLE;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,76 +39,133 @@ public class RepETesting103 extends HttpServlet {
         // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
         request.setAttribute("getCounterData", getCounterData);
 
-        String YEAR = getCounterData.getSTUDY_YEAR();
-        String SEMESTER = getCounterData.getSTUDY_SEMESTER();
+        if (request.getParameter("sumitt") != null) {
 
-        // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
-        REP_ETEST103_TABLE getRepETest103 = new REP_ETEST103_TABLE(db);
-        List<REP_ETEST103> repETest = getRepETest103.findRepETest103(YEAR, SEMESTER);
+            String YEAR = request.getParameter("year");
+            String SEMESTER = request.getParameter("sem");
 
-        // ทำการสร้าง array เพื่อรอเก็บวันที่ที่แปลงเป็น พ.ศ.
-        ArrayList<REP_ETEST103> registerDate = new ArrayList<REP_ETEST103>();
+            // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
+            REP_ETEST103_TABLE getRepETest103 = new REP_ETEST103_TABLE(db);
+            List<REP_ETEST103> repETest = getRepETest103.findRepETest103(YEAR, SEMESTER);
 
-        for (int i = 0; i < repETest.size(); i++) {
+            // ทำการสร้าง array เพื่อรอเก็บวันที่ที่แปลงเป็น พ.ศ.
+            ArrayList<REP_ETEST103> registerDate = new ArrayList<REP_ETEST103>();
 
-            REP_ETEST103 tempDate = new REP_ETEST103();
+            if (!repETest.isEmpty()) {
+                for (int i = 0; i < repETest.size(); i++) {
 
-            // ส่งไปเปลี่ยนเป็นเป็น พ.ศ. changeDateThaiFormate();
-            tempDate.setRECEIPT_DATE(repETest.get(i).getRECEIPT_DATE());
+                    REP_ETEST103 tempDate = new REP_ETEST103();
 
-            registerDate.add(tempDate);
+                    // ส่งไปเปลี่ยนเป็นเป็น พ.ศ. changeDateThaiFormate();
+                    tempDate.setRECEIPT_DATE(repETest.get(i).getRECEIPT_DATE());
 
+                    registerDate.add(tempDate);
+
+                }
+
+                // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
+                ArrayList<REP_ETEST103> repETest103 = new ArrayList<REP_ETEST103>();
+
+                for (int i = 0; i < registerDate.size(); i++) {
+
+                    REP_ETEST103 tempDisplay = new REP_ETEST103();
+                    String totalAmount = "";
+                    String totalSTD = "";
+
+                    totalAmount = getRepETest103.RepETest103SumTotalAmount(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
+                    totalSTD = getRepETest103.RepETest103SumTotalStudents(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
+
+                    tempDisplay.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
+                    tempDisplay.setTOTAL_AMOUNT(totalAmount);
+                    tempDisplay.setTOTAL_STD(totalSTD);
+
+                    // เพิ่มข้อมูลที่จัดเรียงใหม่ลง Lists
+                    repETest103.add(tempDisplay);
+                }
+
+                int tempSumStd = 0;
+                int tempSumAmount = 0;
+
+                for (int i = 0; i < repETest103.size(); i++) {
+
+                    if (repETest103.get(i).getTOTAL_AMOUNT() == null) {
+                        repETest103.get(i).setSTR_TOTAL_AMOUNT("0");
+                    } else {
+                        // (จำนวนเงิน ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
+                        repETest103.get(i).setSTR_TOTAL_AMOUNT(additionalSemicolon(repETest103.get(i).getTOTAL_AMOUNT()));
+                        tempSumAmount += Integer.valueOf(repETest103.get(i).getTOTAL_AMOUNT());
+                    }
+
+                    if (repETest103.get(i).getTOTAL_STD() == null) {
+                        repETest103.get(i).setSTR_TOTAL_STD("0");
+                    } else {
+                        // (จำนวนนักศึกษา ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
+                        repETest103.get(i).setSTR_TOTAL_STD(additionalSemicolon(repETest103.get(i).getTOTAL_STD()));
+                        tempSumStd += Integer.valueOf(repETest103.get(i).getTOTAL_STD());
+                    }                    
+                   
+                }
+
+                String sumStd = "0";
+                String sumAmount = "0";
+
+                if (tempSumStd == 0) {
+                    sumStd = "0";
+                } else {
+                    sumStd = additionalSemicolon(String.valueOf(tempSumStd));
+                }
+                
+                if (tempSumAmount == 0) {
+                    sumAmount = "0";
+                } else {
+                    sumAmount = additionalSemicolon(String.valueOf(tempSumAmount));
+                }
+
+                String dateee = changeDateThaiFormate(String.valueOf(registerDate.get(0).getRECEIPT_DATE())) + " - " + changeDateThaiFormate(String.valueOf(registerDate.get(registerDate.size() - 1).getRECEIPT_DATE()));
+
+                request.setAttribute("timePeriod", dateee);
+                request.setAttribute("sumStd", sumStd);
+                request.setAttribute("sumAmount", sumAmount);
+                request.setAttribute("YEAR", YEAR);
+                request.setAttribute("SEMESTER", SEMESTER);
+                request.setAttribute("repETest103", repETest103);
+
+                RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting103-Data.jsp");
+                rs.forward(request, response);
+            } else {
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('วันที่สอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
+                out.println("location='/etestgbackend/RepETesting103';");
+                out.println("</script>");
+            }
+        } else {
+            String YEAR = getCounterData.getSTUDY_YEAR();
+            String SEMESTER = getCounterData.getSTUDY_SEMESTER();
+
+            // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
+            REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
+            List<REP_ETEST101> repETest = getRepETest101.findRepETest101(YEAR, SEMESTER);
+
+            // ทำการสร้าง array เพื่อรอเก็บวันที่ที่แปลงเป็น พ.ศ.
+            ArrayList<REP_ETEST101> registerDate = new ArrayList<REP_ETEST101>();
+
+            for (int i = 0; i < repETest.size(); i++) {
+
+                REP_ETEST101 tempDate = new REP_ETEST101();
+
+                // ส่งไปเปลี่ยนเป็นเป็น พ.ศ. changeDateThaiFormate();
+                tempDate.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
+
+                registerDate.add(tempDate);
+
+            }
+
+            request.setAttribute("registerDate", registerDate);
+
+            RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting103-Main.jsp");
+            rs.forward(request, response);
         }
-
-        // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
-        ArrayList<REP_ETEST103> repETest103 = new ArrayList<REP_ETEST103>();
-
-        for (int i = 0; i < registerDate.size(); i++) {
-
-            REP_ETEST103 tempDisplay = new REP_ETEST103();
-            String totalAmount = "";
-            String totalSTD = "";
-
-            totalAmount = getRepETest103.RepETest103SumTotalAmount(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
-            totalSTD = getRepETest103.RepETest103SumTotalStudents(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
-
-            tempDisplay.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
-            tempDisplay.setTOTAL_AMOUNT(totalAmount);
-            tempDisplay.setTOTAL_STD(totalSTD);
-
-            // เพิ่มข้อมูลที่จัดเรียงใหม่ลง Lists
-            repETest103.add(tempDisplay);
-        }
-        
-        int tempSumStd = 0;
-        int tempSumAmount = 0;         
-        
-        for (int i = 0; i < repETest103.size(); i++) {
-            
-            // (จำนวนเงิน ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
-            repETest103.get(i).setSTR_TOTAL_AMOUNT(additionalSemicolon(repETest103.get(i).getTOTAL_AMOUNT()));
-
-            // (จำนวนนักศึกษา ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
-            repETest103.get(i).setSTR_TOTAL_STD(additionalSemicolon(repETest103.get(i).getTOTAL_STD()));
-            
-            tempSumStd += Integer.parseInt(repETest103.get(i).getTOTAL_STD());
-            tempSumAmount += Integer.parseInt(repETest103.get(i).getTOTAL_AMOUNT());
-            
-        }
-        
-        String sumStd = additionalSemicolon( String.valueOf(tempSumStd) );
-        String sumAmount = additionalSemicolon( String.valueOf(tempSumAmount) );
-
-        System.out.println(repETest103);
-
-        String dateee = changeDateThaiFormate( String.valueOf( registerDate.get(0).getRECEIPT_DATE() ) ) + " - " + changeDateThaiFormate( String.valueOf(registerDate.get( registerDate.size()-1).getRECEIPT_DATE() ) );
-        request.setAttribute("timePeriod", dateee);
-        request.setAttribute("sumStd", sumStd);
-        request.setAttribute("sumAmount", sumAmount);
-        request.setAttribute("repETest103", repETest103);
-
-        RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting103-Data.jsp");
-        rs.forward(request, response);
 
         db.close();
 

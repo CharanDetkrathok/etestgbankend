@@ -1,12 +1,16 @@
+ <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
  
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
 <footer class="site-footer">
     <div class="footer-inner bg-white">
         <div class="row">
             <div class="col-sm-6">
-                Copyright &copy; 2020
+                Copyright &copy; 2021
             </div>
             <div class="col-sm-6 text-right" id="hid">
-                Designed by xx
+                ฝ่ายวิเคราะห์และพัฒนาระบบ มหาลัยรามคำแหง
             </div>
         </div>
     </div>

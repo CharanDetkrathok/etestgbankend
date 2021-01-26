@@ -79,10 +79,10 @@
                                             <h3>
                                         </div> 
                                     </div>
-                                    <table class="table table-striped-sm table-responsive-sm">
-                                        <thead>
-                                            <tr class="bg-primary" style="font-weight: bold;color: white;">
-                                                <th scope="col">#No</th>
+                                    <table class="table table-hover" style="border: none; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+                                        <thead class="text-center" style="background-color: #002752; color: #fff; border: none; font-weight: normal;">
+                                            <tr style="font-weight: bold;color: white;">
+                                                <th scope="col">ลำดับ</th>
                                                 <th scope="col">วิชา</th>
                                                 <th scope="col">หน่วยกิต</th>
                                                 <th scope="col">คาบสอบ</th>
@@ -112,7 +112,8 @@
                             <div class="row"> 
                                 <div class="col-12" style="text-align: center;">
                                     <label for="bt" class="fontvw" >&nbsp;</label><br /> 
-                                    <button type="button"  onclick="goBack()" class="btn btn-danger">
+                                    <button type="button"  onclick="goBack()" class="btn btn-warning"
+                                            style="height: 50px; width: 20%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000; padding-top: 10px;">
                                         <i class="fa fa-backward"></i> กลับไปก่อนหน้า </button> <label id="demo" ></label>               
                                 </div>
                             </div>
