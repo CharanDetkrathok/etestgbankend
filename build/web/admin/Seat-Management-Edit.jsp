@@ -117,7 +117,8 @@
                                             <div class="col-6 form-group">
                                                 <label for="">กำหนดจำนวนที่นั่งสอบ/แถว <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>                                                
                                                 <input value="${BuildRow.SEAT_EXAM}" type="number" min="1" class="form-control" name="seat_exam" 
-                                                       placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length == 3)return false;" required="true">
+                                                       placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length == 3)
+                                                                   return false;" required="true">
                                             </div>
                                             <div class="col-6 form-group" style="margin-top: 35px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 
@@ -127,11 +128,16 @@
                                                     <i class="fa fa-check"></i> ตกลง
                                                 </button>
                                                 &nbsp;
-                                                <button type="reset" class="btn btn-warning col-3"  
-                                                        style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;"
+                                                <button type="reset" class="btn btn-danger col-3"  
+                                                        style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
                                                         >
-                                                    <i class="fa fa-close"></i> ยกเลิก
+                                                    <i class="fa fa-close"></i> คืนค่า
                                                 </button>
+                                                &nbsp;
+                                                <a type="button" href="/etestgbackend/SeatManagement" class="btn btn-warning"
+                                                   style="width: 30%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;">
+                                                    <i class="fa fa-backward"></i> &nbsp; กลับ 
+                                                </a>
                                             </div>
                                         </div>
                                     </form>

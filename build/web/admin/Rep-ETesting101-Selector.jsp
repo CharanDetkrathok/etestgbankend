@@ -77,7 +77,7 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-6" style="text-align: center; margin: 32px 0 0 -50px; padding: 0 0 0 0;">
+                                <div class="col-4" style="text-align: center; margin: 32px 0 0 0; padding: 0 0 0 0;">
                                     <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ ออกรายงาน REP-eTest101 ใช่หรือไม่?');"
                                             style="height: 50px; width: 40%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
                                         <i class="fa fa-file-excel-o"></i>&nbsp; REP-Etest101 

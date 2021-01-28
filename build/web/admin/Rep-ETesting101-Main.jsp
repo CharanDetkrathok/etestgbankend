@@ -70,11 +70,29 @@
                             <div class="row" style="display: flex; align-items: center; justify-content: center;">
                                 <div class="col-2" style="">
                                     <label style="margin-left: 10px; font-size: 1.2vw;">ปีการศึกษา :</label><br>
-                                    <input type="text" name="year" value="${getCounterData.STUDY_YEAR}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
+                                    <input type="text" name="year" value="${getCounterData.STUDY_YEAR}" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
                                 </div>
                                 <div class="col-2" style="">
                                     <label style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา :</label><br>
-                                    <input type="text" name="sem" value="${getCounterData.STUDY_SEMESTER}" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; padding: 0 0 0 15px;">
+                                    <select class="form-control" name="sem" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0;">
+                                        <c:choose>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
+                                                <option  value="1"> 1 </option>
+                                                <option  value="2"> 2 </option>
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 3 </option>
+                                            </c:when>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '2'}">
+                                                <option  value="1"> 1 </option>
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 2 </option>
+                                                <option  value="3"> 3 </option>
+                                            </c:when>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '1'}">
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 1 </option>
+                                                <option  value="2"> 2 </option>
+                                                <option  value="3"> 3 </option>
+                                            </c:when>                                              
+                                        </c:choose>      
+                                    </select>
                                 </div>
                                 <div class="col-2" style="text-align: center; margin-top: 35px;">
                                     <button type="submit" class="btn btn-success"

@@ -132,11 +132,16 @@
                                                     <i class="fa fa-check"></i> ตกลง
                                                 </button>
                                                 &nbsp;
-                                                <button type="reset" class="btn btn-warning col-3"  
-                                                        style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;"
+                                                <button type="reset" class="btn btn-danger col-3"  
+                                                        style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
                                                         >
-                                                    <i class="fa fa-close"></i> ยกเลิก
+                                                    <i class="fa fa-close"></i> คืนค่า
                                                 </button>
+                                                &nbsp;
+                                                <a type="button" href="/etestgbackend/SeatManagement" class="btn btn-warning"
+                                                   style="width: 30%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;">
+                                                    <i class="fa fa-backward"></i> &nbsp; กลับ 
+                                                </a>
                                             </div>
                                         </div>
                                     </form>

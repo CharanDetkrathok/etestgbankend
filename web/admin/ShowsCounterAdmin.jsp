@@ -66,7 +66,25 @@
                                 </div>
                                 <div class="col-2">
                                     <label for="sem" class="fontvw" style="margin-left: 10px; font-size: 1.2vw;">ภาคการศึกษา : </label> 
-                                    <input type="text" class="form-control" name="sem" id="sem" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0px;" value="${getCounterData.STUDY_SEMESTER}">
+                                    <select class="form-control" name="sem" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0;">
+                                        <c:choose>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '3'}">
+                                                <option  value="1"> 1 </option>
+                                                <option  value="2"> 2 </option>
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 3 </option>
+                                            </c:when>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '2'}">
+                                                <option  value="1"> 1 </option>
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 2 </option>
+                                                <option  value="3"> 3 </option>
+                                            </c:when>
+                                            <c:when test = "${getCounterData.STUDY_SEMESTER == '1'}">
+                                                <option  value="${getCounterData.STUDY_SEMESTER}" selected> 1 </option>
+                                                <option  value="2"> 2 </option>
+                                                <option  value="3"> 3 </option>
+                                            </c:when>                                              
+                                        </c:choose>      
+                                    </select>
                                 </div>
                                 <div class="col-2">
                                     <label for="bt" class="fontvw" >&nbsp;</label>
@@ -91,5 +109,5 @@
     <div class="clearfix"></div>
     <!-- Footer -->
     <!-- Footer -->
-   
+
     <jsp:include page="footer.jsp" />
