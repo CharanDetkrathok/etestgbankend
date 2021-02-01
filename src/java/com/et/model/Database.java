@@ -7,7 +7,7 @@ package com.et.model;
 
 import java.sql.*;
 import java.util.*;
-import lombok.Data;
+import lombok.*;
 
 /**
  *
@@ -27,6 +27,7 @@ public class Database {
                     DatabaseInfo.USER,
                     DatabaseInfo.PASSWORD);
         } catch (Exception e) {
+            
             throw new RuntimeException(e);
 
         }
@@ -55,6 +56,7 @@ public class Database {
             } else {
                 return null;
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -191,7 +193,7 @@ public class Database {
 
     public int insertRc(String[] genCol, String sql, Object... args) {
         try {
-            String generatedColumns[] = genCol;
+            // String generatedColumns[] = genCol;
 
             PreparedStatement pstmt = connect.prepareStatement(sql);
 

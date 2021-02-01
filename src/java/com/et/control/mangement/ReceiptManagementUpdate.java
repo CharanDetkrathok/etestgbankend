@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class ReceiptManagementUpdate extends HttpServlet {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -18,14 +23,14 @@ public class ReceiptManagementUpdate extends HttpServlet {
 
         Database db = new Database();
 
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        // ----- Query สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------- 
+        // ----- Query สถานะการจ่ายเงิน เพื่อไปแสดง ----------------------------------
         ET_RECEIPT_TABLE getReceiptTable = new ET_RECEIPT_TABLE(db);
 
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------------
         request.setAttribute("getCounterData", getCounterData);
 
         String receiptStdCode = request.getParameter("receiptStdCode");
@@ -34,8 +39,9 @@ public class ReceiptManagementUpdate extends HttpServlet {
         String receiptPayStatus = request.getParameter("receiptPayStatus");
         String refKey = request.getParameter("refKey");
 
-        // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------------- 
-        ET_RECEIPT ReceiptData = getReceiptTable.findRefKey(receiptStdCode, receiptYear, receiptSemester, receiptPayStatus, refKey);
+        // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ----------------------------------------
+        ET_RECEIPT ReceiptData = getReceiptTable.findRefKey(receiptStdCode, receiptYear, receiptSemester,
+                receiptPayStatus, refKey);
         request.setAttribute("ReceiptData", ReceiptData);
 
         boolean checkUpdate;
@@ -53,20 +59,21 @@ public class ReceiptManagementUpdate extends HttpServlet {
         request.setAttribute("examdate", request.getParameter("examdate"));
         request.setAttribute("section", request.getParameter("section"));
         request.setAttribute("ReceiptData", ReceiptData);
-        
+
         RequestDispatcher rs = request.getRequestDispatcher("ReceiptManagementData");
         rs.forward(request, response);
         db.close();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -77,10 +84,10 @@ public class ReceiptManagementUpdate extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

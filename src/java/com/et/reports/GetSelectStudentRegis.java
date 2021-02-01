@@ -7,7 +7,7 @@ package com.et.reports;
 
 import com.et.model.*;
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,13 +21,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GetSelectStudentRegis extends HttpServlet {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         //stmt
         String stdcode = request.getParameter("stdcode");
-        String refkey = request.getParameter("refkey");
+        // String refkey = request.getParameter("refkey");
         String sem = request.getParameter("sem");
         String year = request.getParameter("year");
         String srcVal = request.getParameter("srcVal");
@@ -41,11 +46,11 @@ public class GetSelectStudentRegis extends HttpServlet {
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        ET_REGIS_RU24_TABLE getRu24Table = new ET_REGIS_RU24_TABLE(db);
+        // ET_REGIS_RU24_TABLE getRu24Table = new ET_REGIS_RU24_TABLE(db);
         ET_RECEIPT_TABLE getRecieptTable = new ET_RECEIPT_TABLE(db);
 
         List<ET_RECEIPT> getRecieptDataList = null;
-        ET_RECEIPT getRecieptData = null;
+        // ET_RECEIPT getRecieptData = null;
 
         if (stdcode != null && stdcode != null && stdcode != null ) {
             if (srcVal.equals("1")) {

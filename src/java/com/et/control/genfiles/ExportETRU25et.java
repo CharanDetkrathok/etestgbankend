@@ -15,7 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class ExportETRU25et extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
@@ -53,26 +59,26 @@ public class ExportETRU25et extends HttpServlet {
             ArrayList<EXPORT_ET_RU25et> lists = new ArrayList<EXPORT_ET_RU25et>();
 
             // --- ค้นข้อมูลทั้งหมด ทุก วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
-            //--- ทุกวันทุกคาบสอบ
+            // --- ทุกวันทุกคาบสอบ
             ExportET_RU25et = getExportET_RU25et.findExportEtRu25etAll(YEAR, SEMESTER);
-            
-            // นับจำนวน นศ. 
+
+            // นับจำนวน นศ.
             int countStudents = 0;
-            
+
             if (!ExportET_RU25et.isEmpty()) {
 
                 for (int i = 0; i < ExportET_RU25et.size(); i++) {
-                    
-                    // นับจำนวน นศ. 
+
+                    // นับจำนวน นศ.
                     countStudents++;
-                    
+
                     EXPORT_ET_RU25et et_ru24et = new EXPORT_ET_RU25et();
 
                     et_ru24et.setColumnn1(String.format("%1$-" + 53 + "s", ExportET_RU25et.get(i).getColumnn1()));
                     et_ru24et.setColumnn2(String.format("%1$-" + 34 + "s", ExportET_RU25et.get(i).getColumnn2()));
                     et_ru24et.setColumnn3(ExportET_RU25et.get(i).getColumnn3());
                     lists.add(et_ru24et);
-                }//end for
+                } // end for
 
             } else {
 
@@ -83,10 +89,10 @@ public class ExportETRU25et extends HttpServlet {
                 out.println("</script>");
 
             }
-            
-            // นับจำนวน นศ. 
-            System.out.println("countStudents => "+ countStudents);
-            
+
+            // นับจำนวน นศ.
+            System.out.println("countStudents => " + countStudents);
+
             if (!lists.isEmpty()) {
 
                 response.setContentType("text/plain");
@@ -96,10 +102,7 @@ public class ExportETRU25et extends HttpServlet {
                     String outputResult = "";
                     for (EXPORT_ET_RU25et list : lists) {
 
-                        outputResult
-                                = list.getColumnn1()
-                                + list.getColumnn2()
-                                + list.getColumnn3() + "\n";
+                        outputResult = list.getColumnn1() + list.getColumnn2() + list.getColumnn3() + "\n";
                         outputStream.write(outputResult.getBytes());
                     }
                     outputStream.flush();
@@ -119,14 +122,15 @@ public class ExportETRU25et extends HttpServlet {
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -141,10 +145,10 @@ public class ExportETRU25et extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

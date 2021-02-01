@@ -18,12 +18,18 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ru-com7
  */
-public class ShowSeat extends HttpServlet { 
+@SuppressWarnings("unused")
+public class ShowSeat extends HttpServlet {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         Database db = new Database();
-         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
+        Database db = new Database();
+        ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
         if (getCounterData != null) {
@@ -36,33 +42,27 @@ public class ShowSeat extends HttpServlet {
         }
 
         db.close();
-        
-        
-         /*  PrintWriter out = response.getWriter();
-        try {
-          TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ShowSeat</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ShowSeat at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }*/
+
+        /*
+         * PrintWriter out = response.getWriter(); try { TODO output your page here. You
+         * may use following sample code. out.println("<!DOCTYPE html>");
+         * out.println("<html>"); out.println("<head>");
+         * out.println("<title>Servlet ShowSeat</title>"); out.println("</head>");
+         * out.println("<body>"); out.println("<h1>Servlet ShowSeat at " +
+         * request.getContextPath() + "</h1>"); out.println("</body>");
+         * out.println("</html>"); } finally { out.close(); }
+         */
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -73,10 +73,10 @@ public class ShowSeat extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

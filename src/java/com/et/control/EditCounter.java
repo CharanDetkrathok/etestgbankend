@@ -14,7 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class EditCounter extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,33 +53,28 @@ public class EditCounter extends HttpServlet {
                 response.sendRedirect("admin/faild.jsp");
             }
         }
-        
+
         db.close();
 
-        /* PrintWriter out = response.getWriter();
-        try {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EditCounter</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EditCounter at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }*/
+        /*
+         * PrintWriter out = response.getWriter(); try { out.println("<!DOCTYPE html>");
+         * out.println("<html>"); out.println("<head>");
+         * out.println("<title>Servlet EditCounter</title>"); out.println("</head>");
+         * out.println("<body>"); out.println("<h1>Servlet EditCounter at " +
+         * request.getContextPath() + "</h1>"); out.println("</body>");
+         * out.println("</html>"); } finally { out.close(); }
+         */
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -84,10 +85,10 @@ public class EditCounter extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

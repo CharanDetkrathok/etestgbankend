@@ -20,7 +20,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class ExportETSTDC extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
@@ -57,9 +63,10 @@ public class ExportETSTDC extends HttpServlet {
 
             ArrayList<ET_STDC> lists = new ArrayList<ET_STDC>();
 
-            ExportET_STDC = getExportET_STDC.findExportEtSTDCAll(YEAR, SEMESTER); // --- ค้นข้อมูลทั้งหมด ทุก วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
+            ExportET_STDC = getExportET_STDC.findExportEtSTDCAll(YEAR, SEMESTER); // --- ค้นข้อมูลทั้งหมด ทุก
+                                                                                  // วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
             System.err.println(ExportET_STDC);
-            // นับจำนวน นศ. 
+            // นับจำนวน นศ.
             int countStudents = 0;
             if (!ExportET_STDC.isEmpty()) {
 
@@ -70,14 +77,15 @@ public class ExportETSTDC extends HttpServlet {
 
                     String ROW_SEAT;
                     if (ExportET_STDC.get(i).getROW_SEAT().length() == 2) {
-                        ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT().substring(0, 1) + '0' + ExportET_STDC.get(i).getROW_SEAT().substring(1);
+                        ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT().substring(0, 1) + '0'
+                                + ExportET_STDC.get(i).getROW_SEAT().substring(1);
                     } else {
                         ROW_SEAT = ExportET_STDC.get(i).getROW_SEAT();
                     }
-                    
-                    // นับจำนวน นศ. 
+
+                    // นับจำนวน นศ.
                     countStudents++;
-                    
+
                     et_stdc.setStdc_year(ExportET_STDC.get(i).getYEAR());
                     et_stdc.setStdc_std_semester(ExportET_STDC.get(i).getSEMESTER());
                     et_stdc.setStdc_std_code(ExportET_STDC.get(i).getSTD_CODE());
@@ -95,10 +103,10 @@ public class ExportETSTDC extends HttpServlet {
                     et_stdc.setStdc_score_chsum("0000");
 
                     lists.add(et_stdc);
-                }//end for
+                } // end for
 
             } else {
-                
+
                 PrintWriter out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('วันที่สอบ หรือ คาบสอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
@@ -106,9 +114,9 @@ public class ExportETSTDC extends HttpServlet {
                 out.println("</script>");
 
             }
-            // นับจำนวน นศ. 
-            System.out.println("countStudents => "+ countStudents);
-            
+            // นับจำนวน นศ.
+            System.out.println("countStudents => " + countStudents);
+
             if (!lists.isEmpty()) {
 
                 response.setContentType("text/plain");
@@ -118,22 +126,11 @@ public class ExportETSTDC extends HttpServlet {
                     String outputResult = "";
                     for (ET_STDC list : lists) {
 
-                        outputResult
-                                = list.getStdc_year()
-                                + list.getStdc_std_semester()
-                                + list.getStdc_std_code()
-                                + list.getStdc_std_course_code()
-                                + list.getStdc_credit()
-                                + list.getStdc_section()
-                                + list.getApp_date_etest_dd()
-                                + list.getApp_period_etest()
-                                + list.getApp_bld()
-                                + list.getApp_row()
-                                + list.getEtest_status()
-                                + list.getStdc_score_tot()
-                                + list.getStdc_score_M()
-                                + list.getStdc_score_F()
-                                + list.getStdc_score_chsum() + "\n";
+                        outputResult = list.getStdc_year() + list.getStdc_std_semester() + list.getStdc_std_code()
+                                + list.getStdc_std_course_code() + list.getStdc_credit() + list.getStdc_section()
+                                + list.getApp_date_etest_dd() + list.getApp_period_etest() + list.getApp_bld()
+                                + list.getApp_row() + list.getEtest_status() + list.getStdc_score_tot()
+                                + list.getStdc_score_M() + list.getStdc_score_F() + list.getStdc_score_chsum() + "\n";
                         outputStream.write(outputResult.getBytes());
                     }
                     outputStream.flush();
@@ -153,14 +150,15 @@ public class ExportETSTDC extends HttpServlet {
         db.close();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -175,10 +173,10 @@ public class ExportETSTDC extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -6,7 +6,7 @@
 package com.et.testform;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +18,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author ru-com7
  */
 public class TestForm extends HttpServlet { 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

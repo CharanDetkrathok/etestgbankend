@@ -20,18 +20,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class GenerateExamSeat extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
 
         Database db = new Database();
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------------
         request.setAttribute("getCounterData", getCounterData);
 
         if (request.getParameter("sumitt") != null) {
@@ -47,7 +53,8 @@ public class GenerateExamSeat extends HttpServlet {
             // ----- Query ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------
             ET_BUILE_ROW_TABLE getBuildRowTable = new ET_BUILE_ROW_TABLE(db);
 
-            // เก็บแถว A-Z ลง Lists และจำนวนที่สั่ง เอาไว้ไปหยอด นักศึกษาลงเก้าอี้ ใน Method setExamSeat()
+            // เก็บแถว A-Z ลง Lists และจำนวนที่สั่ง เอาไว้ไปหยอด นักศึกษาลงเก้าอี้ ใน Method
+            // setExamSeat()
             List<ET_BUILE_ROW> getBuildRow = getBuildRowTable.findRowAndSeat(year, semester);
 
             // นับจำนวน นศ. ลงทะเบียน
@@ -55,20 +62,23 @@ public class GenerateExamSeat extends HttpServlet {
 
             int ttt = 0;
 
-//           boolean checkDeleteBeforeInsertExamSeat = getGenerateEtExamSeat.deleteBeforeInsertExamSeat(year, semester);
+            // boolean checkDeleteBeforeInsertExamSeat =
+            // getGenerateEtExamSeat.deleteBeforeInsertExamSeat(year, semester);
             // หยอดนักศึกษาลงเก้าอีและแถวสอบ ตามวันที่เปิดสอบ
             for (GENERATE_ET_EXAM_SEAT generate_et_exam_seat : etExamSeat) {
 
-                //หยอด นศ. ตามคาบสอบ มีทั้งหมด 4 คาบ
+                // หยอด นศ. ตามคาบสอบ มีทั้งหมด 4 คาบ
                 for (int sectionTemp = 1; sectionTemp < 5; sectionTemp++) {
 
-                    //ค้นหาข้อมูล นศ. ตามวันและคาบสอบ ค้นที่ละคาบของวันสอบ ที่ลงทะเบียนและจ่ายเงินแล้ว
-                    studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester, generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
+                    // ค้นหาข้อมูล นศ. ตามวันและคาบสอบ ค้นที่ละคาบของวันสอบ
+                    // ที่ลงทะเบียนและจ่ายเงินแล้ว
+                    studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester,
+                            generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
 
-                    //ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
+                    // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
                     if (!studentData.isEmpty()) {
 
-                        //กำหนดที่นั่ง เริ่มต้น ที่โต๊ะหรือเก้าอี้สอบตัวแรก
+                        // กำหนดที่นั่ง เริ่มต้น ที่โต๊ะหรือเก้าอี้สอบตัวแรก
                         int countSeatRow = 1;
 
                         // Loop จนกว่าจะจัดที่นั่งให้ นศ. จนครบทั้งหมดใน วันและคาบสอบนั้นๆ
@@ -77,20 +87,22 @@ public class GenerateExamSeat extends HttpServlet {
                             // นับ นศ.
                             countStudents++;
 
-                            //ส่ง นศ. ไป insert ที่นั่งสอบใน Method setExamSeat ลงฐานข้อมูล
-                            setExamSeat(year, semester, countSeatRow, studentData.get(i), getBuildRow, getGenerateEtExamSeat);
+                            // ส่ง นศ. ไป insert ที่นั่งสอบใน Method setExamSeat ลงฐานข้อมูล
+                            setExamSeat(year, semester, countSeatRow, studentData.get(i), getBuildRow,
+                                    getGenerateEtExamSeat);
 
                         }
 
                         System.out.println("มี นศ. ลงทะเบียน จำนวน นศ. ได้ที่นั่งแล้ว = " + countStudents);
                     } else {
-                        System.out.println("ไม่มี นศ. ลงทะเบียน " + etExamSeat.get(ttt).getEXAM_DATE() + " คาบที่ " + sectionTemp);
+                        System.out.println(
+                                "ไม่มี นศ. ลงทะเบียน " + etExamSeat.get(ttt).getEXAM_DATE() + " คาบที่ " + sectionTemp);
                     }
                 }
 
                 ttt++;
             }
-            System.out.println("countStudents => "+countStudents);
+            System.out.println("countStudents => " + countStudents);
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
@@ -106,7 +118,9 @@ public class GenerateExamSeat extends HttpServlet {
 
     }
 
-    public void setExamSeat(String year, String semester, int countSeatRow, GENERATE_ET_EXAM_SEAT students, List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert) throws ParseException {
+    public void setExamSeat(String year, String semester, int countSeatRow, GENERATE_ET_EXAM_SEAT students,
+            List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert)
+            throws ParseException {
 
         int count = countSeatRow;
         String Year = year;
@@ -122,15 +136,19 @@ public class GenerateExamSeat extends HttpServlet {
         boolean insetSeat = false;
         for (int i = 0; i < buileRow.size(); i++) {
 
-            int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester, changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
+            int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester,
+                    changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
 
             if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
-//                System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + " คาบที่ " + Section + " เต็ม ");                
+                // System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + " คาบที่ " +
+                // Section + " เต็ม ");
             } else {
                 countSeatThisRow += 1;
                 RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
-//                System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + countSeatThisRow + " คาบที่ " + Section);
-                insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode, ExamDate, Section, Credit, Course, StatusCourse);
+                // System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + countSeatThisRow
+                // + " คาบที่ " + Section);
+                insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode,
+                        ExamDate, Section, Credit, Course, StatusCourse);
             }
 
             if (insetSeat) {
@@ -143,13 +161,13 @@ public class GenerateExamSeat extends HttpServlet {
 
     public String changeFormatDate(String Exam_Date) throws ParseException {
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน
         final String TEMP_OLD_FORMAT = "dd/MM/yyyy";
         final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
         String TEMP_OldDateString = Exam_Date;
         String TEMP_EXAM_DATE;
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
         SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
         Date temp_d = temp_sdf.parse(TEMP_OldDateString);
         temp_sdf.applyPattern(TEMP_NEW_FORMAT);
@@ -157,7 +175,7 @@ public class GenerateExamSeat extends HttpServlet {
 
         LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE);
 
-        //--- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
+        // --- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
         final String OLD_FORMAT = "yyyy-MM-dd";
         final String NEW_FORMAT = "MM/dd/yyyy";
         String oldDateString = TEMP_EXAM_DATEe.toString();
@@ -173,21 +191,21 @@ public class GenerateExamSeat extends HttpServlet {
 
     public String changeDate(String Exam_Date) throws ParseException {
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน
         final String TEMP_OLD_FORMAT = "MM/dd/yyyy";
         final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
         String TEMP_OldDateString = Exam_Date;
         String TEMP_EXAM_DATE;
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
         SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
         Date temp_d = temp_sdf.parse(TEMP_OldDateString);
         temp_sdf.applyPattern(TEMP_NEW_FORMAT);
         TEMP_EXAM_DATE = temp_sdf.format(temp_d);
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
         LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE).plus(543, ChronoUnit.YEARS);
 
-        //--- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
+        // --- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
         final String OLD_FORMAT = "yyyy-MM-dd";
         final String NEW_FORMAT = "dd/MM/yyyy";
         String oldDateString = TEMP_EXAM_DATEe.toString();
@@ -201,14 +219,15 @@ public class GenerateExamSeat extends HttpServlet {
         return NEW_EXAM_DATE;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -223,10 +242,10 @@ public class GenerateExamSeat extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

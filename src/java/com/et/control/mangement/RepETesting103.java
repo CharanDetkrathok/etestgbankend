@@ -25,18 +25,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class RepETesting103 extends HttpServlet {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
 
         Database db = new Database();
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------------
         request.setAttribute("getCounterData", getCounterData);
 
         if (request.getParameter("sumitt") != null) {
@@ -72,8 +77,10 @@ public class RepETesting103 extends HttpServlet {
                     String totalAmount = "";
                     String totalSTD = "";
 
-                    totalAmount = getRepETest103.RepETest103SumTotalAmount(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
-                    totalSTD = getRepETest103.RepETest103SumTotalStudents(YEAR, SEMESTER, registerDate.get(i).getRECEIPT_DATE());
+                    totalAmount = getRepETest103.RepETest103SumTotalAmount(YEAR, SEMESTER,
+                            registerDate.get(i).getRECEIPT_DATE());
+                    totalSTD = getRepETest103.RepETest103SumTotalStudents(YEAR, SEMESTER,
+                            registerDate.get(i).getRECEIPT_DATE());
 
                     tempDisplay.setRECEIPT_DATE(changeDateThaiFormate(repETest.get(i).getRECEIPT_DATE()));
                     tempDisplay.setTOTAL_AMOUNT(totalAmount);
@@ -91,19 +98,20 @@ public class RepETesting103 extends HttpServlet {
                     if (repETest103.get(i).getTOTAL_AMOUNT() == null) {
                         repETest103.get(i).setSTR_TOTAL_AMOUNT("0");
                     } else {
-                        // (จำนวนเงิน ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
-                        repETest103.get(i).setSTR_TOTAL_AMOUNT(additionalSemicolon(repETest103.get(i).getTOTAL_AMOUNT()));
+                        // (จำนวนเงิน ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน
+                        repETest103.get(i)
+                                .setSTR_TOTAL_AMOUNT(additionalSemicolon(repETest103.get(i).getTOTAL_AMOUNT()));
                         tempSumAmount += Integer.valueOf(repETest103.get(i).getTOTAL_AMOUNT());
                     }
 
                     if (repETest103.get(i).getTOTAL_STD() == null) {
                         repETest103.get(i).setSTR_TOTAL_STD("0");
                     } else {
-                        // (จำนวนนักศึกษา ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน 
+                        // (จำนวนนักศึกษา ยอดรวม "รายวัน") เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน
                         repETest103.get(i).setSTR_TOTAL_STD(additionalSemicolon(repETest103.get(i).getTOTAL_STD()));
                         tempSumStd += Integer.valueOf(repETest103.get(i).getTOTAL_STD());
-                    }                    
-                   
+                    }
+
                 }
 
                 String sumStd = "0";
@@ -114,14 +122,16 @@ public class RepETesting103 extends HttpServlet {
                 } else {
                     sumStd = additionalSemicolon(String.valueOf(tempSumStd));
                 }
-                
+
                 if (tempSumAmount == 0) {
                     sumAmount = "0";
                 } else {
                     sumAmount = additionalSemicolon(String.valueOf(tempSumAmount));
                 }
 
-                String dateee = changeDateThaiFormate(String.valueOf(registerDate.get(0).getRECEIPT_DATE())) + " - " + changeDateThaiFormate(String.valueOf(registerDate.get(registerDate.size() - 1).getRECEIPT_DATE()));
+                String dateee = changeDateThaiFormate(String.valueOf(registerDate.get(0).getRECEIPT_DATE())) + " - "
+                        + changeDateThaiFormate(
+                                String.valueOf(registerDate.get(registerDate.size() - 1).getRECEIPT_DATE()));
 
                 request.setAttribute("timePeriod", dateee);
                 request.setAttribute("sumStd", sumStd);
@@ -175,7 +185,7 @@ public class RepETesting103 extends HttpServlet {
 
         String tempTotalAmount = tempStr;
 
-        // เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน       
+        // เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน
         switch (tempTotalAmount.length()) {
             case 7:
                 tempTotalAmount = tempTotalAmount.substring(0, 4) + "," + tempTotalAmount.substring(4);
@@ -197,22 +207,22 @@ public class RepETesting103 extends HttpServlet {
 
     public String changeDateThaiFormate(String Exam_Date) throws ParseException {
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน 
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน
         final String TEMP_OLD_FORMAT = "MM/dd/yyyy";
         final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
         String TEMP_OldDateString = Exam_Date;
         String TEMP_EXAM_DATE;
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
         SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
         Date temp_d = temp_sdf.parse(TEMP_OldDateString);
         temp_sdf.applyPattern(TEMP_NEW_FORMAT);
         TEMP_EXAM_DATE = temp_sdf.format(temp_d);
 
-        //--- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
         LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE).plus(543, ChronoUnit.YEARS);
 
-        //--- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
+        // --- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
         final String OLD_FORMAT = "yyyy-MM-dd";
         final String NEW_FORMAT = "dd/MM/yyyy";
         String oldDateString = TEMP_EXAM_DATEe.toString();
@@ -226,14 +236,15 @@ public class RepETesting103 extends HttpServlet {
         return NEW_EXAM_DATE;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -248,10 +259,10 @@ public class RepETesting103 extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

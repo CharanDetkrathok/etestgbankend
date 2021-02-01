@@ -7,7 +7,7 @@ package com.et.reports;
 
 import com.et.model.*;
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,21 +20,26 @@ import javax.servlet.http.HttpServletResponse;
  * @author ru-com7
  */
 public class ShowStdRegisterAll extends HttpServlet { 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
              Database db = new Database();
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
-        ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
+        // ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
         ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
-        ET_REGIS_RU24_TABLE getEtRu24Table = new ET_REGIS_RU24_TABLE(db);
-        ET_RECEIPT_TABLE getRepTable = new ET_RECEIPT_TABLE(db);
+        // ET_REGIS_RU24_TABLE getEtRu24Table = new ET_REGIS_RU24_TABLE(db);
+        // ET_RECEIPT_TABLE getRepTable = new ET_RECEIPT_TABLE(db);
         
-         ET_COURSE_OPEN getEtCourseOpData = null;
+        //  ET_COURSE_OPEN getEtCourseOpData = null;
          List<ET_EXAM_DATE> getExamDate = getExamDateTable.findExamDateReport();
-         ET_REGIS_RU24 getRu24 = null;
-         ET_RECEIPT getEtRepData = null;
+        //  ET_REGIS_RU24 getRu24 = null;
+        //  ET_RECEIPT getEtRepData = null;
                 
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
         

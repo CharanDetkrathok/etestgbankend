@@ -7,7 +7,7 @@ package com.et.login;
 
 import com.et.model.*;
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +20,11 @@ import javax.servlet.http.HttpSession;
  * @author ru-com7
  */
 public class Login extends HttpServlet { 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -27,7 +32,7 @@ public class Login extends HttpServlet {
         
         String usr = request.getParameter("usr");
         String pwd = request.getParameter("pwd");
-        String acct = "เข้าสู่ระบบ";
+        // String acct = "เข้าสู่ระบบ";
 
         Database db = new Database();
         

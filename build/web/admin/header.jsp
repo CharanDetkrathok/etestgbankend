@@ -146,14 +146,18 @@
 
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>จัดการรายละเอียดการสอบ</a>
-                            <ul class="sub-menu children dropdown-menu">                                
+                            <ul class="sub-menu children dropdown-menu">  
+                                <li class="li-line-buttom">
+                                    <i class="menu-icon fa fa-book"></i>
+                                    <a href="/etestgbackend/ShowCourse">กำหนด วิชาที่เปิดสอบ</a>
+                                </li>
                                 <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-list-ol"></i>
-                                    <a href="/etestgbackend/SeatManagement">กำหนดแถวสอบ</a>
+                                    <a href="/etestgbackend/SeatManagement">กำหนด แถวสอบ</a>
                                 </li>
                                 <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-calendar"></i>
-                                    <a href="/etestgbackend/DateManagement">กำหนดวันสอบ</a>
+                                    <a href="/etestgbackend/DateManagement">กำหนด วันสอบ</a>
                                 </li>       
                                 <li class="li-line-buttom">
                                     <i class="menu-icon fa fa-money"></i>

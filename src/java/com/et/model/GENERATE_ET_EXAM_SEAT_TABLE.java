@@ -115,7 +115,7 @@ public class GENERATE_ET_EXAM_SEAT_TABLE {
     }  //end of delete
 
     public boolean InsertAndGenerateEtExamSeat(String year, String semester, String rowSeat, String stdCode, String examDate, String section, String credit, String course, String statusCourse) {
-        List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
+        // List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
         String sql = " INSERT INTO ET_ROW_SEAT_ORDER(YEAR,SEMESTER,INSERT_DATE,ROW_SEAT,STD_CODE,EXAM_DATE,SECTION_NO,CREDIT,COURSE_NO,STATUS_COURSE) "
                 + " VALUES(?,?,SYSDATE,?,?,to_date(?,'dd/mm/yyyy'),?,?,?,?)";
         String[] genCol = {"STD_CODE"};

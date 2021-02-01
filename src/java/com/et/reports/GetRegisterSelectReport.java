@@ -7,7 +7,7 @@ package com.et.reports;
 
 import com.et.model.*;
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author ru-com7
  */
 public class GetRegisterSelectReport extends HttpServlet { 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,12 +39,12 @@ public class GetRegisterSelectReport extends HttpServlet {
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
-        ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
+        // ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
+        // ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
         ET_RECEIPT_TABLE getRepcieptTable = new ET_RECEIPT_TABLE(db);
 
         List<ET_RECEIPT> getRecieptDataList = null;
-        ET_RECEIPT getRecieptData = null;
+        // ET_RECEIPT getRecieptData = null;
 
         if (examdate.equals("0") && sec.equals("0")) {
             getRecieptDataList = getRepcieptTable.findRegisterAll(sem, year);

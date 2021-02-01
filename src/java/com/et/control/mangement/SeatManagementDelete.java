@@ -11,7 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class SeatManagementDelete extends HttpServlet {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,11 +24,12 @@ public class SeatManagementDelete extends HttpServlet {
 
         Database db = new Database();
 
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        // ----- Query วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู ----------------------- 
+        // ----- Query วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู
+        // -----------------------
         ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
         List<ET_EXAM_DATE> getExamDate = getExamDateTable.findAllExamDate();
 
@@ -38,18 +44,18 @@ public class SeatManagementDelete extends HttpServlet {
         }
         request.setAttribute("sumSeat", sumSeat);
 
-        //------- ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------------
+        // ------- ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------------
         request.setAttribute("BuildRow", getBuildRow);
 
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------------
         request.setAttribute("getCounterData", getCounterData);
 
-        // ----- วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู -----------------------------
+        // ----- วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู
+        // -----------------------------
         request.setAttribute("getExamDate", getExamDate);
 
-        if (request.getParameter("Year") != null
-                && request.getParameter("Semester") != null
-                && request.getParameter("RowExam") != null) { //--- ลบแถวสอบ ---
+        if (request.getParameter("Year") != null && request.getParameter("Semester") != null
+                && request.getParameter("RowExam") != null) { // --- ลบแถวสอบ ---
 
             String Year = request.getParameter("Year");
             String Semester = request.getParameter("Semester");
@@ -58,17 +64,18 @@ public class SeatManagementDelete extends HttpServlet {
             String SUM_SEAT_EXAM = request.getParameter("sumSeat");
 
             // --- SUM SEAT_EXAM เพิ่มทำการแก้ไขที่ตาราง ET_EXAM ทุกครั้ง ---------------
-            //int SumSeat = Integer.parseInt(SUM_SEAT_EXAM) - Integer.parseInt(SEAT_EXAM);
+            // int SumSeat = Integer.parseInt(SUM_SEAT_EXAM) - Integer.parseInt(SEAT_EXAM);
 
             // ----- Query วัน/เดือน/ปี และภาคการศึกษา จำนวนที่นั่ง เพื่อไปแสดง ------------
-            //ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
+            // ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
 
-            //boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
-            //if (checkUpdateSumSeat) {
-            //    System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
-            //} else {
-            //    System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
-            //}
+            // boolean checkUpdateSumSeat =
+            // getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
+            // if (checkUpdateSumSeat) {
+            // System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
+            // } else {
+            // System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
+            // }
 
             boolean deleteResult = getBuildRowTable.delete(Year, Semester, RowExam);
             PrintWriter out = response.getWriter();
@@ -95,14 +102,15 @@ public class SeatManagementDelete extends HttpServlet {
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -113,10 +121,10 @@ public class SeatManagementDelete extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -11,7 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 public class SeatManagementUpdate extends HttpServlet {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,15 +24,17 @@ public class SeatManagementUpdate extends HttpServlet {
 
         Database db = new Database();
 
-        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------- 
+        // ----- Query วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        // ----- Query วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู -----------------------
+        // ----- Query วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู
+        // -----------------------
         ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
         List<ET_EXAM_DATE> getExamDate = getExamDateTable.findAllExamDate();
 
-        // ----- Query ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว -----------------------
+        // ----- Query ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว
+        // -----------------------
         ET_BUILE_ROW_TABLE getBuildRowTable = new ET_BUILE_ROW_TABLE(db);
         List<ET_BUILE_ROW> getBuildRow = getBuildRowTable.findAll();
 
@@ -38,22 +45,22 @@ public class SeatManagementUpdate extends HttpServlet {
         }
         request.setAttribute("sumSeat", sumSeat);
 
-        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง ------------------------------- 
+        // ----- วัน/เดือน/ปี และภาคการศึกษา เพื่อไปแสดง -------------------------------
         request.setAttribute("getCounterData", getCounterData);
 
-        // ----- วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู -----------------------------
+        // ----- วัน/เดือน/ปี ที่ทำการเปิดสอบ เพื่อแสดงในเมนู
+        // -----------------------------
         request.setAttribute("getExamDate", getExamDate);
 
         // ------ เลือกเพิ่ม แถว และที่นั่งสอบ -----------------------------------------
-        if (request.getParameter("Year") != null
-                && request.getParameter("Semester") != null
+        if (request.getParameter("Year") != null && request.getParameter("Semester") != null
                 && request.getParameter("RowExam") != null) {
 
             String Year = request.getParameter("Year");
             String Semester = request.getParameter("Semester");
             String RowExam = request.getParameter("RowExam");
 
-            //------- ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------------
+            // ------- ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------------
             ET_BUILE_ROW BuildRow = getBuildRowTable.findBylist(Year, Semester, RowExam);
             request.setAttribute("BuildRow", BuildRow);
 
@@ -62,7 +69,8 @@ public class SeatManagementUpdate extends HttpServlet {
 
         } else if (request.getParameter("submit") != null) { // --- แก้ไข --------
 
-            // ------ เมื่อมีการ submit เพื่อแก้ไข แถว และที่นั่งสอบ  หลังกรอกข้อมูลแล้ว -----
+            // ------ เมื่อมีการ submit เพื่อแก้ไข แถว และที่นั่งสอบ หลังกรอกข้อมูลแล้ว
+            // -----
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("semester");
             String BUILD_NO = request.getParameter("build_no").toUpperCase();
@@ -70,7 +78,8 @@ public class SeatManagementUpdate extends HttpServlet {
             String SEAT_EXAM = request.getParameter("seat_exam");
             String SUM_SEAT_EXAM = request.getParameter("sumSeat");
 
-            //--- ค้นหาข้อมูลเดิมที่ไม่ด้ แก้ไขมาใส่ไว้เหมือนเดิม -----------------------------
+            // --- ค้นหาข้อมูลเดิมที่ไม่ด้ แก้ไขมาใส่ไว้เหมือนเดิม
+            // -----------------------------
             ET_BUILE_ROW getBuildRowUpdate = getBuildRowTable.findBylist(YEAR, SEMESTER, ROW_EXAM);
 
             // --- SUM SEAT_EXAM เพิ่มทำการแก้ไขที่ตาราง ET_EXAM ทุกครั้ง ---------------
@@ -81,7 +90,7 @@ public class SeatManagementUpdate extends HttpServlet {
             // ----- Query วัน/เดือน/ปี และภาคการศึกษา จำนวนที่นั่ง เพื่อไปแสดง ------------
             ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
 
-            //--- สร้าง object เพื่อส่งไปแก้ไข ----------------------------------------
+            // --- สร้าง object เพื่อส่งไปแก้ไข ----------------------------------------
             ET_BUILE_ROW updateRowBuild = new ET_BUILE_ROW();
             updateRowBuild.setYEAR(YEAR);
             updateRowBuild.setSEMESTER(SEMESTER);
@@ -95,13 +104,14 @@ public class SeatManagementUpdate extends HttpServlet {
             boolean checkRowBuild = getBuildRowTable.update(updateRowBuild);
             PrintWriter out = response.getWriter();
 
-//            boolean checkUpdateSumSeat = getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
-//            if (checkUpdateSumSeat) {
-//                System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
-//            } else {
-//                System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
-//            }
-            
+            // boolean checkUpdateSumSeat =
+            // getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
+            // if (checkUpdateSumSeat) {
+            // System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
+            // } else {
+            // System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
+            // }
+
             if (checkRowBuild) {
                 System.out.println("แก้ไขสำเร็จ");
                 out.println("<script type=\"text/javascript\">");
@@ -119,14 +129,15 @@ public class SeatManagementUpdate extends HttpServlet {
         db.close();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -137,10 +148,10 @@ public class SeatManagementUpdate extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

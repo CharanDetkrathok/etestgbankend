@@ -32,7 +32,13 @@ import org.apache.commons.io.FilenameUtils;
 
 @WebServlet("/upload")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
+@SuppressWarnings("unused")
 public class SaveFile extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     private static final String relativeWebPath = "C:\\java\\";
 
@@ -41,26 +47,29 @@ public class SaveFile extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         int batchSize = 40;
-        // stmt 
+        // stmt
         InputStream inputStream = null;
         // String csvFilePath = "Reviews-simple.csv";
         Part file_coursefilePart = request.getPart("file_course");
         Part file_seatPart = request.getPart("file_seat");
         Part file_rowseatPart = request.getPart("file_rowseat");
         Part file_buildPart = request.getPart("file_build");
-        // String fileName = Paths.get(file_seat.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-        //InputStream fileContent = file_seat.getInputStream(); 
+        // String fileName =
+        // Paths.get(file_seat.getSubmittedFileName()).getFileName().toString(); // MSIE
+        // fix.
+        // InputStream fileContent = file_seat.getInputStream();
         // ArrayList<String> AllFile = new ArrayList<String>();
 
         Database db = new Database();
-        if ((file_coursefilePart != null && file_seatPart != null && file_rowseatPart != null && file_buildPart != null)) {
+        if ((file_coursefilePart != null && file_seatPart != null && file_rowseatPart != null
+                && file_buildPart != null)) {
 
             ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
             ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
             ET_EXAM_DATE_TABLE getExamDateTable = new ET_EXAM_DATE_TABLE(db);
             ET_BUILE_ROW_TABLE getBuildRowTable = new ET_BUILE_ROW_TABLE(db);
 
-            //add Data
+            // add Data
             ET_EXAM_SEAT AddExamSeat = new ET_EXAM_SEAT();
             ET_COURSE_OPEN AddCourseOP = new ET_COURSE_OPEN();
             ET_EXAM_DATE AddExamDate = new ET_EXAM_DATE();
@@ -71,10 +80,13 @@ public class SaveFile extends HttpServlet {
             boolean checkAddExamDate = false;
             boolean checkAddBuildRow = false;
 
-            //get the InputStream to store the file somewhere
-            //InputStream fileInputStream = file_coursefilePart.getInputStream();
-            //File fileToSave = new File(relativeWebPath + filePart.getSubmittedFileName());
-            // Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // get the InputStream to store the file somewhere
+            // InputStream fileInputStream = file_coursefilePart.getInputStream();
+            // File fileToSave = new File(relativeWebPath +
+            // filePart.getSubmittedFileName());
+            // Files.copy(fileInputStream, fileToSave.toPath(),
+            // StandardCopyOption.REPLACE_EXISTING);
+
             if (file_coursefilePart != null) {
                 inputStream = file_coursefilePart.getInputStream();
                 File fileToSave = new File(relativeWebPath + file_coursefilePart.getSubmittedFileName());
@@ -84,14 +96,14 @@ public class SaveFile extends HttpServlet {
                 // BufferedReader lineReader = Files.newBufferedReader(Paths.get(path));
                 String lineText = null;
 
-                lineReader.readLine(); // skip header line    
+                lineReader.readLine(); // skip header line
                 while ((lineText = lineReader.readLine()) != null) {
                     try {
                         String[] arr = lineText.split(","); // TODO Auto-generated catch block
                         AddCourseOP.setYEAR(arr[0]);
                         AddCourseOP.setSEMESTER(arr[1]);
                         AddCourseOP.setCOURSE_NO(arr[2]);
-                        //AddCourseOP.setCREDIT(new BigDecimal(arr[3]));
+                        // AddCourseOP.setCREDIT(new BigDecimal(arr[3]));
                         AddCourseOP.setSTATUS_COURSE(arr[4]);
                         // AddCourseOP.(arr[9]);
                         checkAddCourseOP = getCourseOPTable.insert(AddCourseOP);
@@ -99,19 +111,21 @@ public class SaveFile extends HttpServlet {
                         if (checkAddCourseOP) {
                             db.commit();
 
-                            //RequestDispatcher rs = request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
-                            //rs.forward(request, response);
+                            // RequestDispatcher rs =
+                            // request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
+                            // rs.forward(request, response);
                         } else {
                             db.rollback();
                             request.setAttribute("err", "1");
                             RequestDispatcher rs = request.getRequestDispatcher("admin/faild.jsp");
                             rs.forward(request, response);
-                            //response.sendRedirect("admin/faild.jsp");
+                            // response.sendRedirect("admin/faild.jsp");
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    lineReader.close();
                 }
             }
             if (file_seatPart != null) {
@@ -123,7 +137,7 @@ public class SaveFile extends HttpServlet {
                 // BufferedReader lineReader = Files.newBufferedReader(Paths.get(path));
                 String lineText = null;
 
-                lineReader.readLine(); // skip header line    
+                lineReader.readLine(); // skip header line
                 while ((lineText = lineReader.readLine()) != null) {
                     try {
                         String[] arr = lineText.split(","); // TODO Auto-generated catch block
@@ -132,14 +146,15 @@ public class SaveFile extends HttpServlet {
                         AddExamSeat.setEXAM_SEAT(arr[3]);
                         AddExamSeat.setYEAR(arr[7]);
                         AddExamSeat.setSEMESTER(arr[8]);
-                        //AddExamSeat.setBUILD(arr[9]);
+                        // AddExamSeat.setBUILD(arr[9]);
                         checkAddExamSeat = getExamSeatTable.insert(AddExamSeat);
 
                         if (checkAddExamSeat) {
                             db.commit();
 
-                            //RequestDispatcher rs = request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
-                            //rs.forward(request, response);
+                            // RequestDispatcher rs =
+                            // request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
+                            // rs.forward(request, response);
                         } else {
                             db.rollback();
                             request.setAttribute("err", "2");
@@ -150,8 +165,9 @@ public class SaveFile extends HttpServlet {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
 
+                }
+                lineReader.close();
             }
             if (file_rowseatPart != null) {
                 inputStream = file_rowseatPart.getInputStream();
@@ -162,7 +178,7 @@ public class SaveFile extends HttpServlet {
                 // BufferedReader lineReader = Files.newBufferedReader(Paths.get(path));
                 String lineText = null;
 
-                lineReader.readLine(); // skip header line    
+                lineReader.readLine(); // skip header line
                 while ((lineText = lineReader.readLine()) != null) {
                     try {
                         String[] arr = lineText.split(","); // TODO Auto-generated catch block
@@ -175,8 +191,9 @@ public class SaveFile extends HttpServlet {
                         if (checkAddExamDate) {
                             db.commit();
 
-                            //RequestDispatcher rs = request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
-                            //rs.forward(request, response);
+                            // RequestDispatcher rs =
+                            // request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
+                            // rs.forward(request, response);
                         } else {
                             db.rollback();
                             request.setAttribute("err", "3");
@@ -188,6 +205,7 @@ public class SaveFile extends HttpServlet {
                         e.printStackTrace();
                     }
                 }
+                lineReader.close();
             }
             if (file_buildPart != null) {
                 inputStream = file_buildPart.getInputStream();
@@ -198,7 +216,7 @@ public class SaveFile extends HttpServlet {
                 // BufferedReader lineReader = Files.newBufferedReader(Paths.get(path));
                 String lineText = null;
 
-                lineReader.readLine(); // skip header line    
+                lineReader.readLine(); // skip header line
                 while ((lineText = lineReader.readLine()) != null) {
                     try {
                         String[] arr = lineText.split(","); // TODO Auto-generated catch block
@@ -212,8 +230,9 @@ public class SaveFile extends HttpServlet {
                         if (checkAddBuildRow) {
                             db.commit();
 
-                            //RequestDispatcher rs = request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
-                            //rs.forward(request, response);
+                            // RequestDispatcher rs =
+                            // request.getRequestDispatcher("admin/ShowsCounterAdmin.jsp");
+                            // rs.forward(request, response);
                         } else {
                             db.rollback();
                             request.setAttribute("err", "4");
@@ -225,6 +244,7 @@ public class SaveFile extends HttpServlet {
                         e.printStackTrace();
                     }
                 }
+                lineReader.close();
             }
             request.setAttribute("err", "4");
             RequestDispatcher rs = request.getRequestDispatcher("/ShowEditSeat");
@@ -235,35 +255,31 @@ public class SaveFile extends HttpServlet {
         }
         db.close();
         // String absoluteFilePath = getServletContext().getRealPath(relativeWebPath);
-        //File uploadedFile = new File(absoluteFilePath, FilenameUtils.getName(filePart.getName()));
-        //get the URL of the uploaded file
-        // String fileUrl = "http://localhost:8080/uploaded-files/" + filePart.getSubmittedFileName();
+        // File uploadedFile = new File(absoluteFilePath,
+        // FilenameUtils.getName(filePart.getName()));
+        // get the URL of the uploaded file
+        // String fileUrl = "http://localhost:8080/uploaded-files/" +
+        // filePart.getSubmittedFileName();
 
-
-        /*  PrintWriter out = response.getWriter();
-        try {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SaveFile</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SaveFile at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }*/
+        /*
+         * PrintWriter out = response.getWriter(); try { out.println("<!DOCTYPE html>");
+         * out.println("<html>"); out.println("<head>");
+         * out.println("<title>Servlet SaveFile</title>"); out.println("</head>");
+         * out.println("<body>"); out.println("<h1>Servlet SaveFile at " +
+         * request.getContextPath() + "</h1>"); out.println("</body>");
+         * out.println("</html>"); } finally { out.close(); }
+         */
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -274,10 +290,10 @@ public class SaveFile extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

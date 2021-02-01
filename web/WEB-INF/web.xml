@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
     <filter>
         <filter-name>ThaiRequest</filter-name>
         <filter-class>com.e_exam.filter.ThaiRequest</filter-class>
@@ -152,6 +153,26 @@
         <servlet-name>RepETesting103</servlet-name>
         <servlet-class>com.et.control.mangement.RepETesting103</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowCourse</servlet-name>
+        <servlet-class>com.et.course.ShowCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCourse</servlet-name>
+        <servlet-class>com.et.course.AddCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCourse</servlet-name>
+        <servlet-class>com.et.course.EditCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCourse</servlet-name>
+        <servlet-class>com.et.course.DeleteCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetEditCourse</servlet-name>
+        <servlet-class>com.et.course.GetEditCourse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -295,6 +316,26 @@
     <servlet-mapping>
         <servlet-name>RepETesting103</servlet-name>
         <url-pattern>/RepETesting103</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowCourse</servlet-name>
+        <url-pattern>/ShowCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCourse</servlet-name>
+        <url-pattern>/AddCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCourse</servlet-name>
+        <url-pattern>/EditCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCourse</servlet-name>
+        <url-pattern>/DeleteCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetEditCourse</servlet-name>
+        <url-pattern>/GetEditCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

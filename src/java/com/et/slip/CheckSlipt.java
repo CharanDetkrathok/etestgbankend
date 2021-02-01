@@ -5,12 +5,12 @@
  */
 package com.et.slip;
 
-import com.et.model.Database;
-import com.et.model.ET_COUNTER_ADMIN_TABLE;
-import com.et.model.ET_PROFILE_TABLE;
-import com.et.model.ET_REP_SLIP_TABLE;
+// import com.et.model.Database;
+// import com.et.model.ET_COUNTER_ADMIN_TABLE;
+// import com.et.model.ET_PROFILE_TABLE;
+// import com.et.model.ET_REP_SLIP_TABLE;
 import java.io.IOException;
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,14 +21,19 @@ import javax.servlet.http.HttpServletResponse;
  * @author ru-com7
  */
 public class CheckSlipt extends HttpServlet { 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-         Database db = new Database();
-        ET_COUNTER_ADMIN_TABLE getEtCounterTable = new ET_COUNTER_ADMIN_TABLE(db);
-        ET_PROFILE_TABLE getProfileTable = new ET_PROFILE_TABLE(db);
-        ET_REP_SLIP_TABLE getSlipTable = new ET_REP_SLIP_TABLE(db);
+        //  Database db = new Database();
+        // ET_COUNTER_ADMIN_TABLE getEtCounterTable = new ET_COUNTER_ADMIN_TABLE(db);
+        // ET_PROFILE_TABLE getProfileTable = new ET_PROFILE_TABLE(db);
+        // ET_REP_SLIP_TABLE getSlipTable = new ET_REP_SLIP_TABLE(db);
         
         
         /*PrintWriter out = response.getWriter();

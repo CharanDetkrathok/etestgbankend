@@ -1,0 +1,25 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "d:\\LIB\\classes12.jar",
+        "d:\\LIB\\commons-io-2.2.jar",
+        "d:\\LIB\\gson-2.3.1.jar",
+        "d:\\LIB\\json-org.jar",
+        "d:\\LIB\\lombok.jar",
+        "d:\\LIB\\jstl-api-1.2-sources.jar",
+        "d:\\LIB\\jstl-impl.jar",
+        "d:\\LIB\\jstl-api-1.2.jar",
+        "d:\\LIB\\New folder\\ojdbc8-19.3.0.0.jar",
+        "d:\\LIB\\New folder\\bootstrap-5.2.4.jar",
+        "d:\\LIB\\New folder\\tomcat-tribes-8.5.55.jar",
+        "d:\\LIB\\New folder\\tomcat-juli-8.5.55.jar",
+        "d:\\LIB\\New folder\\tomcat-servlet-api-8.5.4.jar"
+    ],
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.format.settings.url": "eclipse-formatter.xml"
+}

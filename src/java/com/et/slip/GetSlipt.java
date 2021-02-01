@@ -5,19 +5,19 @@
  */
 package com.et.slip;
 
-import java.util.Arrays;
+// import java.util.Arrays;
 
 import com.et.model.*;
-import com.sun.javafx.fxml.expression.BinaryExpression;
-import static com.sun.javafx.fxml.expression.Expression.add;
-import java.awt.AWTEventMulticaster;
+// import com.sun.javafx.fxml.expression.BinaryExpression;
+// import static com.sun.javafx.fxml.expression.Expression.add;
+// import java.awt.AWTEventMulticaster;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+// import java.io.PrintWriter;
+// import java.math.BigDecimal;
+// import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,6 +30,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author ru-com7
  */
 public class GetSlipt extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,7 +63,7 @@ public class GetSlipt extends HttpServlet {
 
         //tmp stmt
         String getfiscal = "";
-        String gsubStrfiscal = "";
+        // String gsubStrfiscal = "";
         String tmpSem = "";
         String tmpYear = "";
         String subYear = "";
@@ -72,7 +77,7 @@ public class GetSlipt extends HttpServlet {
         String tmpTotal = "";
         String[] tempSplitTotal = null;
         int noColAmount = 12;
-        boolean checkupdaterepno = false;
+        // boolean checkupdaterepno = false;
 
         ArrayList<String> arrAmount = new ArrayList<String>();
         // ArrayList<String> arrRepSlip = new ArrayList<String>();
@@ -86,9 +91,9 @@ public class GetSlipt extends HttpServlet {
         ET_PROFILE getProfile = null;
         List<ET_REP_SLIP> getRepSlip = null;
         ET_REP_SLIP getHeaderRepSlip = null;
-        ET_REP_SLIP getMockSlip = null;
+        // ET_REP_SLIP getMockSlip = null;
         ET_REP_SLIP checkSlipNo = null;
-        ET_REP_SLIP getSlipNo = null;
+        // ET_REP_SLIP getSlipNo = null;
         ET_REP_SLIP getCheckdigit = null;
         String sliprunno = "000000";
 
@@ -152,7 +157,7 @@ public class GetSlipt extends HttpServlet {
 
                         int chkColAmount = 0;
                         chkColAmount = (noColAmount - cntCourse);
-                        int chkRowSlip = 0;
+                        // int chkRowSlip = 0;
                         if (cntCourse > 0) {
 
                             for (int i = 0; i <= chkColAmount; i++) {
@@ -239,7 +244,8 @@ public class GetSlipt extends HttpServlet {
     }
 
     private static String ThaiBaht(String total) {
-        String bathTxt, n;
+        // String bathTxt, n;
+        String n;
         String bathTH = "";
 
         // bathTxt = "1201.01";
@@ -247,7 +253,7 @@ public class GetSlipt extends HttpServlet {
         String[] rank = {"", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"};
         String[] temp = total.split("[.]");
         String intVal = temp[0];
-        String deciVal = temp[1];
+        // String deciVal = temp[1];
         if (Double.parseDouble(total) == 0) {
             bathTH = "ศูนย์บาทถ้วน";
         } else {

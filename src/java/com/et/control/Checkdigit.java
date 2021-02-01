@@ -20,39 +20,46 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
+@SuppressWarnings("unused")
 public class Checkdigit extends HttpServlet {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         Database db = new Database();
-        // ----- Query สถานะการจ่ายเงิน เพื่อไปแสดง ---------------------------------- 
+        // ----- Query สถานะการจ่ายเงิน เพื่อไปแสดง ----------------------------------
         ET_RECEIPT_TABLE getReceiptTable = new ET_RECEIPT_TABLE(db);
 
-     //   List<ET_RECEIPT> ReceiptData = getReceiptTable.findCheckdigit("0", "0");
+        // List<ET_RECEIPT> ReceiptData = getReceiptTable.findCheckdigit("0", "0");
 
-       // System.out.println(ReceiptData.get(0).getCHECKDIGIT());
+        // System.out.println(ReceiptData.get(0).getCHECKDIGIT());
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -63,10 +70,10 @@ public class Checkdigit extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -16,20 +16,19 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
- 
-    
+
+@SuppressWarnings("unused")
 public class ThaiRequest implements Filter {
 
     public void init(FilterConfig filterConfig) {
 
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest myRequest = (HttpServletRequest) request;
-        
+
         myRequest.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         chain.doFilter(request, response);

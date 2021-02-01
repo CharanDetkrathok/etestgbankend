@@ -22,19 +22,21 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ru-com7
  */
+@SuppressWarnings("unused")
 public class GenerateSeat extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        //stmt 
-        String examdate = "0";//request.getParameter("examdate");
-        String sec = "0";//request.getParameter("sec");
+        // stmt
+        String examdate = "0";// request.getParameter("examdate");
+        String sec = "0";// request.getParameter("sec");
         String year = request.getParameter("year");
         String sem = request.getParameter("sem");
 
-        //df
+        // df
         ArrayList<String> rowSeat = new ArrayList<String>();
         ArrayList<String> ExamDate = new ArrayList<String>();
         ArrayList<String> sectionT = new ArrayList<String>();
@@ -42,13 +44,13 @@ public class GenerateSeat extends HttpServlet {
         ArrayList<String> tmpStdnumSeat = new ArrayList<String>();
         ArrayList<String> tmpStdCourse = new ArrayList<String>();
         ArrayList<String> tmpStdCradit = new ArrayList<String>();
-        //ArrayList<String> tmpStatusCourse = new ArrayList<String>();
+        // ArrayList<String> tmpStatusCourse = new ArrayList<String>();
         ArrayList<String> tmpgetBuildRow = null;
         int stdcount = 1;
         int chkrow = 0;
         int chkSection = 4;
 
-        //csll db
+        // csll db
         Database db = new Database();
         ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
         ET_COURSE_OPEN_TABLE getCourseOPTable = new ET_COURSE_OPEN_TABLE(db);
@@ -85,7 +87,7 @@ public class GenerateSeat extends HttpServlet {
                 getRu24Std = getRu24Table.findBySelectDateAndSection(year, sem, examdate, tmpSec);
 
                 for (ET_REGIS_RU24 et_regis_ru24 : getRu24Std) {
-                    //tmpgetBuildRow = getBuildRow.get(chkrow);             
+                    // tmpgetBuildRow = getBuildRow.get(chkrow);
                     if (stdcount > getBuildRow.get(chkrow).getSEAT_EXAM().intValue()) {
                         chkrow++;
                         stdcount = 1;
@@ -100,7 +102,7 @@ public class GenerateSeat extends HttpServlet {
                 }
                 if (tmpnumRowSeat != null) {
 
-                    //add db
+                    // add db
                     for (int i = 0; i < tmpnumRowSeat.size(); i++) {
                         AddSeatOrder.setYEAR(year);
                         AddSeatOrder.setSEMESTER(sem);
@@ -133,7 +135,7 @@ public class GenerateSeat extends HttpServlet {
             }
             getRu24Std = getRu24Table.findBySelectDateAndSection(year, sem, examdate, sec);
             for (ET_REGIS_RU24 et_regis_ru24 : getRu24Std) {
-                //tmpgetBuildRow = getBuildRow.get(chkrow);             
+                // tmpgetBuildRow = getBuildRow.get(chkrow);
                 if (stdcount > getBuildRow.get(chkrow).getSEAT_EXAM().intValue()) {
                     chkrow++;
                     stdcount = 1;
@@ -148,7 +150,7 @@ public class GenerateSeat extends HttpServlet {
             }
             if (tmpnumRowSeat != null) {
 
-                //add db
+                // add db
                 for (int i = 0; i < tmpnumRowSeat.size(); i++) {
                     AddSeatOrder.setYEAR(year);
                     AddSeatOrder.setSEMESTER(sem);
@@ -173,11 +175,12 @@ public class GenerateSeat extends HttpServlet {
             }
         }
 
-//        request.setAttribute("tmpnumRowSeat", tmpnumRowSeat);
-//        request.setAttribute("getRu24Std", getRu24Std);
-//        request.setAttribute("getBuildRow", getBuildRow);
-//        RequestDispatcher rs = request.getRequestDispatcher("admin/ShowSeatDetail.jsp");
-//        rs.forward(request, response);
+        // request.setAttribute("tmpnumRowSeat", tmpnumRowSeat);
+        // request.setAttribute("getRu24Std", getRu24Std);
+        // request.setAttribute("getBuildRow", getBuildRow);
+        // RequestDispatcher rs =
+        // request.getRequestDispatcher("admin/ShowSeatDetail.jsp");
+        // rs.forward(request, response);
         PrintWriter out = response.getWriter();
         out.println("<script type=\"text/javascript\">");
         out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
@@ -185,31 +188,26 @@ public class GenerateSeat extends HttpServlet {
         out.println("</script>");
 
         db.close();
-        /* PrintWriter out = response.getWriter();
-        try {
-             TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GenerateSeat</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet GenerateSeat at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }*/
+        /*
+         * PrintWriter out = response.getWriter(); try { TODO output your page here. You
+         * may use following sample code. out.println("<!DOCTYPE html>");
+         * out.println("<html>"); out.println("<head>");
+         * out.println("<title>Servlet GenerateSeat</title>"); out.println("</head>");
+         * out.println("<body>"); out.println("<h1>Servlet GenerateSeat at " +
+         * request.getContextPath() + "</h1>"); out.println("</body>");
+         * out.println("</html>"); } finally { out.close(); }
+         */
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -220,10 +218,10 @@ public class GenerateSeat extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
