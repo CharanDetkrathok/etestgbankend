@@ -14,6 +14,40 @@
     hr {
         border-top: 1px solid #999;        
     }
+    li {
+        list-style: none;
+    }
+    
+    .add-item-list-mode {
+        border: none;
+        pointer-events: none;
+    }
+    
+    .edit, .delete {
+        margin: 5px;
+        border-radius: 0; 
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);         
+    }
+    
+    .edit {
+        background: rgba(224, 168, 0, 0.8);
+        color: #000;
+    }
+    
+    .delete {
+        background: rgba(200, 35, 51, 0.8);
+        color: #fff;
+    }
+    
+    .edit:hover {
+        background: rgba(224, 168, 0, 1);
+    }
+    
+    .delete:hover {
+        background: rgba(200, 35, 51, 1);
+    }
+    
+    
 </style>
 <!-- Content -->
 <div class="content">
@@ -84,13 +118,33 @@
                                     <label style="font-weight: bold;">:</label>
                                     <br>
                                     <a type="button" name="addItems" id="addItems" class="btn btn-success"  
-                                            style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                            >
+                                       style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
+                                       >
                                         <i class="fa fa-plus-circle"></i> เพิ่ม Item
-                                    </a>
+                                    </a>                                    
+                                </div> 
+                            </div> 
+
+                            <div class="row">
+                                <div class="col-12" style="margin-left: 15px;">
+                                    <br> 
+                                    <hr>
                                 </div>
-                            </div> <p> 
-                                <!-- /# end body -->
+                            </div>
+                            <!-- /# end body -->
+
+                            <div class="row">
+
+                                <div class="col-1"></div>
+                                <ul id="incomplete-tasks">
+                                    <div class="col-11">
+
+
+                                    </div>
+                                </ul>
+                            </div>
+
+
                             <div class="row"> 
                                 <div class="col-1"></div>
 
@@ -121,18 +175,82 @@
     <!-- Footer -->
     <!-- Footer -->
     <script>
-
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// ------------------------- เพิ่มข้อมูลรายวิชา เข้าไปใน Item lists -------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
         let courseNo = document.querySelector('#course-no');
         let cradit = document.querySelector('#cr');
         let addItemBtn = document.querySelector('#addItems');
-        
-        let addItemToList = () => {
-            console.log(courseNo.value);
-            console.log(cradit.value);
-        };
+        let incompleteTasksHolder = document.querySelector('#incomplete-tasks');
 
-        addItemBtn.addEventListener('click',addItemToList);
+        function editValueInputText() {
+            let listItem = this.parentNode;
+            console.log("edit");
+        }
+
+        function deleteValueInputText() {
+            let listItem = this.parentNode;
+            let ul = listItem.parentNode;
+
+            ul.removeChild(listItem);
+        }
         
+        addItemBtn.onclick = () => {
+
+            let listItem = document.createElement("li");
+
+            let cnInput = document.createElement("input");
+            let crdInput = document.createElement("input");
+
+            let editBtn = document.createElement("button");
+            let deleteBtn = document.createElement("button");
+
+            cnInput.type = 'text';
+            cnInput.name = 'cn';
+            cnInput.className = 'add-item-list-mode';
+            cnInput.value = courseNo.value;
+            cnInput.placeholder = courseNo.value;
+
+            crdInput.type = "text";
+            crdInput.className = 'add-item-list-mode';
+            crdInput.name = 'crd';
+            crdInput.value = cradit.value;
+            crdInput.placeholder = cradit.value;
+
+            editBtn.innerHTML = 'แก้ไข';
+            editBtn.type = 'button';
+            editBtn.className = 'edit btn';
+
+            deleteBtn.innerHTML = 'ลบ';
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'delete btn';
+
+            listItem.appendChild(cnInput);
+            listItem.appendChild(crdInput);
+            listItem.appendChild(editBtn);
+            listItem.appendChild(deleteBtn);
+
+            incompleteTasksHolder.appendChild(listItem);
+
+            let editInput = listItem.querySelector('button.edit');
+            let deleteInput = listItem.querySelector('button.delete');
+
+            console.log('editInput=>' + editInput.parentNode.nodeName);
+            console.log('deleteInput=>' + deleteInput.parentNode.nodeName);
+
+            editInput.addEventListener('click', editValueInputText);
+            deleteInput.addEventListener('click', deleteValueInputText);
+
+            courseNo.value = '';
+            cradit.value = '';
+        };
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
         function goBack() {
             window.history.back();
         }
