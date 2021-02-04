@@ -50,7 +50,7 @@
                                     </label>
                                     <a class="btn btn-success"  
                                        style="float: right; width: 150px; margin: 0 26px 0 5px; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                       href="admin/AddCourse.jsp">
+                                       href="/etestgbackend/AddCourse">
                                         <i class="fa fa-plus-square"></i> เพิ่มวิชาสอบ
                                     </a>
                                     <br>

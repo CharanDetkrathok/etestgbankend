@@ -20,7 +20,24 @@
 
     .cn-add-item-list-mode, .crd-add-item-list-mode {
         border: none;
-        pointer-events: none;        
+        pointer-events: none;     
+        margin-right: 20px;
+        padding: 5px 10px;
+        text-align: center;
+    }
+
+    .cn-add-item-list-mode-edit, .crd-add-item-list-mode-edit { 
+        margin-right: 20px; 
+        padding: 5px 10px;
+        text-align: center;
+    }
+
+    .cn-add-item-list-mode-edit-fail, .crd-add-item-list-mode-edit-fail { 
+        background: rgba(200, 35, 51, 0.1); 
+        margin-right: 20px; 
+        padding: 5px 10px;
+        border: 1px solid;
+        text-align: center;
     }
 
     .add-item-list-mode-edit {
@@ -70,6 +87,12 @@
         display: block;
     }
 
+    .delete-list-animation {
+        transform: translateY(10rem) rotateZ(20deg);
+        transition: 900ms ease all;
+        opacity: 0;
+    }
+
     .wrap-container {
         align-items: center;
         justify-content: center;
@@ -93,11 +116,53 @@
     }
 
     .course-label {
-        margin-left: -202px;
+        width: 200px;
+        pointer-events: none;     
+        margin-right: 41px;
+        padding: 5px 10px;
+        text-align: center;
     }
 
     .cradit-label {
-        margin-left: 96px;
+        pointer-events: none;     
+        margin-right: 174px;
+        padding: 5px 10px;
+        text-align: center;
+    }
+
+    .label-edit-text {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        color: rgba(200, 35, 51, 0.8);
+    }
+
+    .tooltip{
+        position:absolute;
+        margin:5px;
+        width:200px;
+        height:50px;
+        border:1px solid black;
+        display:none;
+    }
+
+    [tip] .tooltip {
+        position: fixed;
+        font-size: 16px;
+        line-height: 20px;
+        padding: 5px;
+        background: white;
+        border: 1px solid #ccc;
+        visibility: hidden;
+        box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition:
+            opacity 0.3s,
+            visiblity 0s;
+    }
+    [tip]:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
     }
 
 </style>
@@ -144,11 +209,11 @@
 
                         <!-- /# body -->
                         <div class="row wrap-container">
-                            <div class="col-2 item-wrap-container"></div>
+                            <div class="col-1 item-wrap-container"></div>
                             <div class="col-3 item-wrap-container">
                                 <label for="course-no" style="font-weight: bold;">รหัสวิชา</label>
                                 <div class="input-group"> 
-                                    <input type="text" name="courseno" class="form-control" id="course-no" maxlength="7" placeholder="กรอกรหัสวิชา 7 หลัก เช่น RAM1000" onkeypress="return changeToUpperCase(event, this)"  required>
+                                    <input tip="รหัสวิชาต้องมี 7 ตัวอักษร!" type="text" name="courseno" class="form-control" id="course-no" maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" onkeypress="return changeToUpperCase(event, this)"  required>
                                 </div>
                                 <div id="wrntxt" style="display: none; color: red;"> **กรอกรหัสวิชาให้ถูก</div>
                             </div>
@@ -163,7 +228,7 @@
                                 </select>
                                 <div  id="crwrntxt"  style="display: none; color: red;"> **ระบุจำนวนหน่วยกิต</div>
                             </div>
-                            <div class="col-3 mt-2 item-wrap-container">           
+                            <div class="col-4 mt-2 item-wrap-container">           
                                 <br>
                                 <button  name="addItems" id="addItems" class="btn btn-success"  
                                          style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
@@ -184,15 +249,17 @@
                             </div>
                         </div>
                         <!-- /# end body -->
-                        <form method="post" action="/etestgbackend/AddCourse" class="hidden-mode"  onsubmit="return validate();">
+                        <form method="post" action="/etestgbackend/AddCourse?submit=1" class="hidden-mode"  onsubmit="return validate();">
 
                             <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
                             <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
 
                             <div class="row item-wrap-container">
-                                <div class="item-wrap">
-                                    <label class="course-label">รหัสวิชา</label> <label class="cradit-label">จำนวนหน่วยกิต</label>
+                                <div class="col-12 item-wrap">
+                                    <label class="course-label">รหัสวิชา</label> 
+                                    <label class="cradit-label">จำนวนหน่วยกิต</label>
                                 </div>  
+                                <br>
                                 <div class="col-12 item-wrap">                                    
                                     <ul id="incomplete-tasks">
                                     </ul>
@@ -236,12 +303,12 @@
         function editValueInputText() {
             let listItem = this.parentNode;
 
-            if (listItem.querySelector('button').classList.contains('edit')) {                              
-                
+            if (listItem.querySelector('button').classList.contains('edit')) {
+
                 let cnEditText = listItem.querySelector('input[type=text].cn-add-item-list-mode');
                 let crdEditText = listItem.querySelector('input[type=text].crd-add-item-list-mode');
                 let editLabelBtn = listItem.querySelector('button.edit');
-                
+
                 editLabelBtn.innerHTML = 'ตกลง';
                 editLabelBtn.classList.remove('edit');
                 editLabelBtn.classList.toggle('edit-success');
@@ -254,37 +321,52 @@
 
             } else {
 
-                let cnEditText = listItem.querySelector('input[type=text].cn-add-item-list-mode-edit');
-                let crdEditText = listItem.querySelector('input[type=text].crd-add-item-list-mode-edit');
+                let cnEditText = listItem.querySelector('input[type=text]#cn');
+                let crdEditText = listItem.querySelector('input[type=text]#crd');
+                let labelTextEditcrd = listItem.querySelector('label#labelTextcrd');
+                let labelTextEditcn = listItem.querySelector('label#labelTextcn');
 
                 if ((cnEditText.value !== '' && crdEditText.value !== '') && (cnEditText.value.length === 7) && (crdEditText.value.length === 1)) {
 
                     let editLabelBtn = listItem.querySelector('button.edit-success');
 
-
+                    labelTextEditcrd.innerHTML = '';
+                    labelTextEditcn.innerHTML = '';
 
                     editLabelBtn.innerHTML = 'แก้ไข';
                     editLabelBtn.classList.remove('edit-success');
                     editLabelBtn.classList.toggle('edit');
 
+                    cnEditText.classList.remove('cn-add-item-list-mode-edit-fail');
                     cnEditText.classList.remove('cn-add-item-list-mode-edit');
                     cnEditText.classList.toggle('cn-add-item-list-mode');
 
+                    crdEditText.classList.remove('crd-add-item-list-mode-edit-fail');
                     crdEditText.classList.remove('crd-add-item-list-mode-edit');
                     crdEditText.classList.toggle('crd-add-item-list-mode');
                 } else {
 
                     if (cnEditText.value === '' || cnEditText.value.length > 7 || cnEditText.value.length < 7) {
-                        alert('รหัสวิชาต้องมี 7 ตัวอักษร');
-                        cnEditText.style = 'background: rgba(200, 35, 51, 0.1); margin-right: 20px; border: 1px solid;';
-                    }
-                    console.log(cnEditText.value.length);
-                    console.log(crdEditText.value.length);
-                    if (crdEditText.value === '' || crdEditText.value.length < 1 || crdEditText.value.length > 1) {
-                        alert('จำนวนหน่วยกิตต้อมี 1 ตัวอักษร');
-                        crdEditText.style = 'background: rgba(200, 35, 51, 0.1); margin-right: 20px; border: 1px solid;';
+//                        alert('รหัสวิชาต้องมี 7 ตัวอักษร');
+                        cnEditText.classList.remove('cn-add-item-list-mode-edit');
+                        cnEditText.classList.add('cn-add-item-list-mode-edit-fail');
+                        labelTextEditcn.innerHTML = 'รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น!!!';
+                    } else {
+                        cnEditText.classList.remove('cn-add-item-list-mode-edit-fail');
+                        cnEditText.classList.add('cn-add-item-list-mode-edit');
+                        labelTextEditcn.innerHTML = '';
                     }
 
+                    if (crdEditText.value === '' || crdEditText.value.length < 1 || crdEditText.value.length > 1) {
+//                        alert('จำนวนหน่วยกิตต้อมี 1 ตัวอักษร');
+                        crdEditText.classList.remove('crd-add-item-list-mode-edit');
+                        crdEditText.classList.add('crd-add-item-list-mode-edit-fail');
+                        labelTextEditcrd.innerHTML = 'จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น!!!';
+                    } else {
+                        crdEditText.classList.remove('crd-add-item-list-mode-edit-fail');
+                        crdEditText.classList.add('crd-add-item-list-mode-edit');
+                        labelTextEditcrd.innerHTML = '';
+                    }
 
                 }
             }
@@ -292,28 +374,35 @@
 
         function deleteValueInputText() {
             let listItem = this.parentNode;
-            let ul = listItem.parentNode;
 
-            ul.removeChild(listItem);
+            listItem.classList.add('delete-list-animation');
 
-            let ulIncomplate = document.querySelector('ul#incomplete-tasks');
+            window.setTimeout(() => {
+                listItem.addEventListener('transitionend', () => {
 
-            console.log(ulIncomplate.childNodes[0].nextSibling);
+                    listItem.remove();
 
-            if (ulIncomplate.childNodes[0].nextSibling === null) {
-                onHiddenMode.classList.remove('on-hidden-mode');
-                onHiddenMode.classList.toggle('hidden-mode');
-            }
+                    let ulIncomplate = document.querySelector('ul#incomplete-tasks');
+
+                    if (ulIncomplate.childNodes[0].nextSibling === null) {
+                        console.log(onHiddenMode.classList);
+                        onHiddenMode.classList.remove('on-hidden-mode');
+                        onHiddenMode.classList.add('hidden-mode');
+                    }
+                });
+
+            }, 500);
+
 
         }
 
         addItemBtn.onclick = () => {
 
-            if (courseNo.value !== '' && cradit.value !== '') {
+            if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1) {
 
                 if (onHiddenMode) {
                     onHiddenMode.classList.remove('hidden-mode');
-                    onHiddenMode.classList.toggle('on-hidden-mode');
+                    onHiddenMode.classList.add('on-hidden-mode');
                 }
 
                 let listItem = document.createElement("li");
@@ -321,20 +410,29 @@
                 let cnInput = document.createElement("input");
                 let crdInput = document.createElement("input");
 
+                let labelTextcn = document.createElement('label');
+                let labelTextcrd = document.createElement('label');
+
                 let editBtn = document.createElement("button");
                 let deleteBtn = document.createElement("button");
 
                 cnInput.type = 'text';
                 cnInput.name = 'cn';
+                cnInput.id = 'cn';
                 cnInput.className = 'cn-add-item-list-mode';
                 cnInput.value = courseNo.value;
-                cnInput.style = 'margin-right: 20px;';
 
                 crdInput.type = "text";
                 crdInput.className = 'crd-add-item-list-mode';
                 crdInput.name = 'crd';
+                crdInput.id = 'crd';
                 crdInput.value = cradit.value;
-                crdInput.style = 'margin-right: 20px;';
+
+                labelTextcn.id = 'labelTextcn';
+                labelTextcn.className = 'label-edit-text';
+
+                labelTextcrd.id = 'labelTextcrd';
+                labelTextcrd.className = 'label-edit-text';
 
                 editBtn.innerHTML = 'แก้ไข';
                 editBtn.type = 'button';
@@ -350,6 +448,11 @@
                 listItem.appendChild(editBtn);
                 listItem.appendChild(deleteBtn);
 
+                listItem.appendChild(document.createElement('br'));
+
+                listItem.appendChild(labelTextcn);
+                listItem.appendChild(labelTextcrd);
+
                 listItem.appendChild(document.createElement('hr'));
 
                 incompleteTasksHolder.appendChild(listItem);
@@ -362,6 +465,9 @@
 
                 courseNo.value = '';
                 cradit.value = '';
+            } else {
+//                alert('รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น และ จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น !!!');
+                console.log(document.querySelectorAll('[tip]'));
             }
         };
 //------------------------------------------------------------------------------
