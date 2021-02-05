@@ -88,7 +88,7 @@
     }
 
     .delete-list-animation {
-        transform: translateY(10rem) rotateZ(20deg);
+        transform: translatex(20rem);
         transition: 900ms ease all;
         opacity: 0;
     }
@@ -146,25 +146,23 @@
         display:none;
     }
 
-    [tip] .tooltip {
-        position: fixed;
-        font-size: 16px;
-        line-height: 20px;
-        padding: 5px;
-        background: white;
-        border: 1px solid #ccc;
-        visibility: hidden;
-        box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
-        opacity: 0;
-        transition:
-            opacity 0.3s,
-            visiblity 0s;
-    }
-    [tip]:hover .tooltip {
-        visibility: visible;
-        opacity: 1;
+    #must-input-text {
+        background: rgba(200, 35, 51, 0.8); 
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: block;
+        color: #fff;
     }
 
+    #duplicated-input-text {
+        background: rgba(224, 168, 0, 1);
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: block;   
+        color: #000;
+    }
 </style>
 <!-- Content -->
 <div class="content">
@@ -213,7 +211,7 @@
                             <div class="col-3 item-wrap-container">
                                 <label for="course-no" style="font-weight: bold;">รหัสวิชา</label>
                                 <div class="input-group"> 
-                                    <input tip="รหัสวิชาต้องมี 7 ตัวอักษร!" type="text" name="courseno" class="form-control" id="course-no" maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" onkeypress="return changeToUpperCase(event, this)"  required>
+                                    <input type="text" name="courseno" class="form-control" id="course-no" maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" onkeypress="return changeToUpperCase(event, this)"  required>
                                 </div>
                                 <div id="wrntxt" style="display: none; color: red;"> **กรอกรหัสวิชาให้ถูก</div>
                             </div>
@@ -244,12 +242,14 @@
 
                         <div class="row">
                             <div class="col-12" style="margin-left: 15px;">
-                                <br> 
+                                <br>
+                                <label id="duplicated-input-text"></label>
+                                <label id="must-input-text"></label>                                
                                 <hr>
                             </div>
                         </div>
                         <!-- /# end body -->
-                        <form method="post" action="/etestgbackend/AddCourse?submit=1" class="hidden-mode"  onsubmit="return validate();">
+                        <form method="post" action="/etestgbackend/AddCourse?submititem=1" class="hidden-mode">
 
                             <input type="hidden" name="sem" value="${getCounterData.STUDY_SEMESTER}">
                             <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
@@ -289,16 +289,16 @@
     <!-- Footer -->
     <!-- Footer -->
     <script>
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
+
 // ------------------------- เพิ่มข้อมูลรายวิชา เข้าไปใน Item lists -------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
+
         let courseNo = document.querySelector('#course-no');
         let cradit = document.querySelector('#cr');
         let addItemBtn = document.querySelector('#addItems');
         let incompleteTasksHolder = document.querySelector('#incomplete-tasks');
         let onHiddenMode = document.querySelector('form.hidden-mode');
+        let mustInputText = document.querySelector('label#must-input-text');
+        let duplicatedInputText = document.querySelector('label#duplicated-input-text');
 
         function editValueInputText() {
             let listItem = this.parentNode;
@@ -347,7 +347,6 @@
                 } else {
 
                     if (cnEditText.value === '' || cnEditText.value.length > 7 || cnEditText.value.length < 7) {
-//                        alert('รหัสวิชาต้องมี 7 ตัวอักษร');
                         cnEditText.classList.remove('cn-add-item-list-mode-edit');
                         cnEditText.classList.add('cn-add-item-list-mode-edit-fail');
                         labelTextEditcn.innerHTML = 'รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น!!!';
@@ -358,7 +357,6 @@
                     }
 
                     if (crdEditText.value === '' || crdEditText.value.length < 1 || crdEditText.value.length > 1) {
-//                        alert('จำนวนหน่วยกิตต้อมี 1 ตัวอักษร');
                         crdEditText.classList.remove('crd-add-item-list-mode-edit');
                         crdEditText.classList.add('crd-add-item-list-mode-edit-fail');
                         labelTextEditcrd.innerHTML = 'จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น!!!';
@@ -385,9 +383,10 @@
                     let ulIncomplate = document.querySelector('ul#incomplete-tasks');
 
                     if (ulIncomplate.childNodes[0].nextSibling === null) {
-                        console.log(onHiddenMode.classList);
+
                         onHiddenMode.classList.remove('on-hidden-mode');
                         onHiddenMode.classList.add('hidden-mode');
+
                     }
                 });
 
@@ -398,81 +397,123 @@
 
         addItemBtn.onclick = () => {
 
-            if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1) {
+            mustInputText.innerHTML = '';
+            mustInputText.style = '';
 
-                if (onHiddenMode) {
-                    onHiddenMode.classList.remove('hidden-mode');
-                    onHiddenMode.classList.add('on-hidden-mode');
+            duplicatedInputText.innerHTML = '';
+            duplicatedInputText.style = '';
+
+            const lists = document.querySelectorAll('li#item-list');
+            let isHasItemList = false;
+            lists.forEach((li) => {
+                console.log(li.firstChild.value);
+
+                if (li.firstChild.value === courseNo.value) {
+
+                    isHasItemList = true;
+
+                    duplicatedInputText.innerHTML = 'รหัสวิชานี้มีอยู่ใน List แล้ว';
+                    duplicatedInputText.style = 'padding: 10px;';
+
+                    courseNo.value = '';
+                    cradit.value = '';
+
                 }
+            });
 
-                let listItem = document.createElement("li");
+            if (!isHasItemList) {
 
-                let cnInput = document.createElement("input");
-                let crdInput = document.createElement("input");
 
-                let labelTextcn = document.createElement('label');
-                let labelTextcrd = document.createElement('label');
 
-                let editBtn = document.createElement("button");
-                let deleteBtn = document.createElement("button");
+                if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1) {
 
-                cnInput.type = 'text';
-                cnInput.name = 'cn';
-                cnInput.id = 'cn';
-                cnInput.className = 'cn-add-item-list-mode';
-                cnInput.value = courseNo.value;
 
-                crdInput.type = "text";
-                crdInput.className = 'crd-add-item-list-mode';
-                crdInput.name = 'crd';
-                crdInput.id = 'crd';
-                crdInput.value = cradit.value;
 
-                labelTextcn.id = 'labelTextcn';
-                labelTextcn.className = 'label-edit-text';
+                    if (onHiddenMode) {
+                        onHiddenMode.classList.remove('hidden-mode');
+                        onHiddenMode.classList.add('on-hidden-mode');
+                    }
 
-                labelTextcrd.id = 'labelTextcrd';
-                labelTextcrd.className = 'label-edit-text';
+                    let listItem = document.createElement("li");
 
-                editBtn.innerHTML = 'แก้ไข';
-                editBtn.type = 'button';
-                editBtn.className = 'edit btn';
+                    let cnInput = document.createElement("input");
+                    let crdInput = document.createElement("input");
 
-                deleteBtn.innerHTML = 'ลบ';
-                deleteBtn.type = 'button';
-                deleteBtn.className = 'delete btn';
+                    let labelTextcn = document.createElement('label');
+                    let labelTextcrd = document.createElement('label');
 
-                listItem.appendChild(cnInput);
-                listItem.appendChild(crdInput);
+                    let editBtn = document.createElement("button");
+                    let deleteBtn = document.createElement("button");
 
-                listItem.appendChild(editBtn);
-                listItem.appendChild(deleteBtn);
+                    cnInput.type = 'text';
+                    cnInput.name = 'cn';
+                    cnInput.id = 'cn';
+                    cnInput.className = 'cn-add-item-list-mode';
+                    cnInput.value = courseNo.value;
 
-                listItem.appendChild(document.createElement('br'));
+                    crdInput.type = "text";
+                    crdInput.className = 'crd-add-item-list-mode';
+                    crdInput.name = 'crd';
+                    crdInput.id = 'crd';
+                    crdInput.value = cradit.value;
 
-                listItem.appendChild(labelTextcn);
-                listItem.appendChild(labelTextcrd);
+                    labelTextcn.id = 'labelTextcn';
+                    labelTextcn.className = 'label-edit-text';
 
-                listItem.appendChild(document.createElement('hr'));
+                    labelTextcrd.id = 'labelTextcrd';
+                    labelTextcrd.className = 'label-edit-text';
 
-                incompleteTasksHolder.appendChild(listItem);
+                    editBtn.innerHTML = 'แก้ไข';
+                    editBtn.type = 'button';
+                    editBtn.className = 'edit btn';
 
-                let editInput = listItem.querySelector('button.edit');
-                let deleteInput = listItem.querySelector('button.delete');
+                    deleteBtn.innerHTML = 'ลบ';
+                    deleteBtn.type = 'button';
+                    deleteBtn.className = 'delete btn';
 
-                editInput.addEventListener('click', editValueInputText);
-                deleteInput.addEventListener('click', deleteValueInputText);
+                    listItem.id = 'item-list';
 
-                courseNo.value = '';
-                cradit.value = '';
-            } else {
-//                alert('รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น และ จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น !!!');
-                console.log(document.querySelectorAll('[tip]'));
+                    listItem.appendChild(cnInput);
+                    listItem.appendChild(crdInput);
+
+                    listItem.appendChild(editBtn);
+                    listItem.appendChild(deleteBtn);
+
+                    listItem.appendChild(document.createElement('br'));
+
+                    listItem.appendChild(labelTextcn);
+                    listItem.appendChild(labelTextcrd);
+
+                    listItem.appendChild(document.createElement('hr'));
+
+                    incompleteTasksHolder.appendChild(listItem);
+
+                    let editInput = listItem.querySelector('button.edit');
+                    let deleteInput = listItem.querySelector('button.delete');
+
+                    editInput.addEventListener('click', editValueInputText);
+                    deleteInput.addEventListener('click', deleteValueInputText);
+
+                    courseNo.value = '';
+                    cradit.value = '';
+                } else {
+
+                    if ((courseNo.value.length !== 7 & cradit.value.length !== 1) || cradit.value.length === 1) {
+
+                        document.querySelector('#course-no').focus();
+
+                    } else {
+
+                        document.querySelector('#cr').focus();
+
+                    }
+
+                    mustInputText.innerHTML = 'รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น และ จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น !!!';
+                    mustInputText.style = 'padding: 10px;';
+
+                }
             }
         };
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
         function goBack() {

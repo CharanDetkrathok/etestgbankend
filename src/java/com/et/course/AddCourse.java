@@ -38,18 +38,26 @@ public class AddCourse extends HttpServlet {
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
 
-        if (request.getParameter("submit") != null) {
-            String courseno = request.getParameter("courseno");
-            String credit = request.getParameter("credit");
-            String statusCourse = "O";
+        if (request.getParameter("submititem") != null) {
+
+            String[] itemsCourse = request.getParameterValues("cn");
+            String[] itemsCradit = request.getParameterValues("crd");
 
             ET_COURSE_OPEN_TABLE getCourseTable = new ET_COURSE_OPEN_TABLE(db);
             List<ET_COURSE_OPEN> getCourseData = null;
             ET_COURSE_OPEN AddCourseOP = new ET_COURSE_OPEN();
+            boolean isInsertData = false;
 
-            boolean chkAddCourse = false;
+            for (int index = 0; index < itemsCourse.length; index++) {
 
-            if (getCounterData != null && courseno != null && credit != null) {
+                System.out.println(itemsCourse[index] + " " + itemsCradit[index]);
+
+                String courseno = itemsCourse[index];
+                String credit = itemsCradit[index];
+                String statusCourse = "O";
+
+                boolean chkAddCourse = false;
+
                 AddCourseOP.setYEAR(getCounterData.getSTUDY_YEAR());
                 AddCourseOP.setSEMESTER(getCounterData.getSTUDY_SEMESTER());
                 AddCourseOP.setCOURSE_NO(courseno);
@@ -59,35 +67,27 @@ public class AddCourse extends HttpServlet {
 
                 if (chkAddCourse) {
                     db.commit();
-                    getCourseData = getCourseTable.findBySemAndYear(getCounterData.getSTUDY_SEMESTER(),
-                            getCounterData.getSTUDY_YEAR());
-                    request.setAttribute("getCourseData", getCourseData);
-                    request.setAttribute("getCounterData", getCounterData);
-                    RequestDispatcher rs = request.getRequestDispatcher("/ShowCourse");
-                    rs.forward(request, response);
+                    isInsertData = true;
                 } else {
                     db.rollback();
                     response.sendRedirect("admin/faild.jsp");
                 }
+
+            }
+
+            if (isInsertData == true) {
+                RequestDispatcher rs = request.getRequestDispatcher("/ShowCourse");
+                rs.forward(request, response);
             } else {
                 response.sendRedirect("admin/faild.jsp");
             }
-            db.close();
         } else {
             request.setAttribute("getCounterData", getCounterData);
             RequestDispatcher rs = request.getRequestDispatcher("admin/AddCourse.jsp");
             rs.forward(request, response);
         }
+        db.close();
 
-        /*
-     * PrintWriter out = response.getWriter(); try { TODO output your page here. You
-     * may use following sample code. out.println("<!DOCTYPE html>");
-     * out.println("<html>"); out.println("<head>");
-     * out.println("<title>Servlet AddCourse</title>"); out.println("</head>");
-     * out.println("<body>"); out.println("<h1>Servlet AddCourse at " +
-     * request.getContextPath() + "</h1>"); out.println("</body>");
-     * out.println("</html>"); } finally { out.close(); }
-         */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
