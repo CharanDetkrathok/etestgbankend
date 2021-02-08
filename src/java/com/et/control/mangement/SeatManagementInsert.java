@@ -92,9 +92,9 @@ public class SeatManagementInsert extends HttpServlet {
             // --------
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("semester");
-            String BUILD_NO = request.getParameter("build_no").toUpperCase();
-            String ROW_EXAM = request.getParameter("row_exam");
-            String SEAT_EXAM = request.getParameter("seat_exam");
+            String BUILD_NO = request.getParameter("buildNoText").toUpperCase();
+            String ROW_EXAM = request.getParameter("rowExamText");
+            String SEAT_EXAM = request.getParameter("seatExamText");
             String SUM_SEAT_EXAM = request.getParameter("sumSeat");
 
             SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy HH:mm:ss");
@@ -125,13 +125,6 @@ public class SeatManagementInsert extends HttpServlet {
             if (!checkDuplicateRowBuild) {
 
                 boolean checkInsertRowBuild = getBuildRowTable.insert(insertRowBuild);
-                // boolean checkUpdateSumSeat =
-                // getExamSeatTable.updateSumSeat(String.valueOf(SumSeat) );
-                // if (checkUpdateSumSeat) {
-                // System.out.println("เพิ่มข้อมูลเรียบร้อย checkUpdateSumSeat");
-                // } else {
-                // System.out.println("มีบางอย่างผิดพลาด checkUpdateSumSeat");
-                // }
 
                 if (checkInsertRowBuild) {
 

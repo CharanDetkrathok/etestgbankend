@@ -104,11 +104,6 @@
         display: block;
     }
 
-    .item-wrap-container {
-        align-items: center;
-        justify-content: center;
-    }
-
     .item-wrap {
         align-items: center;
         justify-content: center;
@@ -270,7 +265,7 @@
                                 <div class="col-12 item-wrap">                                    
                                     <button type="submit" class="btn btn-primary" onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');"  
                                             style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
-                                        <i class="fa fa-check"></i> บันทึกวิชา 
+                                        <i class="fa fa-save"></i> บันทึกวิชา 
                                     </button>  
                                 </div>
                             </div>
@@ -308,6 +303,12 @@
                 let cnEditText = listItem.querySelector('input[type=text].cn-add-item-list-mode');
                 let crdEditText = listItem.querySelector('input[type=text].crd-add-item-list-mode');
                 let editLabelBtn = listItem.querySelector('button.edit');
+
+                let upperText = '';
+                cnEditText.onkeypress = () => {
+                    upperText = cnEditText.value.toUpperCase();
+                    cnEditText.value = upperText;
+                };
 
                 editLabelBtn.innerHTML = 'ตกลง';
                 editLabelBtn.classList.remove('edit');
@@ -423,11 +424,7 @@
 
             if (!isHasItemList) {
 
-
-
                 if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1) {
-
-
 
                     if (onHiddenMode) {
                         onHiddenMode.classList.remove('hidden-mode');
@@ -544,10 +541,17 @@
         function changeToUpperCase(event, obj) {
             charValue = (document.all) ? event.keyCode : event.which;
             if (charValue != "8" && charValue != "0" && charValue != "27") {
-                obj.value += String.fromCharCode(charValue).toUpperCase();
-                return false;
+
+                if (obj.value.length !== 7) {
+                    obj.value += String.fromCharCode(charValue).toUpperCase();
+                }
+                
+                return  false;
+                
             } else {
+                
                 return true;
+                
             }
         }
 
