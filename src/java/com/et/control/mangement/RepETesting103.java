@@ -145,7 +145,7 @@ public class RepETesting103 extends HttpServlet {
             } else {
                 PrintWriter out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
-                out.println("alert('วันที่สอบที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
+                out.println("alert('ปี,ภาค ที่เลือกไม่มีนักศึกษาลงทะเบียน!!!');");
                 out.println("location='/etestgbackend/RepETesting103';");
                 out.println("</script>");
             }

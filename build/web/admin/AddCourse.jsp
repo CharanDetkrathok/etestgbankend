@@ -158,6 +158,19 @@
         display: block;   
         color: #000;
     }
+
+    .subimt-btn {
+        border-radius: 0; 
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); 
+        color: #fff;
+    }
+
+    .hin-subimt-btn {
+        border-radius: 0; 
+        pointer-events: none;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); 
+        color: #999;
+    }
 </style>
 <!-- Content -->
 <div class="content">
@@ -263,8 +276,7 @@
 
                             <div class="row item-wrap-container"> 
                                 <div class="col-12 item-wrap">                                    
-                                    <button type="submit" class="btn btn-primary" onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');"  
-                                            style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
+                                    <button type="submit" name="submit" id="submit" class="btn btn-primary subimt-btn" onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');">
                                         <i class="fa fa-save"></i> บันทึกวิชา 
                                     </button>  
                                 </div>
@@ -298,6 +310,11 @@
         function editValueInputText() {
             let listItem = this.parentNode;
 
+            const lists = document.querySelectorAll('li#item-list');
+
+            let submitBtn = document.querySelector('button#submit');
+            let isBtnUsing = false;
+
             if (listItem.querySelector('button').classList.contains('edit')) {
 
                 let cnEditText = listItem.querySelector('input[type=text].cn-add-item-list-mode');
@@ -319,6 +336,11 @@
 
                 crdEditText.classList.remove('crd-add-item-list-mode');
                 crdEditText.classList.toggle('crd-add-item-list-mode-edit');
+
+                submitBtn.classList.remove('subimt-btn');
+                submitBtn.classList.add('hin-subimt-btn');
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-light');
 
             } else {
 
@@ -360,13 +382,26 @@
                     if (crdEditText.value === '' || crdEditText.value.length < 1 || crdEditText.value.length > 1) {
                         crdEditText.classList.remove('crd-add-item-list-mode-edit');
                         crdEditText.classList.add('crd-add-item-list-mode-edit-fail');
-                        labelTextEditcrd.innerHTML = 'จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น!!!';
+                        labelTextEditcrd.innerHTML = 'จำนวนหน่วยกิตต้องมี 1 ตัวอักษรเท่านั้น!!!';
                     } else {
                         crdEditText.classList.remove('crd-add-item-list-mode-edit-fail');
                         crdEditText.classList.add('crd-add-item-list-mode-edit');
                         labelTextEditcrd.innerHTML = '';
                     }
 
+                }
+
+                lists.forEach((li) => {
+                    if (li.childNodes[2].className.match('edit-success')) {
+                        isBtnUsing = true;
+                    }
+                });
+
+                if (!isBtnUsing) {
+                    submitBtn.classList.remove('hin-subimt-btn');
+                    submitBtn.classList.add('subimt-btn');
+                    submitBtn.classList.remove('btn-light');
+                    submitBtn.classList.add('btn-primary');
                 }
             }
         }
@@ -379,14 +414,20 @@
             window.setTimeout(() => {
                 listItem.addEventListener('transitionend', () => {
 
+                    const lists = document.querySelectorAll('li#item-list');
+                    let submitBtn = document.querySelector('button#submit');
+                    
                     listItem.remove();
-
                     let ulIncomplate = document.querySelector('ul#incomplete-tasks');
-
                     if (ulIncomplate.childNodes[0].nextSibling === null) {
 
                         onHiddenMode.classList.remove('on-hidden-mode');
                         onHiddenMode.classList.add('hidden-mode');
+
+                        submitBtn.classList.remove('hin-subimt-btn');
+                        submitBtn.classList.add('subimt-btn');
+                        submitBtn.classList.remove('btn-light');
+                        submitBtn.classList.add('btn-primary');
 
                     }
                 });
@@ -424,7 +465,8 @@
 
             if (!isHasItemList) {
 
-                if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1) {
+                if (courseNo.value !== '' && cradit.value !== '' && courseNo.value.length === 7 && cradit.value.length === 1)
+                {
 
                     if (onHiddenMode) {
                         onHiddenMode.classList.remove('hidden-mode');
@@ -505,7 +547,7 @@
 
                     }
 
-                    mustInputText.innerHTML = 'รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น และ จำนวนหน่วยกิตต้อมี 1 ตัวอักษรเท่านั้น !!!';
+                    mustInputText.innerHTML = 'รหัสวิชาต้องมี 7 ตัวอักษรเท่านั้น และ จำนวนหน่วยกิตต้องมี 1 ตัวอักษรเท่านั้น !!!';
                     mustInputText.style = 'padding: 10px;';
 
                 }
@@ -545,13 +587,13 @@
                 if (obj.value.length !== 7) {
                     obj.value += String.fromCharCode(charValue).toUpperCase();
                 }
-                
+
                 return  false;
-                
+
             } else {
-                
+
                 return true;
-                
+
             }
         }
 

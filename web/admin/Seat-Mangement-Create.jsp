@@ -52,6 +52,13 @@
         border: 1px solid;
     }
 
+    .label-edit-text {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        color: rgba(200, 35, 51, 0.8);
+    }
+
     .edit, .delete {
         margin: 5px;
         border-radius: 0; 
@@ -144,6 +151,27 @@
         display: flex;
     }
 
+    #duplicated-input-text {
+        background: rgba(224, 168, 0, 1);
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: block;   
+        color: #000;
+    }
+
+    .subimt-btn {
+        border-radius: 0; 
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); 
+        color: #fff;
+    }
+
+    .hin-subimt-btn {
+        border-radius: 0; 
+        pointer-events: none;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); 
+        color: #999;
+    }
 </style>
 
 <!-- /#header -->
@@ -219,7 +247,7 @@
                                     <div class="row">
                                         <div class="col-6 form-group">
                                             <label for="">กำหนดจำนวนที่นั่งสอบ/แถว <font color="tomato">( เฉพาะตัวเลขเท่านั้น )</font></label>                                                
-                                            <input type="number" min="1" class="form-control" name="seat_exam" id="seat_exam" placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length === 4)
+                                            <input type="number" min="1" class="form-control" name="seat_exam" id="seat_exam" placeholder="กรอก จำนวนที่นั่งสอบ ต่อแถว" onKeyPress="if (this.value.length === 3)
                                                         return false;" required="true">
                                         </div>
                                         <div class="col-6 form-group" style="margin-top: 35px;"> 
@@ -233,8 +261,15 @@
                                             </a>
                                         </div>                                        
                                     </div>
-                                    <br>
-                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-12" style="margin-left: 15px;">
+                                            <br>
+                                            <label id="duplicated-input-text"></label>
+                                            <label id="must-input-text"></label>                                
+                                            <hr>
+                                        </div>
+                                    </div>
 
                                     <!--FORM เพิ่มข้อมูล-->
                                     <form action="/etestgbackend/SeatManagementInsert" method="POST" class="hidden-mode">
@@ -258,10 +293,8 @@
 
                                         <div class="row item-wrap-container"> 
                                             <div class="col-12 item-wrap">
-                                                <button type="submit" name="submit" class="btn btn-primary col-3" 
-                                                        onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');"  
-                                                        style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                                        >
+                                                <button type="submit" name="submit" id="submit" class="btn btn-primary col-3 subimt-btn" 
+                                                        onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');">
                                                     <i class="fa fa-save"></i> บันทึก
                                                 </button>
                                             </div>                                           
@@ -292,105 +325,267 @@
         let addItemBtn = document.querySelector('#addItems');
         let incompleteTasksHolder = document.querySelector('#incomplete-tasks');
         let onHiddenMode = document.querySelector('form.hidden-mode');
-//        let mustInputText = document.querySelector('label#must-input-text');
-//        let duplicatedInputText = document.querySelector('label#duplicated-input-text');
+        let duplicatedInputText = document.querySelector('label#duplicated-input-text');
 
+        function editValueInputText() {
+
+            let listItem = this.parentNode;
+            const lists = document.querySelectorAll('li#item-list');
+
+            let submitBtn = document.querySelector('button#submit');
+            let isBtnUsing = false;
+
+            if (listItem.querySelector('button').classList.contains('edit')) {
+
+                let bnEditText = listItem.querySelector('input[type=text].bn-add-item-list-mode');
+                let reEditText = listItem.querySelector('input[type=text].re-add-item-list-mode');
+                let seEditText = listItem.querySelector('input[type=text].se-add-item-list-mode');
+                let editLabelBtn = listItem.querySelector('button.edit');
+
+                editLabelBtn.innerHTML = 'ตกลง';
+                editLabelBtn.classList.remove('edit');
+                editLabelBtn.classList.toggle('edit-success');
+
+                bnEditText.classList.remove('bn-add-item-list-mode');
+                bnEditText.classList.toggle('bn-add-item-list-mode-edit');
+
+                reEditText.classList.remove('re-add-item-list-mode');
+                reEditText.classList.toggle('re-add-item-list-mode-edit');
+
+                seEditText.classList.remove('se-add-item-list-mode');
+                seEditText.classList.toggle('se-add-item-list-mode-edit');
+
+                submitBtn.classList.remove('subimt-btn');
+                submitBtn.classList.add('hin-subimt-btn');
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-light');
+
+            } else {
+
+                let bnEditText = listItem.querySelector('input[type=text]#buildNoText');
+                let reEditText = listItem.querySelector('input[type=text]#rowExamText');
+                let seEditText = listItem.querySelector('input[type=text]#seatExamText');
+
+                let labelTextEditbn = listItem.querySelector('label#labelTextbn');
+                let labelTextEditre = listItem.querySelector('label#labelTextre');
+                let labelTextEditse = listItem.querySelector('label#labelTextse');
+
+                if (bnEditText.value !== '' && reEditText.value !== '' && seEditText.value !== '' && bnEditText.value.length === 6 && reEditText.value.length === 1 && seEditText.value.length >= 1) {
+
+                    let letters = /^[A-Za-z]+$/;
+
+                    if (reEditText.value.match(letters)) {
+
+                        let editLabelBtn = listItem.querySelector('button.edit-success');
+
+                        labelTextEditse.innerHTML = '';
+                        labelTextEditbn.innerHTML = '';
+                        labelTextEditre.innerHTML = '';
+
+                        editLabelBtn.innerHTML = 'แก้ไข';
+                        editLabelBtn.classList.remove('edit-success');
+                        editLabelBtn.classList.toggle('edit');
+
+                        bnEditText.classList.remove('bn-add-item-list-mode-edit-fail');
+                        bnEditText.classList.remove('bn-add-item-list-mode-edit');
+                        bnEditText.classList.toggle('bn-add-item-list-mode');
+
+                        reEditText.classList.remove('re-add-item-list-mode-edit-fail');
+                        reEditText.classList.remove('re-add-item-list-mode-edit');
+                        reEditText.classList.toggle('re-add-item-list-mode');
+
+                        seEditText.classList.remove('se-add-item-list-mode-edit-fail');
+                        seEditText.classList.remove('se-add-item-list-mode-edit');
+                        seEditText.classList.toggle('se-add-item-list-mode');
+
+                    } else {
+
+                        reEditText.classList.remove('re-add-item-list-mode-edit');
+                        reEditText.classList.add('re-add-item-list-mode-edit-fail');
+                        labelTextEditre.innerHTML = 'แถวสอบต้องเป็น \"ตัวอักษร\"  เท่านั้น!!!';
+                    }
+
+                } else {
+
+                    if (bnEditText.value === '' || bnEditText.value.length > 6 || bnEditText.value.length < 6) {
+                        bnEditText.classList.remove('bn-add-item-list-mode-edit');
+                        bnEditText.classList.add('bn-add-item-list-mode-edit-fail');
+                        labelTextEditbn.innerHTML = 'ห้องสอบต้องมี 6 ตัวอักษรเท่านั้น!!!';
+                    } else {
+                        bnEditText.classList.remove('bn-add-item-list-mode-edit-fail');
+                        bnEditText.classList.add('bn-add-item-list-mode-edit');
+                        labelTextEditbn.innerHTML = '';
+                    }
+
+                    if (reEditText.value === '' || reEditText.value.length > 1 || reEditText.value.length < 1) {
+                        reEditText.classList.remove('re-add-item-list-mode-edit');
+                        reEditText.classList.add('re-add-item-list-mode-edit-fail');
+                        labelTextEditre.innerHTML = 'แถวสอบต้องมี 1 ตัวอักษรเท่านั้น!!!';
+                    } else {
+                        reEditText.classList.remove('re-add-item-list-mode-edit-fail');
+                        reEditText.classList.add('re-add-item-list-mode-edit');
+                        labelTextEditre.innerHTML = '';
+                    }
+
+                    if (seEditText.value === '' || seEditText.value.length < 1) {
+                        seEditText.classList.remove('se-add-item-list-mode-edit');
+                        seEditText.classList.add('se-add-item-list-mode-edit-fail');
+                        labelTextEditse.innerHTML = 'จำนวนที่นั่งสอบต้องมีมากกว่า 1 ที่นั่งเท่านั้น!!!';
+                    } else {
+                        seEditText.classList.remove('se-add-item-list-mode-edit-fail');
+                        seEditText.classList.add('se-add-item-list-mode-edit');
+                        labelTextEditse.innerHTML = '';
+                    }
+                }
+
+                lists.forEach((li) => {
+                    if (li.childNodes[3].className.match('edit-success')) {
+                        isBtnUsing = true;
+                    }
+                });
+
+                if (!isBtnUsing) {
+                    submitBtn.classList.remove('hin-subimt-btn');
+                    submitBtn.classList.add('subimt-btn');
+                    submitBtn.classList.remove('btn-light');
+                    submitBtn.classList.add('btn-primary');
+                }
+            }
+        }
 
         function deleteValueInputText() {
-            let listItem = this.parentNode;
-            console.log(listItem);
-            listItem.classList.add('delete-list-animation');
 
+            let listItem = this.parentNode;
+            listItem.classList.add('delete-list-animation');
             window.setTimeout(() => {
                 listItem.addEventListener('transitionend', () => {
 
+                    const lists = document.querySelectorAll('li#item-list');
+                    let submitBtn = document.querySelector('button#submit');
+
                     listItem.remove();
-
                     let ulIncomplate = document.querySelector('ul#incomplete-tasks');
-
                     if (ulIncomplate.childNodes[0].nextSibling === null) {
 
                         onHiddenMode.classList.remove('on-hidden-mode');
                         onHiddenMode.classList.add('hidden-mode');
 
+                        submitBtn.classList.remove('hin-subimt-btn');
+                        submitBtn.classList.add('subimt-btn');
+                        submitBtn.classList.remove('btn-light');
+                        submitBtn.classList.add('btn-primary');
                     }
                 });
-
             }, 500);
         }
+
         addItemBtn.onclick = () => {
 
-            if (buildNo.value !== '' && rowExam.value !== '' && seatExam.value !== '') {
+            duplicatedInputText.innerHTML = '';
+            duplicatedInputText.style = '';
 
-                if (onHiddenMode) {
-                    onHiddenMode.classList.remove('hidden-mode');
-                    onHiddenMode.classList.add('on-hidden-mode');
+            const lists = document.querySelectorAll('li#item-list');
+            let isHasItemList = false;
+
+            lists.forEach((li) => {
+
+                if (li.childNodes[1].value === rowExam.value) {
+
+                    isHasItemList = true;
+                    duplicatedInputText.innerHTML = 'แถวสอบ <b style="color: red;">' + rowExam.value + '</b> มีอยู่ใน List แล้ว';
+                    duplicatedInputText.style = 'padding: 10px;';
                 }
+            });
 
-                let listItem = document.createElement("li");
+            if (!isHasItemList) {
+                if (buildNo.value !== '' && rowExam.value !== '' && seatExam.value !== '') {
 
-                let buildNoTag = document.createElement("input");
-                let rowExamTag = document.createElement("input");
-                let seatExamTag = document.createElement("input");
+                    if (onHiddenMode) {
+                        onHiddenMode.classList.remove('hidden-mode');
+                        onHiddenMode.classList.add('on-hidden-mode');
+                    }
 
-                let editBtn = document.createElement("button");
-                let deleteBtn = document.createElement("button");
+                    let listItem = document.createElement("li");
 
-                buildNoTag.type = 'text';
-                buildNoTag.name = 'buildNoText';
-                buildNoTag.id = 'buildNoText';
-                buildNoTag.className = 'bn-add-item-list-mode';
-                buildNoTag.value = buildNo.value;
+                    let buildNoTag = document.createElement("input");
+                    let rowExamTag = document.createElement("input");
+                    let seatExamTag = document.createElement("input");
 
-                rowExamTag.type = "text";
-                rowExamTag.className = 're-add-item-list-mode';
-                rowExamTag.name = 'rowExamText';
-                rowExamTag.id = 'rowExamText';
-                rowExamTag.value = rowExam.value;
+                    let labelTextbn = document.createElement('label');
+                    let labelTextre = document.createElement('label');
+                    let labelTextse = document.createElement('label');
 
-                seatExamTag.type = "text";
-                seatExamTag.className = 'se-add-item-list-mode';
-                seatExamTag.name = 'seatExamText';
-                seatExamTag.id = 'seatExamText';
-                seatExamTag.value = seatExam.value;
+                    let editBtn = document.createElement("button");
+                    let deleteBtn = document.createElement("button");
 
-                editBtn.innerHTML = 'แก้ไข';
-                editBtn.type = 'button';
-                editBtn.className = 'edit btn';
+                    buildNoTag.type = 'text';
+                    buildNoTag.name = 'buildNoText';
+                    buildNoTag.id = 'buildNoText';
+                    buildNoTag.className = 'bn-add-item-list-mode';
+                    buildNoTag.value = buildNo.value;
 
-                deleteBtn.innerHTML = 'ลบ';
-                deleteBtn.type = 'button';
-                deleteBtn.className = 'delete btn';
+                    rowExamTag.type = "text";
+                    rowExamTag.className = 're-add-item-list-mode';
+                    rowExamTag.name = 'rowExamText';
+                    rowExamTag.id = 'rowExamText';
+                    rowExamTag.value = rowExam.value;
 
-                listItem.id = 'item-list';
+                    seatExamTag.type = "text";
+                    seatExamTag.className = 'se-add-item-list-mode';
+                    seatExamTag.name = 'seatExamText';
+                    seatExamTag.id = 'seatExamText';
+                    seatExamTag.value = seatExam.value;
 
-                listItem.appendChild(buildNoTag);
-                listItem.appendChild(rowExamTag);
-                listItem.appendChild(seatExamTag);
+                    labelTextbn.id = 'labelTextbn';
+                    labelTextbn.className = 'label-edit-text';
 
-                listItem.appendChild(editBtn);
-                listItem.appendChild(deleteBtn);
+                    labelTextre.id = 'labelTextre';
+                    labelTextre.className = 'label-edit-text';
 
-                listItem.appendChild(document.createElement('br'));
+                    labelTextse.id = 'labelTextse';
+                    labelTextse.className = 'label-edit-text';
 
-                listItem.appendChild(document.createElement('hr'));
+                    editBtn.innerHTML = 'แก้ไข';
+                    editBtn.type = 'button';
+                    editBtn.className = 'edit btn';
 
-                incompleteTasksHolder.appendChild(listItem);
+                    deleteBtn.innerHTML = 'ลบ';
+                    deleteBtn.type = 'button';
+                    deleteBtn.className = 'delete btn';
 
-                let editInput = listItem.querySelector('button.edit');
-                let deleteInput = listItem.querySelector('button.delete');
+                    listItem.id = 'item-list';
 
-//                editInput.addEventListener('click', editValueInputText);
-                deleteInput.addEventListener('click', deleteValueInputText);
+                    listItem.appendChild(buildNoTag);
+                    listItem.appendChild(rowExamTag);
+                    listItem.appendChild(seatExamTag);
 
-            } else {
+                    listItem.appendChild(editBtn);
+                    listItem.appendChild(deleteBtn);
 
-                if (buildNo.value === '' && (seatExam.value === '' || seatExam.value !== '')) {
-                    buildNo.focus();
+                    listItem.appendChild(document.createElement('br'));
+
+                    listItem.appendChild(labelTextbn);
+                    listItem.appendChild(labelTextre);
+                    listItem.appendChild(labelTextse);
+
+                    listItem.appendChild(document.createElement('hr'));
+
+                    incompleteTasksHolder.appendChild(listItem);
+
+                    let editInput = listItem.querySelector('button.edit');
+                    let deleteInput = listItem.querySelector('button.delete');
+
+                    editInput.addEventListener('click', editValueInputText);
+                    deleteInput.addEventListener('click', deleteValueInputText);
                 } else {
-                    seatExam.focus();
-                }
 
+                    if (buildNo.value === '' && (seatExam.value === '' || seatExam.value !== '')) {
+                        buildNo.focus();
+                    } else {
+                        seatExam.focus();
+                    }
+
+                }
             }
 
         };

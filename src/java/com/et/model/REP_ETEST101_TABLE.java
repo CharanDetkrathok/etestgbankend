@@ -35,7 +35,7 @@ public class REP_ETEST101_TABLE {
     public List<REP_ETEST101> findRepETest101(String year, String semester) {
         List<REP_ETEST101> list = new ArrayList<REP_ETEST101>();
         String sql = " SELECT DISTINCT TO_CHAR(A.INSERT_DATE, 'MM/DD/YYYY') AS RECEIPT_DATE "
-                + " FROM QR_PAYMENT_CONFIRM_TMB  A WHERE A.YEAR = '" + year + "' AND A.SEMESTER = '" + semester + "' "
+                + " FROM QR_PAYMENT_CONFIRM_TMB A WHERE A.YEAR = '" + year + "' AND A.SEMESTER = '" + semester + "' "
                 + " ORDER BY TO_CHAR(A.INSERT_DATE, 'MM/DD/YYYY') ASC";
 
         List<Map<String, Object>> result = db.queryList(sql);
