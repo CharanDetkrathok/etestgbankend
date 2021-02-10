@@ -190,12 +190,12 @@
                                 <i class="menu-icon fa fa-address-book"></i>รายงาน
                             </a>
                             <ul class="sub-menu children dropdown-menu">
-                                <li class="li-line-buttom"><i class="menu-icon fa fa-address-card"></i>
-                                    <a href="/etestgbackend/GetRegisReport">รายงานการลงทะเบียน นักศึกษาที่ชำระเงินแล้ว</a>
-                                </li>
                                 <li class="li-line-buttom"><i class="menu-icon fa fa-anchor"></i>
-                                    <a href="/etestgbackend/ShowStdRegisterAll">รายงานลงทะเบียน</a>
+                                    <a href="/etestgbackend/ShowStdRegisterAll">รายงานลงทะเบียนทั้งหมด</a>
                                 </li>
+                                <li class="li-line-buttom"><i class="menu-icon fa fa-address-card"></i>
+                                    <a href="/etestgbackend/GetRegisReport">รายงานการลงทะเบียน ชำระเงินแล้ว</a>
+                                </li>                                
                                 <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
                                     <a href="/etestgbackend/RepETesting101"><span style="font-style: italic; ">พิมพ์สรุปเงินรายวัน</span></a>
                                 </li>

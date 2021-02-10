@@ -91,7 +91,7 @@
                                 <div class="col-11"><label for="bt" class="fontvw" >&nbsp;</label><br /> 
                                     <button type="submit" class="btn btn-primary" onclick="return confirm('คุณต้องการ เพิ่มข้อมูลใช่หรือไม่?');"  
                                             style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
-                                        <i class="fa fa-check"></i> บันทึกวิชา 
+                                        <i class="fa fa-save"></i> บันทึกวิชา 
                                     </button>                                     
                                     <button type="button" class="btn btn-warning" onclick="goBack()"  
                                             style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #000;">

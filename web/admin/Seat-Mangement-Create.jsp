@@ -20,6 +20,7 @@
     hr {
         border-top: 1px solid #999;        
     }
+    
     li {
         list-style: none;
     }
@@ -274,7 +275,6 @@
                                     <!--FORM เพิ่มข้อมูล-->
                                     <form action="/etestgbackend/SeatManagementInsert" method="POST" class="hidden-mode">
 
-                                        <input type="text" class="form-control" name="sumSeat" value="${sumSeat}" hidden="true">
                                         <input type="hidden" name="semester" value="${getCounterData.STUDY_SEMESTER}">
                                         <input type="hidden" name="year" value="${getCounterData.STUDY_YEAR}">
 

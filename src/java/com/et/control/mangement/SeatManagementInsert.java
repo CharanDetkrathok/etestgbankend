@@ -3,6 +3,7 @@ package com.et.control.mangement;
 import com.et.model.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("unused")
 public class SeatManagementInsert extends HttpServlet {
+
     /**
      *
      */
@@ -58,8 +60,8 @@ public class SeatManagementInsert extends HttpServlet {
         if (request.getParameter("Create") != null) {
 
             // --- สร้าง String สำหรับแสดงแถวที่นั่งสอบ -------------------------------
-            String a[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
-                    "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            String a[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+                "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
             // --- สร้าง String สำหรับแสดงแถวที่นั่งสอบ ที่ยังเหลือ เช่นมีแถว A,B,C
             // แล้วเก็บเฉพาะ D-Z เพื่อนำไปแสดงให้ทำการเลือกเพื่อเพิ่มแถวใหม่
@@ -89,70 +91,54 @@ public class SeatManagementInsert extends HttpServlet {
         } else if (request.getParameter("submit") != null) { // --- เพิ่ม --------
 
             // ------ เมื่อมีการ submit เพื่อเพิ่ม แถว และที่นั่งสอบ หลังกรอกข้อมูลแล้ว
-            // --------
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("semester");
-            String BUILD_NO = request.getParameter("buildNoText").toUpperCase();
-            String ROW_EXAM = request.getParameter("rowExamText");
-            String SEAT_EXAM = request.getParameter("seatExamText");
-            String SUM_SEAT_EXAM = request.getParameter("sumSeat");
 
-            SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy HH:mm:ss");
-            java.util.Date date = new java.util.Date();
+            String[] BUILD_NO = request.getParameterValues("buildNoText");
+            String[] ROW_EXAM = request.getParameterValues("rowExamText");
+            String[] SEAT_EXAM = request.getParameterValues("seatExamText");
 
-            String dateNow = formatter.format(date);
+            boolean checkInsertRowBuild = false;
+            boolean checkDuplicateRowBuild = false;
 
-            ET_BUILE_ROW insertRowBuild = new ET_BUILE_ROW();
-            insertRowBuild.setYEAR(YEAR);
-            insertRowBuild.setSEMESTER(SEMESTER);
-            insertRowBuild.setBUILD_NO(BUILD_NO);
-            insertRowBuild.setROW_EXAM(ROW_EXAM);
-            insertRowBuild.setSEAT_EXAM(BigDecimal.valueOf(Integer.valueOf(SEAT_EXAM)));
-            insertRowBuild.setINSERT_DATE(dateNow);
+            for (int index = 0; index < BUILD_NO.length; index++) {
 
-            // --- ตรวจสอบว่ามีข้อมูลซ้ำหรือไม่ ถ้า checkDuplicateRowBuild เป็น false
-            // ยังไม่มีข้อมูลเพิ่มได้
-            boolean checkDuplicateRowBuild = getBuildRowTable.checkDuplicate(ROW_EXAM);
-            PrintWriter out = response.getWriter();
+                SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy HH:mm:ss");
+                java.util.Date date = new java.util.Date();
 
-            // --- SUM SEAT_EXAM เพิ่มทำการแก้ไขที่ตาราง ET_EXAM ทุกครั้ง
-            int SumSeat = Integer.parseInt(SUM_SEAT_EXAM) + Integer.parseInt(SEAT_EXAM);
+                String dateNow = formatter.format(date);
 
-            // ----- Query วัน/เดือน/ปี และภาคการศึกษา จำนวนที่นั่ง เพื่อไปแสดง
-            // ----------------
-            ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
+                ET_BUILE_ROW insertRowBuild = new ET_BUILE_ROW();
+                insertRowBuild.setYEAR(YEAR);
+                insertRowBuild.setSEMESTER(SEMESTER);
+                insertRowBuild.setBUILD_NO(BUILD_NO[index].toUpperCase());
+                insertRowBuild.setROW_EXAM(ROW_EXAM[index]);
+                insertRowBuild.setSEAT_EXAM(BigDecimal.valueOf(Integer.valueOf(SEAT_EXAM[index])));
+                insertRowBuild.setINSERT_DATE(dateNow);
 
-            if (!checkDuplicateRowBuild) {
+                // --- ตรวจสอบว่ามีข้อมูลซ้ำหรือไม่ ถ้า checkDuplicateRowBuild เป็น false
+                // ยังไม่มีข้อมูลเพิ่มได้
+                checkDuplicateRowBuild = getBuildRowTable.checkDuplicate(ROW_EXAM[index]);
+                PrintWriter out = response.getWriter();
 
-                boolean checkInsertRowBuild = getBuildRowTable.insert(insertRowBuild);
+                if (!checkDuplicateRowBuild) {
 
-                if (checkInsertRowBuild) {
+                    checkInsertRowBuild = getBuildRowTable.insert(insertRowBuild);
 
-                    System.out.println("เพิ่มข้อมูลเรียบร้อย");
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('เพิ่มข้อมูลเรียบร้อย');");
-                    out.println("location='SeatManagement';");
-                    out.println("</script>");
+                    if (checkInsertRowBuild) {
+                        System.out.println("เพิ่มข้อมูลเรียบร้อย");
+
+                    } else {
+                        System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้");
+                    }
 
                 } else {
-
-                    System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้");
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้');");
-                    out.println("location='SeatManagementInsert?Create=1';");
-                    out.println("</script>");
-
+                    System.out.println("มีข้อมูลนี้อยู่แล้ว(ซ้ำ) ไม่สามารถเพิ่มข้อมูลได้");
                 }
-
-            } else {
-
-                System.out.println("มีข้อมูลนี้อยู่แล้ว(ซ้ำ) ไม่สามารถเพิ่มข้อมูลได้");
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้');");
-                out.println("location='SeatManagementInsert?Create=1';");
-                out.println("</script>");
-
             }
+
+            RequestDispatcher rs = request.getRequestDispatcher("SeatManagement");
+            rs.forward(request, response);
 
         }
         db.close();
@@ -163,10 +149,10 @@ public class SeatManagementInsert extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -177,10 +163,10 @@ public class SeatManagementInsert extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

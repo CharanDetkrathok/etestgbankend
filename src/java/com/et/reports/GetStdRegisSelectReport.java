@@ -48,7 +48,8 @@ public class GetStdRegisSelectReport extends HttpServlet {
         // ET_RECEIPT getRecieptData = null;
 
         if (examdate.equals("0") && sec.equals("0")) {
-            getRecieptDataList = getRepcieptTable.findAllReceipt(sem, year);
+//            getRecieptDataList = getRepcieptTable.findAllReceipt(sem, year);
+            getRecieptDataList = getRepcieptTable.findReceiptAllDateExamAllSecoet(sem, year);
             if (getRecieptDataList == null) {
                 response.sendRedirect("admin/faild.jsp");
             }
@@ -72,7 +73,7 @@ public class GetStdRegisSelectReport extends HttpServlet {
         }
 
         int cnt = 0;
-        if (getRecieptDataList  !=  null) {
+        if (getRecieptDataList != null) {
             for (int i = 0; i < getRecieptDataList.size(); i++) {
                 cnt++;
             }

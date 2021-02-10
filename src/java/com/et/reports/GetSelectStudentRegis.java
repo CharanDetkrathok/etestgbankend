@@ -32,7 +32,7 @@ public class GetSelectStudentRegis extends HttpServlet {
 
         //stmt
         String stdcode = request.getParameter("stdcode");
-        // String refkey = request.getParameter("refkey");
+        String refkey = request.getParameter("refkey");
         String sem = request.getParameter("sem");
         String year = request.getParameter("year");
         String srcVal = request.getParameter("srcVal");
@@ -52,12 +52,12 @@ public class GetSelectStudentRegis extends HttpServlet {
         List<ET_RECEIPT> getRecieptDataList = null;
         // ET_RECEIPT getRecieptData = null;
 
-        if (stdcode != null && stdcode != null && stdcode != null ) {
+        if (stdcode != null && stdcode != null && stdcode != null) {
             if (srcVal.equals("1")) {
-                getRecieptDataList = getRecieptTable.findReceiptSelectStdApproove(sem, year, stdcode);
-
-            } else {                
-                 getRecieptDataList = getRecieptTable.findReceiptSelectStdAll(sem, year, stdcode);
+//                getRecieptDataList = getRecieptTable.findReceiptSelectStdApproove(sem, year, stdcode);
+                getRecieptDataList = getRecieptTable.findReceiptSelectStdAll(sem, year, stdcode, refkey);
+            } else {
+                getRecieptDataList = getRecieptTable.findReceiptSelectStdAll(sem, year, stdcode, refkey);
             }
 
             if (getRecieptDataList != null) {

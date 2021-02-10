@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-12" style="margin-left: 15px;">
                                     <label class="fontvwhead">
-                                        <i class="fa fa-address-book-o"></i> รายงานการลงทะเบียน
+                                        <i class="fa fa-address-book-o"></i> รายงานการลงทะเบียนทั้งหมด (ชำระเงินแล้ว และยังไม่ชำระเงิน)
                                     </label>
                                     <br/>                                     
                                 </div>

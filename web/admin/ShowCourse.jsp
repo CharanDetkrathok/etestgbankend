@@ -68,7 +68,8 @@
                                                 <th>หน่วยกิต</th>
                                                 <th>วันที่เพิ่ม</th>
                                                 <th>วันที่แก้ไข</th> 
-                                                <th style="text-align: center;">Action</th>
+                                                <th>แก้ไขข้อมูล</th>
+                                                <th>ลบข้อมูล</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-center"> 
@@ -97,16 +98,18 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td>
                                                         <a type="button" class="btn btn-warning" 
                                                            style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);"
                                                            href="/etestgbackend/GetEditCourse?courseno=${getCourseData.COURSE_NO}&sem=${getCourseData.SEMESTER}&year=${getCourseData.YEAR}">
                                                             <i class="fa fa-pencil"></i> แก้ไข </a>
+                                                    </td>
+                                                    <td>
                                                         <a type="button" class="btn btn-danger" 
                                                            style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
                                                            onclick="return confirm('คุณต้องการ ลบข้อมูลใช่หรือไม่?');"
                                                            href="/etestgbackend/DeleteCourse?courseno=${getCourseData.COURSE_NO}&sem=${getCourseData.SEMESTER}&year=${getCourseData.YEAR}">
-                                                            <i class="fa fa-trash"></i> ลบวิชา </a>
+                                                            <i class="fa fa-trash"></i> ลบ </a>
                                                     </td>
                                                 </tr> 
                                             </c:forEach>

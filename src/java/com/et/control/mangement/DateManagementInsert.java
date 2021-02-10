@@ -66,82 +66,76 @@ public class DateManagementInsert extends HttpServlet {
 
             String YEAR = request.getParameter("year");
             String SEMESTER = request.getParameter("semester");
-            String EXAM_DATE = request.getParameter("date_exam");
-            String SEAT_EXAM = request.getParameter("seat_exam");
+            String[] EXAM_DATE = request.getParameterValues("dateExamText");
+            String[] SEAT_EXAM = request.getParameterValues("seatExamText");
 
-            String TEMP_EXAM_DATE = EXAM_DATE.replace("-", "/");
+            for (int index = 0; index < EXAM_DATE.length; index++) {
 
-            final String OLD_FORMAT = "yyyy/MM/dd";
-            final String NEW_FORMAT = "MM/dd/yyyy";
-            String oldDateString = TEMP_EXAM_DATE;
-            String NEW_EXAM_DATE;
+                String TEMP_EXAM_DATE = EXAM_DATE[index].replace("-", "/");
 
-            SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-            Date d = sdf.parse(oldDateString);
-            sdf.applyPattern(NEW_FORMAT);
-            NEW_EXAM_DATE = sdf.format(d);
+                final String OLD_FORMAT = "yyyy/MM/dd";
+                final String NEW_FORMAT = "MM/dd/yyyy";
+                String oldDateString = TEMP_EXAM_DATE;
+                String NEW_EXAM_DATE;
 
-            ET_EXAM_DATE insertExamDate = new ET_EXAM_DATE();
-            insertExamDate.setYEAR(YEAR);
-            insertExamDate.setSEMESTER(SEMESTER);
-            insertExamDate.setEXAM_DATE(NEW_EXAM_DATE);
+                SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                Date d = sdf.parse(oldDateString);
+                sdf.applyPattern(NEW_FORMAT);
+                NEW_EXAM_DATE = sdf.format(d);
 
-            ET_EXAM_SEAT insertExamSeat = new ET_EXAM_SEAT();
-            insertExamSeat.setYEAR(YEAR);
-            insertExamSeat.setSEMESTER(SEMESTER);
-            insertExamSeat.setEXAM_DATE(NEW_EXAM_DATE);
-            insertExamSeat.setEXAM_SEAT(SEAT_EXAM);
+                ET_EXAM_DATE insertExamDate = new ET_EXAM_DATE();
+                insertExamDate.setYEAR(YEAR);
+                insertExamDate.setSEMESTER(SEMESTER);
+                insertExamDate.setEXAM_DATE(NEW_EXAM_DATE);
 
-            boolean checkDuplicateExamDate = getExamDateTable.checkDuplicate(NEW_EXAM_DATE);
-            boolean checkDuplicateExamSeat = getExamSeatTable.checkDuplicate(NEW_EXAM_DATE);
+                ET_EXAM_SEAT insertExamSeat = new ET_EXAM_SEAT();
+                insertExamSeat.setYEAR(YEAR);
+                insertExamSeat.setSEMESTER(SEMESTER);
+                insertExamSeat.setEXAM_DATE(NEW_EXAM_DATE);
+                insertExamSeat.setEXAM_SEAT(SEAT_EXAM[index]);
 
-            boolean checkInsertExamSeat = false;
-            boolean checkInsertExamDate = false;
+                boolean checkDuplicateExamDate = getExamDateTable.checkDuplicate(NEW_EXAM_DATE);
+                boolean checkDuplicateExamSeat = getExamSeatTable.checkDuplicate(NEW_EXAM_DATE);
 
-            if (!checkDuplicateExamDate || !checkDuplicateExamSeat) {
+                boolean checkInsertExamSeat = false;
+                boolean checkInsertExamDate = false;
 
-                for (int i = 0; i < 4; i++) {
+                if (!checkDuplicateExamDate || !checkDuplicateExamSeat) {
 
-                    insertExamDate.setPERIOD(String.valueOf(i + 1));
-                    checkInsertExamDate = getExamDateTable.insert(insertExamDate);
-                    if (checkInsertExamDate) {
-                        System.out.println("เพิ่ม --ET_EXAM_DATE-- เรียบร้อย");
+                    for (int i = 0; i < 4; i++) {
+
+                        insertExamDate.setPERIOD(String.valueOf(i + 1));
+                        checkInsertExamDate = getExamDateTable.insert(insertExamDate);
+                        if (checkInsertExamDate) {
+                            System.out.println("เพิ่ม --ET_EXAM_DATE-- เรียบร้อย");
+                        } else {
+                            System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูล --ET_EXAM_DATE-- ได้");
+                        }
+
+                        insertExamSeat.setPERIOD(String.valueOf(i + 1));
+                        checkInsertExamSeat = getExamSeatTable.insert(insertExamSeat);
+                        if (checkInsertExamSeat) {
+                            System.out.println("เพิ่ม <<ET_EXAM_SEAT>> เรียบร้อย");
+                        } else {
+                            System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูล <<ET_EXAM_SEAT>> ได้");
+                        }
+
+                    } // end for
+
+                    if (checkInsertExamSeat && checkInsertExamDate) {
+                        System.out.println("เพิ่มข้อมูลเรียบร้อย");
                     } else {
-                        System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูล --ET_EXAM_DATE-- ได้");
+                        System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้!!!");
                     }
 
-                    insertExamSeat.setPERIOD(String.valueOf(i + 1));
-                    checkInsertExamSeat = getExamSeatTable.insert(insertExamSeat);
-                    if (checkInsertExamSeat) {
-                        System.out.println("เพิ่ม <<ET_EXAM_SEAT>> เรียบร้อย");
-                    } else {
-                        System.out.println("มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูล <<ET_EXAM_SEAT>> ได้");
-                    }
-
-                } // end for
-
-                if (checkInsertExamSeat && checkInsertExamDate) {
-                    PrintWriter out = response.getWriter();
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('เพิ่มข้อมูลเรียบร้อย');");
-                    out.println("location='DateManagement';");
-                    out.println("</script>");
                 } else {
-                    PrintWriter out = response.getWriter();
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้!!!');");
-                    out.println("location='DateManagementInsert?Create=1';");
-                    out.println("</script>");
+                    System.out.println("มีข้อมูลแล้ว");
                 }
 
-            } else {
-                System.out.println("มีข้อมูลแล้ว");
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('ไม่สามารถเพิ่มข้อมูลได้ เพราะมีข้อมูลอยู่แล้ว!!!');");
-                out.println("location='DateManagementInsert?Create=1';");
-                out.println("</script>");
             }
+            
+            RequestDispatcher rs = request.getRequestDispatcher("DateManagement");
+            rs.forward(request, response);
 
         }
         db.close();
@@ -152,10 +146,10 @@ public class DateManagementInsert extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -170,10 +164,10 @@ public class DateManagementInsert extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

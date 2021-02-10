@@ -49,21 +49,10 @@ public class DateManagementDelete extends HttpServlet {
 
             if (isDeleteAllDate && isDeleteAllSeat) {
                 System.out.println("--ExamDate-- ลบได้");
-
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('ลบข้อมูลเรียบร้อย');");
-                out.println("location='DateManagement';");
-                out.println("</script>");
             } else {
                 System.out.println("--ExamDate-- ลบไม่ได้");
-
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถลบข้อมูลได้!!!');");
-                out.println("location='DateManagement';");
-                out.println("</script>");
             }
+
         }
 
         if (request.getParameter("Year") != null && request.getParameter("Semester") != null
@@ -112,24 +101,11 @@ public class DateManagementDelete extends HttpServlet {
                 System.out.println("<<ExamSeat>> ลบไม่ได้");
             }
 
-            if (deleteResultExamDate && deleteResultExamSeat) {
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('ลบข้อมูลเรียบร้อย');");
-                out.println("location='DateManagement';");
-                out.println("</script>");
-            } else {
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถลบข้อมูลได้!!!');");
-                out.println("location='DateManagement';");
-                out.println("</script>");
-            }
-
-        } else {
-            RequestDispatcher rs = request.getRequestDispatcher("DateManagement");
-            rs.forward(request, response);
         }
+        
+        RequestDispatcher rs = request.getRequestDispatcher("DateManagement");
+        rs.forward(request, response);
+
         db.close();
     }
 
@@ -138,10 +114,10 @@ public class DateManagementDelete extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -156,10 +132,10 @@ public class DateManagementDelete extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

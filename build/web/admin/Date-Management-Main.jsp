@@ -65,12 +65,6 @@
                                        href="/etestgbackend/DateManagementInsert?Create=1">
                                         <i class="fa fa-plus-square"></i> เพิ่ม
                                     </a>
-                                    <a type="button" class="btn btn-danger"  
-                                       style="float: right; width: 110px; margin: 0 26px 0 5px; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;"
-                                       onclick="return confirm('คุณต้องการ ลบข้อมูลทั้งหมด ใช่หรือไม่?');"
-                                       href="#" >
-                                        <i class="fa fa-trash"></i> ลบทั้งหมด
-                                    </a> 
                                     <br>
                                     <hr>
                                 </div>
@@ -104,7 +98,7 @@
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test = "${ExamSeat.UPDATE_DATE == null}">
-                                                                    ยังไม่มีการแก้ไขข้อมูล
+                                                                    -
                                                                 </c:when>
                                                                 <c:otherwise>
                                                                     ${ExamSeat.UPDATE_DATE}

@@ -50,8 +50,6 @@ public class AddCourse extends HttpServlet {
 
             for (int index = 0; index < itemsCourse.length; index++) {
 
-                System.out.println(itemsCourse[index] + " " + itemsCradit[index]);
-
                 String courseno = itemsCourse[index];
                 String credit = itemsCradit[index];
                 String statusCourse = "O";

@@ -100,7 +100,7 @@
                                                         <td>
                                                              <c:choose>
                                                                 <c:when test = "${BuildRow.UPDATE_DATE == null}">
-                                                                    ยังไม่มีการแก้ไขข้อมูล
+                                                                    -
                                                                 </c:when>
                                                                 <c:otherwise>
                                                                     ${BuildRow.UPDATE_DATE}

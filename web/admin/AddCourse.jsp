@@ -227,7 +227,7 @@
                                 <label for="cr" style="font-weight: bold;">จำนวนหน่วยกิต</label> 
                                 <select name="credit" id="cr" class="form-control" required >
                                     <option value=""> เลือกหน่วยกิต </option>
-                                    <option value="0"> ไม่มีหน่วยกิต</option>
+                                    <option value="0"> (0) ไม่มีหน่วยกิต </option>
                                     <option value="1"> 1 </option>
                                     <option value="2"> 2 </option>
                                     <option value="3"> 3 </option>

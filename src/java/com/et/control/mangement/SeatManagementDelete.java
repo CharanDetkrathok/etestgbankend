@@ -60,42 +60,18 @@ public class SeatManagementDelete extends HttpServlet {
             String Year = request.getParameter("Year");
             String Semester = request.getParameter("Semester");
             String RowExam = request.getParameter("RowExam");
-            String SEAT_EXAM = request.getParameter("seat_exam");
-            String SUM_SEAT_EXAM = request.getParameter("sumSeat");
-
-            // --- SUM SEAT_EXAM เพิ่มทำการแก้ไขที่ตาราง ET_EXAM ทุกครั้ง ---------------
-            // int SumSeat = Integer.parseInt(SUM_SEAT_EXAM) - Integer.parseInt(SEAT_EXAM);
-
-            // ----- Query วัน/เดือน/ปี และภาคการศึกษา จำนวนที่นั่ง เพื่อไปแสดง ------------
-            // ET_EXAM_SEAT_TABLE getExamSeatTable = new ET_EXAM_SEAT_TABLE(db);
-
-            // boolean checkUpdateSumSeat =
-            // getExamSeatTable.updateSumSeat(String.valueOf(SumSeat));
-            // if (checkUpdateSumSeat) {
-            // System.out.println("แก้ไขข้อมูลเรียบร้อย checkUpdateSumSeat");
-            // } else {
-            // System.out.println("แก้ไขมีบางอย่างผิดพลาด checkUpdateSumSeat");
-            // }
-
+           
             boolean deleteResult = getBuildRowTable.delete(Year, Semester, RowExam);
-            PrintWriter out = response.getWriter();
-
+           
             if (deleteResult) {
-
                 System.out.println("ลบได้");
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('ลบข้อมูลเรียบร้อย');");
-                out.println("location='SeatManagement';");
-                out.println("</script>");
 
             } else {
                 System.out.println("ลบไม่ได้");
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('มีบางอย่างผิดพลาด ไม่สามารถลบข้อมูลได้');");
-                out.println("location='SeatManagement';");
-                out.println("</script>");
             }
-
+            
+            RequestDispatcher rs = request.getRequestDispatcher("SeatManagement");
+            rs.forward(request, response);
         }
 
         db.close();

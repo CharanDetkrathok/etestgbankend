@@ -350,18 +350,15 @@ public class ET_RECEIPT_TABLE {
     }//end get max no
 
     // ------------------------REPORT ----------------------------------------------
-    /* public List<ET_RECEIPT> findAllReceipt(String sem, String year) {
+    public List<ET_RECEIPT> findReceiptAllDateExamAllSecoet(String sem, String year) {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
-        String sql = " SELECT DISTINCT a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
-                + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE , "
-                + " TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE"
-                + " ,D.NAME_THAI,c.REF_KEY,A.RECEIPT_NO,"
-                + " TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
-                + " FROM ET_RECEIPT a,QR_PAYMENT_CONFIRM_TMB b,ET_REGIS_RU24 c , DBBACH00.VM_STUDENT_MOBILE d "
-                + " where A.STD_CODE = B.STD_CODE and A.RECEIPT_SEMESTER = B.SEMESTER "
-                + " and A.RECEIPT_YEAR = b.year and A.REF_KEY = B.QRID and B.STD_CODE = C.STD_CODE and B.SEMESTER = C.SEMESTER and B.YEAR = C.YEAR "
-                + " and B.QRID = C.REF_KEY and C.STD_CODE = D.STD_CODE "
-                + " and A.RECEIPT_PAY_STATUS = '1' and A.RECEIPT_SEMESTER = ? and A.RECEIPT_YEAR = ? ";
+        String sql = " SELECT DISTINCT A.FISCAL_YEAR,A.RECEIPT_YEAR,A.RECEIPT_SEMESTER,A.STD_CODE, A.TOTAL_AMOUNT,"
+                + " A.RECEIPT_STATUS,A.FACULTY_NO, A.REF_KEY,A.RECEIPT_PAY_STATUS,"
+                + " TO_CHAR(A.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss','NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,D.NAME_THAI"
+                + " FROM ET_RECEIPT A,ET_REGIS_RU24 B , QR_PAYMENT_CONFIRM_TMB C, DBBACH00.VM_STUDENT_MOBILE D "
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.RECEIPT_SEMESTER = B.SEMESTER AND A.RECEIPT_YEAR = B.YEAR AND A.REF_KEY = B.REF_KEY AND B.STD_CODE = D.STD_CODE  "
+                + " AND  TO_NUMBER(A.TOTAL_AMOUNT) !=  TO_NUMBER(C.AMOUNT)"
+                + " AND A.RECEIPT_SEMESTER = ? AND A.RECEIPT_YEAR = ? AND A.RECEIPT_PAY_STATUS = '1' ORDER BY D.NAME_THAI ASC";
         List<Map<String, Object>> result = db.queryList(sql, sem, year);
 
         for (Map<String, Object> row : result) {
@@ -369,11 +366,11 @@ public class ET_RECEIPT_TABLE {
             list.add(setAltmodel(row));
         }
         return list;
-    }*/
+    }
     //end find 
     public List<ET_RECEIPT> findAllReceipt(String sem, String year) {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
-        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
+        String sql = "SELECT a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, a.REF_KEY, "
                 + " TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE ,to_char(a.SLIP_NO,'fm000000')SLIP_RUN_NO, "
                 + "  TO_CHAR(b.INSERT_DATE, 'dd/mm/yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE ,D.NAME_THAI, "
                 + "  A.RECEIPT_NO, TO_CHAR(B.INSERT_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')PAYMENT_DATE "
@@ -477,17 +474,14 @@ public class ET_RECEIPT_TABLE {
     }
     //end find 
 
-    public List<ET_RECEIPT> findReceiptSelectStdAll(String sem, String year, String stdcode) {
+    public List<ET_RECEIPT> findReceiptSelectStdAll(String sem, String year, String stdcode, String RefKey) {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
-        String sql = "SELECT  a.FISCAL_YEAR,a.RECEIPT_YEAR,a.RECEIPT_SEMESTER,a.STD_CODE, a.TOTAL_AMOUNT, a.RECEIPT_STATUS, a.FACULTY_NO, "
-                + "a.REF_KEY, TO_CHAR(a.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE,"
-                + "TO_CHAR(C.INSERT_DATE , 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')RECEIPT_DATE  "
-                + ",D.NAME_THAI,C.COURSE_NO,C.CREDIT, "
-                + "(TO_CHAR(C.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || C.SECTION_NO  || ')' )EXAM_DATE "
-                + " FROM ET_RECEIPT a,ET_REGIS_RU24 c, DBBACH00.VM_STUDENT_MOBILE d  where  A.STD_CODE = c.STD_CODE "
-                + " and A.RECEIPT_SEMESTER = c.SEMESTER  and A.RECEIPT_YEAR = c.year and A.REF_KEY = C.REF_KEY and C.STD_CODE = D.STD_CODE "
-                + " and a.RECEIPT_SEMESTER = ? and a.RECEIPT_YEAR = ? and C.STD_CODE = ?";
-        List<Map<String, Object>> result = db.queryList(sql, sem, year, stdcode);
+        String sql = " SELECT  A.YEAR,A.SEMESTER,A.STD_CODE,A.COURSE_NO,A.CREDIT,"
+                + " (TO_CHAR(A.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
+                + " TO_CHAR(C.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE"
+                + " FROM ET_REGIS_RU24 A, DBBACH00.VM_STUDENT_MOBILE B, ET_RECEIPT C"
+                + " WHERE  A.STD_CODE = B.STD_CODE AND A.STD_CODE = C.STD_CODE AND A.REF_KEY = C.REF_KEY AND A.YEAR = ? AND A.SEMESTER = ? AND A.STD_CODE = ? AND A.REF_KEY = ? ";
+        List<Map<String, Object>> result = db.queryList(sql, year, sem, stdcode, RefKey);
 
         for (Map<String, Object> row : result) {
 
