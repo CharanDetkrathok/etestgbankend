@@ -75,6 +75,8 @@ public class GenerateExamSeat extends HttpServlet {
                     studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester,
                             generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
 
+//                    System.out.println("std => " + studentData.get(0).getSTD_CODE() +" course => " + studentData.get(0).getCOURSE_NO() );
+                    System.out.println(studentData);
                     // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
                     if (!studentData.isEmpty()) {
 
@@ -93,10 +95,9 @@ public class GenerateExamSeat extends HttpServlet {
 
                         }
 
-                        System.out.println("มี นศ. ลงทะเบียน จำนวน นศ. ได้ที่นั่งแล้ว = " + countStudents);
+//                        System.out.println("มี นศ. ลงทะเบียน จำนวน นศ. ได้ที่นั่งแล้ว = " + countStudents);
                     } else {
-                        System.out.println(
-                                "ไม่มี นศ. ลงทะเบียน " + etExamSeat.get(ttt).getEXAM_DATE() + " คาบที่ " + sectionTemp);
+//                        System.out.println("ไม่มี นศ. ลงทะเบียน " + etExamSeat.get(ttt).getEXAM_DATE() + " คาบที่ " + sectionTemp);
                     }
                 }
 
@@ -140,13 +141,9 @@ public class GenerateExamSeat extends HttpServlet {
                     changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
 
             if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
-                // System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + " คาบที่ " +
-                // Section + " เต็ม ");
             } else {
                 countSeatThisRow += 1;
                 RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
-                // System.out.println("แถว " + buileRow.get(i).getROW_EXAM() + countSeatThisRow
-                // + " คาบที่ " + Section);
                 insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode,
                         ExamDate, Section, Credit, Course, StatusCourse);
             }
@@ -224,10 +221,10 @@ public class GenerateExamSeat extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -242,10 +239,10 @@ public class GenerateExamSeat extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

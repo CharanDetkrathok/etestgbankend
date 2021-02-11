@@ -232,12 +232,12 @@
                     <div class="header-menu">
 
                         <div class="user-area dropdown float-right">
-                            <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 ${user.USER_NAME} &nbsp; <img class="user-avatar rounded-circle" src="/etestgbackend/admin/images/logo2.png" alt="User Avatar"> 
                             </a>
 
                             <div class="user-menu dropdown-menu">
-                                <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                                <a class="nav-link" href="Logout"><i class="fa fa-power -off"></i>ออกจากระบบ</a>
                             </div>
                         </div>
 

@@ -89,6 +89,7 @@ public class RepETesting101 extends HttpServlet {
             // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
             REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
             List<REP_ETEST101> repETest = getRepETest101.RepETest101(YEAR, SEMESTER, registerDate);
+            System.out.println(repETest);
 
             // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
             ArrayList<REP_ETEST101> repETest101 = new ArrayList<REP_ETEST101>();

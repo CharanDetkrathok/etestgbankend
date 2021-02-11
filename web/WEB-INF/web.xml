@@ -18,6 +18,10 @@
         <servlet-class>com.et.login.Login</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.et.login.Logout</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetAdminCounter</servlet-name>
         <servlet-class>com.et.control.GetAdminCounter</servlet-class>
     </servlet>
@@ -180,6 +184,10 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetAdminCounter</servlet-name>

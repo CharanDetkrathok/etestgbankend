@@ -20,31 +20,13 @@ public class Logout extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
-        //request.getRequestDispatcher("admin/LogoutRedirect.jsp").include(request, response);
-        HttpSession session = request.getSession();
-        //session.invalidate();
+        HttpSession session = request.getSession(); 
         session.removeAttribute("user");
-        RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
-        rs.include(request, response);
-        out.close();
+        RequestDispatcher rs = request.getRequestDispatcher("login.jsp");
+        rs.forward(request, response);
 
-        /*  response.setContentType("text/html;charset=UTF-8");
-         PrintWriter out = response.getWriter();
-         try {
-         out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">");
-         out.println("<html>");
-         out.println("<head>");
-         out.println("<title>Servlet Logout</title>");            
-         out.println("</head>");
-         out.println("<body>");
-         out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
-         out.println("</body>");
-         out.println("</html>");
-         } finally {
-         out.close();
-         }*/
+      
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
