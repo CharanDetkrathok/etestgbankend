@@ -97,11 +97,12 @@
                 </div>
             </div>            
         </div>
+
         <div class="row" id="">
             <div class="col-lg-12">
                 <div class="card">              
-                    <table class="" id= "">
-                        
+                    <table style="margin: 20px;" class="" id= "">
+
                         <thead>
                         <br id="hid"><br id="hid"><br id="hid"><br id="hid">
                         <tr>
@@ -111,7 +112,7 @@
                         </tr>
                         <tr class="text-center">
                             <th colspan="6">
-                                <h6 class="text-center mb-2">REP-eTest101 สถาบันบริการวิชาการทางอิเล็กทรอนิกส์ มหาวิทยาลัยรามคำแหง</h6>
+                                <h6 class="text-center mb-2">สถาบันบริการวิชาการทางอิเล็กทรอนิกส์ มหาวิทยาลัยรามคำแหง</h6>
                             </th>
                         </tr>
                         <tr class="text-center">
@@ -128,20 +129,24 @@
                                     </c:choose> 
                                 </h6>
                             </th>
-                        </tr>
-                        <tr class="text-center" style="border-bottom: 1px solid black;">
-                            <th colspan="6" style="padding-bottom:20px;">
+                        </tr>                        
+                        <tr class="text-center">
+                            <th colspan="6">
                                 <h6 class="text-center">เครื่องที่ 567 ประจำวันที่ ${registerDate} คาบที่ 1 (จำแนกตามเลขที่ใบเสร็จ)</h6>
+                            </th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid black;">
+                            <th colspan="6">
+                                REP-eTest101
                             </th>
                         </tr>
                         <tr class="text-center" style="border-bottom: 1px solid black;">
                             <th style="padding-top:5px; padding-bottom:5px;">ลำดับ</th>
                             <th style="padding-top:5px; padding-bottom:5px;">เครื่องที่/เลขที่ใบเสร็จ</th>
                             <th style="padding-top:5px; padding-bottom:5px;">รหัสนักศึกษา</th>
-                            <th style="padding-top:5px; padding-bottom:5px;">ค่าลงทะเบียน</th>
-                            <th style="padding-top:5px; padding-bottom:5px;">ค่าวัสดุอุปกรณ์</th>
+                            <th style="padding-top:5px; padding-bottom:5px;">ค่าลงทะเบียนสอบ</th>
                             <th style="padding-top:5px; padding-bottom:5px;">รวม</th>                            
-                        </tr>     
+                        </tr>   
                         </thead>                       
                         <tbody>
                             <%
@@ -176,7 +181,6 @@
                                 <td><%= e.getSLIP_NO()%></td>
                                 <td><%= e.getSTD_CODE()%></td>
                                 <td><%= Amount%></td>
-                                <td> - </td>
                                 <td><%= Amount%></td>  
 
                             </tr>
@@ -211,7 +215,6 @@
                             <td style="padding-top:5px; padding-bottom:5px;"><b>Counter totals</b></td>
                             <td style="padding-top:5px; padding-bottom:5px;"></td>
                             <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>
-                            <td style="padding-top:5px; padding-bottom:5px;"></td>
                             <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>                            
                         </tr>
                         <tr class="text-center"  style="border-bottom: 1px solid black;">
@@ -219,7 +222,6 @@
                             <td style="padding-top:5px; padding-bottom:5px;"><b>Period totals</b></td>
                             <td style="padding-top:5px; padding-bottom:5px;"></td>
                             <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>
-                            <td style="padding-top:5px; padding-bottom:5px;"></td>
                             <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>                            
                         </tr>
                         <tfoot>
@@ -231,6 +233,7 @@
                 </div>
             </div><!-- /# column -->
         </div>
+
         <!--  /Traffic -->
         <div class="clearfix"></div>
 

@@ -93,16 +93,15 @@
                                                 <th scope="col">วิชา</th>
                                                 <th scope="col">หน่วยกิต</th>
                                                 <th scope="col">คาบสอบ</th>
-
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="text-center">
                                             <c:forEach items="${ReceiptData}" var="ReceiptData"  varStatus="loop">                                                      
                                                 <tr>
                                                     <td><c:out value="${loop.count}"/></td>
-                                                    <td>${ReceiptData.COURSE_NO}</td>
-                                                    <td>${ReceiptData.CREDIT}</td>
-                                                    <td>${ReceiptData.EXAM_DATE}</td>
+                                                    <td> ${ReceiptData.COURSE_NO}</td>
+                                                    <td> ${ReceiptData.CREDIT}</td>
+                                                    <td> ${ReceiptData.EXAM_DATE}</td>
                                                 </tr> 
                                             </c:forEach>
                                         </tbody>

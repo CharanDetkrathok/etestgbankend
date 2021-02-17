@@ -121,6 +121,96 @@
                 document.getElementById(sTargetID).value = oFileInput.value;
             }
 
+//            function countDown()
+//            {
+//                timeA = new Date();
+//                var timeDifference = timeB - timeA;
+//                if (timeDifference >= 0)
+//                {
+//                    timeDifference = timeDifference / 1000;
+//                    timeDifference = Math.floor(timeDifference);
+//                    var wan = Math.floor(timeDifference / 86400);
+//                    var l_wan = timeDifference % 86400;
+//                    var hour = Math.floor(l_wan / 3600);
+//                    var l_hour = l_wan % 3600;
+//                    var minute = Math.floor(l_hour / 60);
+//                    var second = l_hour % 60;
+//
+//                    if (minute == 0 || minute < 0)
+//                    {
+//                        alert('ระบบขาดการเชื่อมต่อเกิน 20 นาที กรุณา login ใหม่อีกครั้ง');
+//                        sessionStorage.clear();
+//                        localStorage.clear();
+//                        //top.location.href = '@Url.Action("Logout", "/eduptests/Logout")';
+//                        //---------------------------------
+//                        window.onload = function () {
+//                            if (typeof history.pushState === "function") {
+//                                history.pushState("jibberish", null, null);
+//                                window.onpopstate = function () {
+//                                    history.pushState('newjibberish', null, null);
+//                                    // Handle the back (or forward) buttons here
+//                                    // Will NOT handle refresh, use onbeforeunload for this.
+//                                };
+//                            } else {
+//                                var ignoreHashChange = true;
+//                                window.onhashchange = function () {
+//                                    if (!ignoreHashChange) {
+//                                        ignoreHashChange = true;
+//                                        window.location.hash = Math.random();
+//                                        // Detect and redirect change here
+//                                        // Works in older FF and IE9
+//                                        // * it does mess with your hash symbol (anchor?) pound sign
+//                                        // delimiter on the end of the URL
+//                                    } else {
+//                                        ignoreHashChange = false;
+//                                    }
+//                                };
+//                            }
+//                        }
+//                        //---------------------------------
+//
+//                        window.location = "/etestgbackend/Login";
+//                    }
+//                } else
+//                {
+//                    clearInterval(iCountDown);
+//                    alert('ระบบขาดการเชื่อมต่อเกิน 20 นาที กรุณา login ใหม่อีกครั้ง');
+//                    localStorage.clear();
+//                    sessionStorage.clear();
+//                    //top.location.href = '@Url.Action("Logout", "/eduptests/Logout")';
+//                    //---------------------------------
+//                    window.onload = function () {
+//                        if (typeof history.pushState === "function") {
+//                            history.pushState("jibberish", null, null);
+//                            window.onpopstate = function () {
+//                                history.pushState('newjibberish', null, null);
+//                                // Handle the back (or forward) buttons here
+//                                // Will NOT handle refresh, use onbeforeunload for this.
+//                            };
+//                        } else {
+//                            var ignoreHashChange = true;
+//                            window.onhashchange = function () {
+//                                if (!ignoreHashChange) {
+//                                    ignoreHashChange = true;
+//                                    window.location.hash = Math.random();
+//                                    // Detect and redirect change here
+//                                    // Works in older FF and IE9
+//                                    // * it does mess with your hash symbol (anchor?) pound sign
+//                                    // delimiter on the end of the URL
+//                                } else {
+//                                    ignoreHashChange = false;
+//                                }
+//                            };
+//                        }
+//                    }
+//                    //---------------------------------
+//
+//                    window.location = "/etestgbackend/Login";
+//                }
+//            }
+
+            var iCountDown = setInterval("countDown()", 10000);   //ทุกๆ 10 วินาที วิ่งเช็ค session timeout 1 ครั้ง
+
 
         </script>
     </head>
@@ -140,6 +230,10 @@
                                 <li class="li-line-buttom"><i class="fa fa-puzzle-piece"></i>
                                     <a href="/etestgbackend/GetAdminCounter">กำหนดปี/ภาค การศึกษา</a>
                                 </li>
+                                <!--                                <li class="li-line-buttom">
+                                                                    <i class="fa fa-id-badge"></i></i>
+                                                                    <a href="/etestgbackend/ShowEditSeat">Files Setting</a>
+                                                                </li>-->
                             </ul>
                         </li> 
                         <li class="menu-title"><i class="menu-icon fa fa-share"></i> Seat Managements</li><!-- /.menu-title -->
@@ -179,7 +273,7 @@
                                 </li>
                                 <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
                                     <a href="/etestgbackend/ExportETRU25et">RU25et</a>
-                                </li>                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
+                                </li>                               
                             </ul>
                         </li> 
 
@@ -205,7 +299,6 @@
                                 <li class="li-line-buttom"><i class="menu-icon fa fa-file-text"></i>
                                     <a href="/etestgbackend/RepETesting103"><span style="font-style: italic; ">พิมพ์สรุปเงินรวมทั้งหมด</span></a>
                                 </li>
-                                <!--li><i class="menu-icon ti-themify-logo"></i><a href="#">xxxxxxxxxx</a></li -->
                             </ul>
                         </li> 
                         <!-- End report components -->
@@ -237,7 +330,7 @@
                             </a>
 
                             <div class="user-menu dropdown-menu">
-                                <a class="nav-link" href="Logout"><i class="fa fa-power -off"></i>ออกจากระบบ</a>
+                                <a class="nav-link" href="/etestgbackend/Logout"><i class="fa fa-power -off"></i>ออกจากระบบ</a>
                             </div>
                         </div>
 

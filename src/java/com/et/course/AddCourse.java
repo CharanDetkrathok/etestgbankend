@@ -30,13 +30,15 @@ public class AddCourse extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String sem = request.getParameter("sem");
-        String year = request.getParameter("year");
+        
+        
 
         Database db = new Database();
         ET_COUNTER_ADMIN_TABLE getAdminTable = new ET_COUNTER_ADMIN_TABLE(db);
         ET_COUNTER_ADMIN getCounterData = getAdminTable.findCounterData();
+        
+        String year = getCounterData.getSTUDY_YEAR();
+        String sem = getCounterData.getSTUDY_SEMESTER();
 
         if (request.getParameter("submititem") != null) {
 
@@ -80,6 +82,16 @@ public class AddCourse extends HttpServlet {
                 response.sendRedirect("admin/faild.jsp");
             }
         } else {
+
+            ET_RU_COURSE_TABLE GET_RU_COURSE = new ET_RU_COURSE_TABLE(db);
+            List<ET_RU_COURSE> ruCourse = GET_RU_COURSE.findAll(year, sem);
+
+            System.out.println(year);
+            System.out.println(sem);
+            System.out.println(ruCourse);
+            System.out.println(ruCourse.size());
+            request.setAttribute("ruCourse", ruCourse);
+
             request.setAttribute("getCounterData", getCounterData);
             RequestDispatcher rs = request.getRequestDispatcher("admin/AddCourse.jsp");
             rs.forward(request, response);

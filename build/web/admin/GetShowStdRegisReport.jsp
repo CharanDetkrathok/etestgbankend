@@ -93,7 +93,7 @@
 
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="text-center">
                                             <c:forEach items="${getRecieptDataList}" var="getRecieptDataList" begin="0" end="${cnt}" varStatus="loop">                                                      
                                                 <tr>
                                                     <td><c:out value="${loop.count}"/></td>

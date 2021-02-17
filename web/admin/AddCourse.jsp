@@ -1,4 +1,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List"%>
+<%@page import="sun.java2d.cmm.ProfileDeferralMgr"%>
+<%@ page import="com.et.model.ET_RU_COURSE"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -171,7 +174,37 @@
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); 
         color: #999;
     }
+
+    .hidden { 
+        display: none;
+    }
+
+    .bg-display {
+        background-color: rgb(251, 251, 251);
+        border-bottom: 1px solid #999; 
+        border-left: 1px solid #999;
+        border-right: 1px solid #999;
+        padding: 5px; 
+    }
+
+    .courseno-text-input {        
+        border-radius: 0; 
+        border: 1px solid #999;
+        box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.5); 
+    }
+
+    #ru-course-tasks {
+        width: 89%;
+        position: absolute;
+        z-index: 200;
+    }
+
+    #ru-course-tasks li:hover {
+        background-color: #eee;
+        cursor: pointer;
+    }
 </style>
+
 <!-- Content -->
 <div class="content">
     <!-- Animated -->
@@ -219,20 +252,41 @@
                             <div class="col-3 item-wrap-container">
                                 <label for="course-no" style="font-weight: bold;">รหัสวิชา</label>
                                 <div class="input-group"> 
-                                    <input type="text" name="courseno" class="form-control" id="course-no" maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" onkeypress="return changeToUpperCase(event, this)"  required>
+                                    <input type="text" name="courseno" class="form-control courseno-text-input" id="course-no" 
+                                           maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" 
+                                           onkeypress="return changeToUpperCase(event, this)"  
+                                           required>
                                 </div>
-                                <div id="wrntxt" style="display: none; color: red;"> **กรอกรหัสวิชาให้ถูก</div>
+
+                                <!-- Interpolation วิชา และหน่วยกิต ที่มหาลัยเปิดสอน เอาไว้ทำ Navigater search filter แสดง วิชาอัตโนมัต -->
+
+                                <ul id="ru-course-tasks">
+                                    <%
+                                        List<ET_RU_COURSE> ruCourse = (List<ET_RU_COURSE>) request.getAttribute("ruCourse");
+                                        for (ET_RU_COURSE ruC : ruCourse) {
+                                    %>
+                                    <li class="hidden bg-display" id="select-course-items">
+                                        <span><%= ruC.getCOURSE_NO()%></span>
+                                        <span>( <%= ruC.getCREDIT()%> )</span>
+                                        <input hidden id="course-no-items-span" value="<%= ruC.getCOURSE_NO()%>">
+                                        <input hidden id="credit-items-span" value="<%= ruC.getCREDIT()%>">
+                                    </li>
+                                    <%
+                                        }
+                                    %>
+                                </ul>
+
+                                <!-- จบ Interpolation วิชา และหน่วยกิต ที่มหาลัยเปิดสอน -->
                             </div>
                             <div class="col-3 item-wrap-container">
                                 <label for="cr" style="font-weight: bold;">จำนวนหน่วยกิต</label> 
-                                <select name="credit" id="cr" class="form-control" required >
+                                <select name="credit" id="cr" class="form-control courseno-text-input" required >
                                     <option value=""> เลือกหน่วยกิต </option>
                                     <option value="0"> (0) ไม่มีหน่วยกิต </option>
                                     <option value="1"> 1 </option>
                                     <option value="2"> 2 </option>
                                     <option value="3"> 3 </option>
-                                </select>
-                                <div  id="crwrntxt"  style="display: none; color: red;"> **ระบุจำนวนหน่วยกิต</div>
+                                </select>                                 
                             </div>
                             <div class="col-4 mt-2 item-wrap-container">           
                                 <br>
@@ -294,8 +348,49 @@
     <!-- /.content -->
     <div class="clearfix"></div>
     <!-- Footer -->
-    <!-- Footer -->
+    <!-- Footer -->    
+
     <script>
+
+//---------------------- วิชา และหน่วยกิต ที่มหาลัยเปิดสอน -----------------------------
+
+        let ruCourseTasks = document.querySelector('#ru-course-tasks').getElementsByTagName('li');
+        let courseNoOnInputText = document.querySelector('#course-no');
+
+        courseNoOnInputText.addEventListener('keyup', (ev) => {
+            let text = ev.target.value;
+            console.log(text);
+            let pat = new RegExp(text, 'i');
+            if (text.length > 1) {
+                document.querySelector('#ru-course-tasks').classList.remove("hidden");
+                for (let i = 0; i < ruCourseTasks.length; i++) {
+                    let item = ruCourseTasks[i];
+                    if (pat.test(item.innerText)) {
+                        item.classList.remove("hidden");
+                    } else {
+                        item.classList.add("hidden");
+                    }
+                }
+            } else {
+                for (let i = 0; i < ruCourseTasks.length; i++) {
+                    let item = ruCourseTasks[i];
+                    item.classList.add("hidden");
+                }
+            }
+        });
+
+        let ruCourseTasksClickForSelected = document.querySelector('#ru-course-tasks');
+        let courseNoSelected = document.querySelector('#course-no');
+        let craditSelected = document.querySelector('#cr');
+
+        ruCourseTasksClickForSelected.addEventListener('click', event => {
+            courseNoSelected.value = event.target.querySelector('input#course-no-items-span').value;
+            craditSelected.value = event.target.querySelector('input#credit-items-span').value;
+        }, false);
+
+//---------------------- (จบ) วิชา และหน่วยกิต ที่มหาลัยเปิดสอน -----------------------------
+
+
 
 // ------------------------- เพิ่มข้อมูลรายวิชา เข้าไปใน Item lists -------------------
 
@@ -416,7 +511,7 @@
 
                     const lists = document.querySelectorAll('li#item-list');
                     let submitBtn = document.querySelector('button#submit');
-                    
+
                     listItem.remove();
                     let ulIncomplate = document.querySelector('ul#incomplete-tasks');
                     if (ulIncomplate.childNodes[0].nextSibling === null) {
@@ -438,6 +533,9 @@
         }
 
         addItemBtn.onclick = () => {
+            
+            let ruCourseTasksHidden = document.querySelector('#ru-course-tasks');
+            ruCourseTasksHidden.classList.toggle("hidden");
 
             mustInputText.innerHTML = '';
             mustInputText.style = '';

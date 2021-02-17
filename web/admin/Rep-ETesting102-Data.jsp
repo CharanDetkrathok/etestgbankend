@@ -101,12 +101,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">              
-                    <table cellpadding="1" cellspacing="1" id="DataPanel" class="gridtable"> 
+                    <table style="margin: 20px;" cellpadding="1" cellspacing="1" id="DataPanel" class="gridtable"> 
                         <thead>
                         <br id="hid"><br id="hid"><br id="hid"><br id="hid">
                         <tr class="text-center">
                             <th colspan="5">
-                                <h6 class="text-center mb-2">REP-eTest102 สถาบันบริการวิชาการทางอิเล็กทรอนิกส์ มหาวิทยาลัยรามคำแหง</h6>
+                                <h6 class="text-center mb-2">สถาบันบริการวิชาการทางอิเล็กทรอนิกส์ มหาวิทยาลัยรามคำแหง</h6>
                             </th>
                         </tr>
                         <tr class="text-center">
@@ -124,9 +124,14 @@
                                 </h6>
                             </th>
                         </tr>
-                        <tr class="text-center" style="border-bottom: 1px solid black;">
-                            <th colspan="5" style="padding-bottom:20px;">
+                        <tr class="text-center">
+                            <th colspan="5">
                                 <h6 class="text-center">จำแนกตามคาบและเครื่องรับเงิน ประจำวันที่ ${registerDate} </h6>
+                            </th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid black;">
+                            <th colspan="5">
+                                REP-eTest102
                             </th>
                         </tr>
                         <tr class="text-center" style="border-bottom: 1px solid black;">

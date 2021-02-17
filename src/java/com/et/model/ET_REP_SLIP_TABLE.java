@@ -43,7 +43,7 @@ public class ET_REP_SLIP_TABLE {
                     .run_no((String) row.get("RUN_NO"))
                     .REF_KEY((String) row.get("REF_KEY"))
                     .CHECKDIGIT((String) row.get("CHECKDIGIT"))
-                   // .SLIP((String) row.get("CHECKDIGIT"))
+                    // .SLIP((String) row.get("CHECKDIGIT"))
                     .build();
             /* user.setXxtthh((Integer) row.get("USERID"));
              user.setUsersname((String) row.get("USERNAME"));
@@ -188,4 +188,60 @@ public class ET_REP_SLIP_TABLE {
 
         return setAltmodel(row);
     }
+
+    public ET_REP_SLIP findSlipNoByRef(String stdid, String sem, String year, String refkey) {
+        String sql = "select to_char(max(to_number(SLIP_NO)),'fm000000')run_no from ET_RECEIPT where STD_CODE = ? and RECEIPT_SEMESTER = ?"
+                + " and RECEIPT_year = ? and REF_KEY = ?";
+        Map<String, Object> row = db.querySingle(sql, stdid, sem, year, refkey);
+
+        return setAltmodel(row);
+
+    }
+
+    public ET_REP_SLIP findSlipNo(String stdid, String sem, String year, String refkey) {
+        String sql = "select to_char(SLIP_NO,'fm000000')run_no from ET_RECEIPT where STD_CODE = ? and RECEIPT_SEMESTER = ?"
+                + "  and RECEIPT_year = ? and REF_KEY  = ?";
+        Map<String, Object> row = db.querySingle(sql, stdid, sem, year, refkey);
+
+        return setAltmodel(row);
+
+    }
+
+    public int getMaxSlip() {
+        int maxusr = 0;
+        String sql = "select to_char(max(to_number(SLIP_NO)))SLIP_NO from et_receipt";
+        Map<String, Object> row = db.querySingle(sql);
+
+        if (row != null) {
+            maxusr = Integer.parseInt((String) row.get("SLIP_NO"));
+            return maxusr;
+        } else {
+            return 0;
+        }
+
+    }
+
+    public ET_REP_SLIP genSlipRunNo() {
+        // String sql = "select to_char(max(to_number(SLIP_NO) + 1),'fm00000')run_no from ET_RECEIPT";
+        String sql = "select to_char((max(to_number(SLIP_NO)))+ 1,'fm000000')run_no from ET_RECEIPT";
+        Map<String, Object> row = db.querySingle(sql);
+
+        return setAltmodel(row);
+
+    }
+
+    public Boolean updateSlipt(ET_REP_SLIP obj) {
+        String sql = "update ET_RECEIPT set SLIP_NO = ? "
+                + " where STD_CODE = ? and REF_KEY = ? and RECEIPT_SEMESTER = ? and RECEIPT_YEAR = ? ";
+        int chkUpdate = db.update(sql, obj.getSLIP_NO(), obj.getSTD_CODE(), obj.getREF_KEY(),
+                obj.getSEMESTER(), obj.getYEAR());
+        try {
+            return chkUpdate > 0;
+
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
 }

@@ -173,7 +173,7 @@ public class ET_RECEIPT_TABLE {
     public List<ET_RECEIPT> findReceiptDetail(String year, String secmester, String stdCode, String RefKey) {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
         String sql = " SELECT  A.YEAR,A.SEMESTER,A.STD_CODE,A.COURSE_NO,A.CREDIT,"
-                + " (TO_CHAR(A.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
+                + " (TO_CHAR(A.EXAM_DATE, 'dd month yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
                 + " TO_CHAR(C.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE"
                 + " FROM ET_REGIS_RU24 A, DBBACH00.VM_STUDENT_MOBILE B, ET_RECEIPT C"
                 + " WHERE  A.STD_CODE = B.STD_CODE AND A.STD_CODE = C.STD_CODE AND A.REF_KEY = C.REF_KEY AND A.YEAR = ? AND A.SEMESTER = ? AND A.STD_CODE = ? AND A.REF_KEY = ? ";
@@ -477,7 +477,7 @@ public class ET_RECEIPT_TABLE {
     public List<ET_RECEIPT> findReceiptSelectStdAll(String sem, String year, String stdcode, String RefKey) {
         List<ET_RECEIPT> list = new ArrayList<ET_RECEIPT>();
         String sql = " SELECT  A.YEAR,A.SEMESTER,A.STD_CODE,A.COURSE_NO,A.CREDIT,"
-                + " (TO_CHAR(A.EXAM_DATE, 'dd monthyyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
+                + " (TO_CHAR(A.EXAM_DATE, 'dd month yyyy', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI') || ' ('  || A.SECTION_NO  || ')' )EXAM_DATE ,B.NAME_THAI,"
                 + " TO_CHAR(C.REGIS_DATE, 'dd/mm/yyyy hh24:mi:ss', 'NLS_CALENDAR=''THAI BUDDHA'' NLS_DATE_LANGUAGE=THAI')REGIS_DATE"
                 + " FROM ET_REGIS_RU24 A, DBBACH00.VM_STUDENT_MOBILE B, ET_RECEIPT C"
                 + " WHERE  A.STD_CODE = B.STD_CODE AND A.STD_CODE = C.STD_CODE AND A.REF_KEY = C.REF_KEY AND A.YEAR = ? AND A.SEMESTER = ? AND A.STD_CODE = ? AND A.REF_KEY = ? ";
