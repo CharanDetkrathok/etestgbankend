@@ -35,13 +35,13 @@ public class GetSlipt extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String stdcode = "6301503105";
-        String refkey = "DRKEE210209235900775";
-        String sem = "2";
-        String year = "2563";
+//        String stdcode = "6301503105";
+//        String refkey = "DRKEE210209235900775";
+//        String sem = "2";
+//        String year = "2563";
 
         // String tmpstdcode = "NjMwMTAwMzI1NA==";
-        /*
+        
         String stdcode = decodeparam(request.getParameter("stdcode"));       
        // byte[] decodedtmpstdcode = Base64.getDecoder().decode(tmpstdcode);
        // String stdcode = new String(decodedtmpstdcode);
@@ -56,7 +56,7 @@ public class GetSlipt extends HttpServlet {
 
         String year =  decodeparam(request.getParameter("year"));
         //byte[] decodedtmpyear = Base64.getDecoder().decode(tmpyear);
-        //String year = new String(decodedtmpyear);*/
+        //String year = new String(decodedtmpyear);
         //tmp stmt
         String getfiscal = "";
         String gsubStrfiscal = "";
