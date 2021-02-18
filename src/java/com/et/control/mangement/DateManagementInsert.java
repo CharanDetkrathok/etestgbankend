@@ -45,6 +45,15 @@ public class DateManagementInsert extends HttpServlet {
         // ----- Query ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว -------------------
         ET_BUILE_ROW_TABLE getBuildRowTable = new ET_BUILE_ROW_TABLE(db);
         ET_BUILE_ROW BuildRow = getBuildRowTable.findSumSeatExam();
+        
+        List<ET_BUILE_ROW> getBuildRow = getBuildRowTable.findAll();
+        
+        // ---- ผลรวมของจำนวนที่นั่งทั้งหมด -------------------------------------------
+        int sumSeat = 0;
+        for (int i = 0; i < getBuildRow.size(); i++) {
+            sumSeat += getBuildRow.get(i).getSEAT_EXAM().intValue();
+        }
+        request.setAttribute("sumSeat", sumSeat);
 
         // ------- ข้อมูล ปี/ภาค/ตึกสอบ/แถว/จำนวนที่นั่งต่อแถว ------------------------
         request.setAttribute("BuildRow", BuildRow);

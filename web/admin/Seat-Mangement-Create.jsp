@@ -20,7 +20,7 @@
     hr {
         border-top: 1px solid #999;        
     }
-    
+
     li {
         list-style: none;
     }
@@ -470,6 +470,9 @@
                         onHiddenMode.classList.remove('on-hidden-mode');
                         onHiddenMode.classList.add('hidden-mode');
 
+                        duplicatedInputText.innerHTML = '';
+                        duplicatedInputText.style = '';
+
                         submitBtn.classList.remove('hin-subimt-btn');
                         submitBtn.classList.add('subimt-btn');
                         submitBtn.classList.remove('btn-light');
@@ -492,7 +495,7 @@
                 if (li.childNodes[1].value === rowExam.value) {
 
                     isHasItemList = true;
-                    duplicatedInputText.innerHTML = 'แถวสอบ <b style="color: red;">' + rowExam.value + '</b> มีอยู่ใน List แล้ว';
+                    duplicatedInputText.innerHTML = 'แถวสอบ <b style="color: red; text-shadow: 1px 1px 2px #fff;">' + rowExam.value + '</b> มีอยู่ใน List แล้ว';
                     duplicatedInputText.style = 'padding: 10px;';
                 }
             });

@@ -161,7 +161,7 @@
                                             <b> Summer /${getCounterData.STUDY_YEAR}</b>
                                         </c:when>
                                         <c:otherwise>
-                                            <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
+                                            <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>&nbsp;&nbsp;&nbsp;<font color="#0027FF"><b>จำนวนที่นั่ง / คาบสอบ ( คาบละไม่เกิน ${sumSeat} ที่นั่ง)</b></font>
                                         </c:otherwise>
                                     </c:choose>  
                                 </label>
@@ -203,7 +203,7 @@
                                     <div class="row">
                                         <div class="col-6 form-group">
                                             <label for="">จำนวนที่นั่งสอบ / คาบสอบ</label>
-                                            <input type="number" class="form-control" name="seat_exam" id="seat_exam" min="1" value="${BuildRow.SEAT_EXAM}" disabled="true">
+                                            <input type="number" class="form-control" name="seat_exam" id="seat_exam" min="1" value="${BuildRow.SEAT_EXAM}">
                                         </div>
                                         <div class="col-6 form-group" style="margin-top: 35px;">        
                                             <button type="button" name="addItems" id="addItems" class="btn btn-success col-3" style=" border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
@@ -298,6 +298,9 @@
 
                         onHiddenMode.classList.remove('on-hidden-mode');
                         onHiddenMode.classList.add('hidden-mode');
+                        
+                        duplicatedInputText.innerHTML = '';
+                        duplicatedInputText.style = '';
 
                         submitBtn.classList.remove('hin-subimt-btn');
                         submitBtn.classList.add('subimt-btn');
@@ -321,7 +324,7 @@
                 if (li.childNodes[0].value === dateExam.value) {
 
                     isHasItemList = true;
-                    duplicatedInputText.innerHTML = 'วันสอบนี้ <b style="color: red;">' + dateExam.value + '</b> มีอยู่ใน List แล้ว';
+                    duplicatedInputText.innerHTML = 'วันสอบนี้ <b style="color: red; text-shadow: 1px 1px 2px #fff;">' + dateExam.value + '</b> มีอยู่ใน List แล้ว';
                     duplicatedInputText.style = 'padding: 10px;';
                 }
             });

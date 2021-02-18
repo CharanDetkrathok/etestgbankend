@@ -194,7 +194,7 @@
     }
 
     #ru-course-tasks {
-        width: 89%;
+        width: 88%;
         position: absolute;
         z-index: 200;
     }
@@ -255,7 +255,7 @@
                                     <input type="text" name="courseno" class="form-control courseno-text-input" id="course-no" 
                                            maxlength="7" placeholder="กรอกรหัสวิชา 7 ตัวอักษร" 
                                            onkeypress="return changeToUpperCase(event, this)"  
-                                           required>
+                                           required autocomplete="off">
                                 </div>
 
                                 <!-- Interpolation วิชา และหน่วยกิต ที่มหาลัยเปิดสอน เอาไว้ทำ Navigater search filter แสดง วิชาอัตโนมัต -->
@@ -282,7 +282,7 @@
                                 <label for="cr" style="font-weight: bold;">จำนวนหน่วยกิต</label> 
                                 <select name="credit" id="cr" class="form-control courseno-text-input" required >
                                     <option value=""> เลือกหน่วยกิต </option>
-                                    <option value="0"> (0) ไม่มีหน่วยกิต </option>
+                                    <option value="0"> 0 </option>
                                     <option value="1"> 1 </option>
                                     <option value="2"> 2 </option>
                                     <option value="3"> 3 </option>
@@ -358,23 +358,30 @@
         let courseNoOnInputText = document.querySelector('#course-no');
 
         courseNoOnInputText.addEventListener('keyup', (ev) => {
-            let text = ev.target.value;
-            console.log(text);
+            
+            let text = ev.target.value;            
             let pat = new RegExp(text, 'i');
+            
             if (text.length > 1) {
+                
                 document.querySelector('#ru-course-tasks').classList.remove("hidden");
+                
                 for (let i = 0; i < ruCourseTasks.length; i++) {
-                    let item = ruCourseTasks[i];
-                    if (pat.test(item.innerText)) {
-                        item.classList.remove("hidden");
-                    } else {
+                    
+                    let item = ruCourseTasks[i];  
+                    
+                    if (pat.test(item.innerText)) {                        
+                        item.classList.remove("hidden");                        
+                    } else {                        
                         item.classList.add("hidden");
                     }
                 }
             } else {
                 for (let i = 0; i < ruCourseTasks.length; i++) {
+                    
                     let item = ruCourseTasks[i];
                     item.classList.add("hidden");
+                    
                 }
             }
         });
@@ -384,8 +391,16 @@
         let craditSelected = document.querySelector('#cr');
 
         ruCourseTasksClickForSelected.addEventListener('click', event => {
+            
             courseNoSelected.value = event.target.querySelector('input#course-no-items-span').value;
             craditSelected.value = event.target.querySelector('input#credit-items-span').value;
+            
+            for (let i = 0; i < ruCourseTasks.length; i++) {
+                
+                let item = ruCourseTasks[i];
+                item.classList.add("hidden");
+                
+            }
         }, false);
 
 //---------------------- (จบ) วิชา และหน่วยกิต ที่มหาลัยเปิดสอน -----------------------------
@@ -533,7 +548,7 @@
         }
 
         addItemBtn.onclick = () => {
-            
+
             let ruCourseTasksHidden = document.querySelector('#ru-course-tasks');
             ruCourseTasksHidden.classList.toggle("hidden");
 
@@ -546,13 +561,12 @@
             const lists = document.querySelectorAll('li#item-list');
             let isHasItemList = false;
             lists.forEach((li) => {
-                console.log(li.firstChild.value);
 
-                if (li.firstChild.value === courseNo.value) {
+                if (li.firstChild.value === courseNo.value && li.children[1].value === cradit.value) {
 
                     isHasItemList = true;
 
-                    duplicatedInputText.innerHTML = 'รหัสวิชานี้มีอยู่ใน List แล้ว';
+                    duplicatedInputText.innerHTML = 'รหัสวิชา <b style="color: red; text-shadow: 1px 1px 2px #fff;">' + courseNo.value +'</b> มีอยู่ใน List แล้ว';
                     duplicatedInputText.style = 'padding: 10px;';
 
                     courseNo.value = '';

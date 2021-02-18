@@ -60,7 +60,7 @@
                                             <b> Summer /${getCounterData.STUDY_YEAR}</b>
                                         </c:when>
                                         <c:otherwise>
-                                            <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>
+                                            <b> ${getCounterData.STUDY_SEMESTER}/${getCounterData.STUDY_YEAR}</b>&nbsp;&nbsp;&nbsp;<font color="#0027FF"><b>จำนวนที่นั่ง / คาบสอบ ( คาบละไม่เกิน ${sumSeat} ที่นั่ง)</b></font>
                                         </c:otherwise>
                                     </c:choose>  
                                 </label>
