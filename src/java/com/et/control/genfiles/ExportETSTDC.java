@@ -120,7 +120,7 @@ public class ExportETSTDC extends HttpServlet {
             if (!lists.isEmpty()) {
 
                 response.setContentType("text/plain");
-                response.setHeader("Content-Disposition", "attachment; filename=\"ET_STDC.txt\"");
+                response.setHeader("Content-Disposition", "attachment; filename=\"ET_STDC.TXT\"");
                 try {
                     OutputStream outputStream = response.getOutputStream();
                     String outputResult = "";

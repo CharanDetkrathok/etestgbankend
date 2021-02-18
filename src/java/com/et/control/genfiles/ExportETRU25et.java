@@ -96,7 +96,7 @@ public class ExportETRU25et extends HttpServlet {
             if (!lists.isEmpty()) {
 
                 response.setContentType("text/plain");
-                response.setHeader("Content-Disposition", "attachment; filename=\"RU25et.txt\"");
+                response.setHeader("Content-Disposition", "attachment; filename=\"RU25et.TXT\"");
                 try {
                     OutputStream outputStream = response.getOutputStream();
                     String outputResult = "";
