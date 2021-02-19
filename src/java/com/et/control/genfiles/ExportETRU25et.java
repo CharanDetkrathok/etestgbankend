@@ -1,12 +1,16 @@
 package com.et.control.genfiles;
 
 import com.et.model.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -25,7 +29,7 @@ public class ExportETRU25et extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
+        
 
         Database db = new Database();
 
@@ -42,6 +46,8 @@ public class ExportETRU25et extends HttpServlet {
         String CheckExportText = request.getParameter("Export");
 
         if (getCounterData != null && CheckExportText == null) {
+            
+            response.setContentType("text/html;charset=UTF-8");
 
             RequestDispatcher rs = request.getRequestDispatcher("admin/Export-ETRU25et-Main.jsp");
             rs.forward(request, response);
@@ -94,7 +100,9 @@ public class ExportETRU25et extends HttpServlet {
             System.out.println("countStudents => " + countStudents);
 
             if (!lists.isEmpty()) {
-
+                
+                response.reset();
+                response.setCharacterEncoding("US-ASCII");
                 response.setContentType("text/plain");
                 response.setHeader("Content-Disposition", "attachment; filename=\"RU25et.TXT\"");
                 try {
@@ -105,11 +113,13 @@ public class ExportETRU25et extends HttpServlet {
                         outputResult = list.getColumnn1() + list.getColumnn2() + list.getColumnn3() + "\n";
                         outputStream.write(outputResult.getBytes());
                     }
+                    
                     outputStream.flush();
                     outputStream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                                
 
             } else {
 

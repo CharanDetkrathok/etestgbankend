@@ -1,17 +1,14 @@
 package com.et.control.genfiles;
 
 import com.et.model.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -30,7 +27,6 @@ public class ExportETSTDC extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
 
         Database db = new Database();
 
@@ -48,6 +44,8 @@ public class ExportETSTDC extends HttpServlet {
 
         if (getCounterData != null && CheckExportText == null) {
 
+            response.setContentType("text/html;charset=UTF-8");
+
             RequestDispatcher rs = request.getRequestDispatcher("admin/Export-ETSTDC-Main.jsp");
             rs.forward(request, response);
 
@@ -64,8 +62,8 @@ public class ExportETSTDC extends HttpServlet {
             ArrayList<ET_STDC> lists = new ArrayList<ET_STDC>();
 
             ExportET_STDC = getExportET_STDC.findExportEtSTDCAll(YEAR, SEMESTER); // --- ค้นข้อมูลทั้งหมด ทุก
-                                                                                  // วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
-            System.err.println(ExportET_STDC);
+            // วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
+//            System.err.println(ExportET_STDC);
             // นับจำนวน นศ.
             int countStudents = 0;
             if (!ExportET_STDC.isEmpty()) {
@@ -118,7 +116,10 @@ public class ExportETSTDC extends HttpServlet {
             System.out.println("countStudents => " + countStudents);
 
             if (!lists.isEmpty()) {
-
+                System.out.println("get 1 => " + response.getCharacterEncoding());
+                response.reset();
+                response.setCharacterEncoding("US-ASCII");
+                System.out.println("get 2 => " + response.getCharacterEncoding());
                 response.setContentType("text/plain");
                 response.setHeader("Content-Disposition", "attachment; filename=\"ET_STDC.TXT\"");
                 try {
@@ -133,6 +134,7 @@ public class ExportETSTDC extends HttpServlet {
                                 + list.getStdc_score_M() + list.getStdc_score_F() + list.getStdc_score_chsum() + "\n";
                         outputStream.write(outputResult.getBytes());
                     }
+
                     outputStream.flush();
                     outputStream.close();
                 } catch (Exception e) {
@@ -155,10 +157,10 @@ public class ExportETSTDC extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -173,10 +175,10 @@ public class ExportETSTDC extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
