@@ -75,8 +75,11 @@ public class GenerateExamSeat extends HttpServlet {
                     studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester,
                             generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
 
-//                    System.out.println("std => " + studentData.get(0).getSTD_CODE() +" course => " + studentData.get(0).getCOURSE_NO() );
-                    System.out.println(studentData);
+                    //จำนวนที่นั่งสอบของคาบสอบนั้นๆ
+                    String seatThisExamdateAndPeriod = getGenerateEtExamSeat.getSeatThisExamdateAndPeriod(year, semester, generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
+                    
+                    System.out.println("วันสอบ => " + generate_et_exam_seat.getEXAM_DATE() + " " + sectionTemp);
+                    
                     // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
                     if (!studentData.isEmpty()) {
 
@@ -85,13 +88,12 @@ public class GenerateExamSeat extends HttpServlet {
 
                         // Loop จนกว่าจะจัดที่นั่งให้ นศ. จนครบทั้งหมดใน วันและคาบสอบนั้นๆ
                         for (int i = 0; i < studentData.size(); i++) {
-
+                            System.out.println("std => " + studentData.get(i).getSTD_CODE());
                             // นับ นศ.
                             countStudents++;
 
                             // ส่ง นศ. ไป insert ที่นั่งสอบใน Method setExamSeat ลงฐานข้อมูล
-                            setExamSeat(year, semester, countSeatRow, studentData.get(i), getBuildRow,
-                                    getGenerateEtExamSeat);
+                            setExamSeat(year, semester, countSeatRow, studentData.get(i), getBuildRow, getGenerateEtExamSeat, Integer.parseInt(seatThisExamdateAndPeriod));
 
                         }
 
@@ -120,7 +122,7 @@ public class GenerateExamSeat extends HttpServlet {
     }
 
     public void setExamSeat(String year, String semester, int countSeatRow, GENERATE_ET_EXAM_SEAT students,
-            List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert)
+            List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert, int seatThisExamdateAndPeriod)
             throws ParseException {
 
         int count = countSeatRow;
@@ -140,7 +142,8 @@ public class GenerateExamSeat extends HttpServlet {
             int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester,
                     changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
 
-            if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
+            if (countSeatThisRow >= seatThisExamdateAndPeriod) {
+
             } else {
                 countSeatThisRow += 1;
                 RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);

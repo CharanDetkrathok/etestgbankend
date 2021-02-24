@@ -111,7 +111,7 @@
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 <label for="">กำหนดจำนวนที่นั่งสอบ</label>
-                                                <input type="number" class="form-control" name="seat_exam" min="1" value="${SeatExam}" placeholder="รวม ${SeatExam} ที่นั่ง" required="true">
+                                                <input type="number" class="form-control" name="seat_exam" min="0" value="${SeatExam}" placeholder="รวม ${SeatExam} ที่นั่ง" required="true">
                                             </div>
                                             <div class="col-6 form-group" style="margin-top: 35px;">        
                                                 <button type="submit" name="submit" class="btn btn-success col-3" 

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("unused")
 public class ReceiptManagementData extends HttpServlet {
+
     /**
      *
      */
@@ -47,43 +48,7 @@ public class ReceiptManagementData extends HttpServlet {
         String SECTION = request.getParameter("section");
 
         // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ----------------------------------------
-        List<ET_RECEIPT> ReceiptData = null;
-
-        if (SECTION.equals("0")) { // --- ค้นข้อมูลทั้งหมด คาบสอบ
-
-            if (ExamDate.equals("0")) { // --- ค้นข้อมูลทั้งหมด วัน/เดือน/ปี
-
-                // ----- สถานะการจ่ายเงิน เพื่อไปแสดง --------------------------------
-                ReceiptData = getReceiptTable.findAllDateAllSection(YEAR, SEMESTER);// --- ค้นข้อมูลทั้งหมด ทุก
-                                                                                    // วัน/เดือน/ปี ที่สอบ และทุกคาบสอบ
-
-            } else {
-
-                ReceiptData = getReceiptTable.findAllSectionByDate(YEAR, SEMESTER, changeDate(ExamDate));// ---
-                                                                                                         // ค้นข้อมูล
-                                                                                                         // ทุก คาบสอบ
-                                                                                                         // ตาม
-                                                                                                         // วัน/เดือน/ปี
-                                                                                                         // ที่สอบ
-
-            }
-
-        } else {
-
-            if (ExamDate.equals("0")) { // --- ค้นข้อมูลทั้งหมด วัน/เดือน/ปี
-
-                ReceiptData = getReceiptTable.findAllDateBySection(YEAR, SEMESTER, SECTION);// --- ค้นข้อมูลทั้งหมด
-                                                                                            // วัน/เดือน/ปี
-                                                                                            // ตามคาบสอบที่ต้องการ
-            } else {
-
-                ReceiptData = getReceiptTable.findByDateBySection(YEAR, SEMESTER, changeDate(ExamDate), SECTION);// ---
-                                                                                                                 // ค้นข้อมูล
-                                                                                                                 // ตาม
-                                                                                                                 // วัน/เดือน/ปี
-                                                                                                                 // และคาบที่เลือก
-            }
-        }
+        List<ET_RECEIPT> ReceiptData = getReceiptTable.findAllDateAllSection(YEAR, SEMESTER);// --- ค้นข้อมูลทั้งหมด ทุก
 
         if (!ReceiptData.isEmpty()) {
 
@@ -145,10 +110,10 @@ public class ReceiptManagementData extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -163,10 +128,10 @@ public class ReceiptManagementData extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

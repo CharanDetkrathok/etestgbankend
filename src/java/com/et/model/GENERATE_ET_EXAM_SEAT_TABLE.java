@@ -53,11 +53,11 @@ public class GENERATE_ET_EXAM_SEAT_TABLE {
         return list;
     }
     //end find
-    
+
     //------------------------------ ET_REGIS_RU24 ------------------------------
     public List<GENERATE_ET_EXAM_SEAT> findExamDateAndSectionForStudents(String year, String semester, String examDate, String section) {
         List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
-        String sql = "SELECT DISTINCT TO_CHAR(B.RECEIPT_DATE, 'MM/DD/YYYY hh:mm:ss') INSERT_DATE, TO_CHAR(A.EXAM_DATE, 'MM/DD/YYYY')EXAM_DATE,B.COUNTER_NO, A.STD_CODE,A.COURSE_NO,A.CREDIT, A.SECTION_NO,B.RECEIPT_PAY_STATUS FROM ET_REGIS_RU24 A,ET_RECEIPT B,QR_PAYMENT_CONFIRM_TMB C WHERE A.YEAR = '"+year+"' AND A.SEMESTER = '"+semester+"' AND A.EXAM_DATE = TO_DATE('"+examDate+"', 'MM/DD/YYYY') AND A.SECTION_NO = '"+section+"' AND B.RECEIPT_PAY_STATUS = '1' AND A.STD_CODE = B.STD_CODE AND A.REF_KEY = B.REF_KEY AND B.REF_KEY = C.QRID AND TO_NUMBER(B.TOTAL_AMOUNT) = TO_NUMBER(C.AMOUNT) AND NOT EXISTS (SELECT L.STD_CODE,L.COURSE_NO FROM ET_ROW_SEAT_ORDER L WHERE A.STD_CODE = L.STD_CODE AND A.COURSE_NO = L.COURSE_NO AND A.YEAR = L.YEAR AND A.SEMESTER = L.SEMESTER AND A.SECTION_NO = L.SECTION_NO) ORDER BY TO_CHAR(B.RECEIPT_DATE, 'MM/DD/YYYY hh:mm:ss')";
+        String sql = "SELECT DISTINCT TO_CHAR(B.RECEIPT_DATE, 'MM/DD/YYYY hh:mm:ss') INSERT_DATE, TO_CHAR(A.EXAM_DATE, 'MM/DD/YYYY')EXAM_DATE,B.COUNTER_NO, A.STD_CODE,A.COURSE_NO,A.CREDIT, A.SECTION_NO,B.RECEIPT_PAY_STATUS FROM ET_REGIS_RU24 A,ET_RECEIPT B,QR_PAYMENT_CONFIRM_TMB C WHERE A.YEAR = '" + year + "' AND A.SEMESTER = '" + semester + "' AND A.EXAM_DATE = TO_DATE('" + examDate + "', 'MM/DD/YYYY') AND A.SECTION_NO = '" + section + "' AND B.RECEIPT_PAY_STATUS = '1' AND A.STD_CODE = B.STD_CODE AND A.REF_KEY = B.REF_KEY AND B.REF_KEY = C.QRID AND TO_NUMBER(B.TOTAL_AMOUNT) = TO_NUMBER(C.AMOUNT) AND NOT EXISTS (SELECT L.STD_CODE,L.COURSE_NO FROM ET_ROW_SEAT_ORDER L WHERE A.STD_CODE = L.STD_CODE AND A.COURSE_NO = L.COURSE_NO AND A.YEAR = L.YEAR AND A.SEMESTER = L.SEMESTER AND A.SECTION_NO = L.SECTION_NO) ORDER BY TO_CHAR(B.RECEIPT_DATE, 'MM/DD/YYYY hh:mm:ss')";
         List<Map<String, Object>> result = db.queryList(sql);
 
         for (Map<String, Object> row : result) {
@@ -68,6 +68,21 @@ public class GENERATE_ET_EXAM_SEAT_TABLE {
     }
     //end find
 
+    //------------------------------ GenerateExamSeat ------------------------------
+    public String getSeatThisExamdateAndPeriod(String year, String semester, String examDate, String section) {
+       List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
+        String sql = "SELECT A.EXAM_SEAT AS SUM_SEAT_BY_ROW FROM ET_EXAM_SEAT A WHERE A.YEAR = '" + year + "' AND A.SEMESTER = '" + semester + "' AND A.EXAM_DATE = TO_DATE('" + examDate + "', 'MM/DD/YYYY') AND A.PERIOD = '" + section + "'";
+
+        List<Map<String, Object>> result = db.queryList(sql);
+
+        for (Map<String, Object> row : result) {
+
+            list.add(setAltmodel(row));
+        }
+        return list.get(0).getSUM_SEAT_BY_ROW();
+    }
+
+    //end find
     //----------------  ET_ROW_SEAT_ORDER  --------------------
     public List<GENERATE_ET_EXAM_SEAT> findStudentsInRowSeat(String year, String semester, String examDate, String section) {
         List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
@@ -83,11 +98,11 @@ public class GENERATE_ET_EXAM_SEAT_TABLE {
         return list;
     }
     //end find
-    
+
     public int getCounterSeatThisRow(String year, String semester, String examDate, String section, String rowSeat) {
-        
+
         List<GENERATE_ET_EXAM_SEAT> list = new ArrayList<GENERATE_ET_EXAM_SEAT>();
-        String sql = "SELECT (CASE WHEN  COUNT( A.ROW_SEAT) IS NOT NULL THEN  COUNT( A.ROW_SEAT) END) AS COUNT_SEAT_THIS_ROW FROM ET_ROW_SEAT_ORDER A WHERE A.YEAR = '"+year+"' AND A.SEMESTER = '"+semester+"' AND A.EXAM_DATE = TO_DATE('"+examDate+"', 'MM/DD/YYYY') AND A.SECTION_NO = '"+section+"' AND A.ROW_SEAT LIKE '"+rowSeat+"'";
+        String sql = "SELECT (CASE WHEN  COUNT( A.ROW_SEAT) IS NOT NULL THEN  COUNT( A.ROW_SEAT) END) AS COUNT_SEAT_THIS_ROW FROM ET_ROW_SEAT_ORDER A WHERE A.YEAR = '" + year + "' AND A.SEMESTER = '" + semester + "' AND A.EXAM_DATE = TO_DATE('" + examDate + "', 'MM/DD/YYYY') AND A.SECTION_NO = '" + section + "' AND A.ROW_SEAT LIKE '" + rowSeat + "'";
 
         List<Map<String, Object>> result = db.queryList(sql);
 

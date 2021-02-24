@@ -110,7 +110,8 @@
                                                         </td>
                                                         <td>
                                                             <c:choose>
-                                                                <c:when test = "${ReceiptData.RECEIPT_PAY_STATUS == 1}">
+                                                                <c:when test = "${ReceiptData.RECEIPT_PAY_STATUS == '1'}">
+                                                                    
                                                                     <a type="button" class="btn btn-success" 
                                                                        style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);"
                                                                        onclick="return confirm('คุณต้องการ ปรับสถานะการชำระเงินเป็น ***ยังไม่ชำระเงิน!*** ใช่หรือไม่?');"
@@ -123,7 +124,7 @@
                                                                        style="border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);"
                                                                        onclick="return confirm('คุณต้องการ ปรับสถานะการชำระเงินเป็น ***ชำระเงินเรียบร้อยแล้ว*** ใช่หรือไม่?');"
                                                                        href="/etestgbackend/ReceiptManagementUpdate?receiptStdCode=${ReceiptData.STD_CODE}&receiptYear=${ReceiptData.RECEIPT_YEAR}&receiptSemester=${ReceiptData.RECEIPT_SEMESTER}&receiptPayStatus=${ReceiptData.RECEIPT_PAY_STATUS}&refKey=${ReceiptData.REF_KEY}&year=${year}&sem=${sem}&examdate=${examdate}&section=${section}">
-                                                                        <i class="fa fa-money"></i> ยังไม่ชำระเงิน
+                                                                        <i class="fa fa-money"></i> ยังไม่ชำระเงิน 
                                                                     </a>
                                                                 </c:otherwise>
                                                             </c:choose> 
