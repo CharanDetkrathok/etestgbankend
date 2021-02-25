@@ -77,9 +77,9 @@ public class GenerateExamSeat extends HttpServlet {
 
                     //จำนวนที่นั่งสอบของคาบสอบนั้นๆ
                     String seatThisExamdateAndPeriod = getGenerateEtExamSeat.getSeatThisExamdateAndPeriod(year, semester, generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
-                    
+
                     System.out.println("วันสอบ => " + generate_et_exam_seat.getEXAM_DATE() + " " + sectionTemp);
-                    
+
                     // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
                     if (!studentData.isEmpty()) {
 
@@ -142,7 +142,7 @@ public class GenerateExamSeat extends HttpServlet {
             int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester,
                     changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
 
-            if (countSeatThisRow >= seatThisExamdateAndPeriod) {
+            if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
 
             } else {
                 countSeatThisRow += 1;
