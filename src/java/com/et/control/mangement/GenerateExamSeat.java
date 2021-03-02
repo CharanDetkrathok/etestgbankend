@@ -78,7 +78,7 @@ public class GenerateExamSeat extends HttpServlet {
                     //จำนวนที่นั่งสอบของคาบสอบนั้นๆ
                     String seatThisExamdateAndPeriod = getGenerateEtExamSeat.getSeatThisExamdateAndPeriod(year, semester, generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
 
-                    System.out.println("วันสอบ => " + generate_et_exam_seat.getEXAM_DATE() + " " + sectionTemp);
+//                    System.out.println("วันสอบ => " + generate_et_exam_seat.getEXAM_DATE() + " " + sectionTemp);
 
                     // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
                     if (!studentData.isEmpty()) {
@@ -87,8 +87,7 @@ public class GenerateExamSeat extends HttpServlet {
                         int countSeatRow = 1;
 
                         // Loop จนกว่าจะจัดที่นั่งให้ นศ. จนครบทั้งหมดใน วันและคาบสอบนั้นๆ
-                        for (int i = 0; i < studentData.size(); i++) {
-                            System.out.println("std => " + studentData.get(i).getSTD_CODE());
+                        for (int i = 0; i < studentData.size(); i++) {                            
                             // นับ นศ.
                             countStudents++;
 
@@ -141,6 +140,8 @@ public class GenerateExamSeat extends HttpServlet {
 
             int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester,
                     changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
+            
+            
 
             if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
 
@@ -149,6 +150,7 @@ public class GenerateExamSeat extends HttpServlet {
                 RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
                 insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode,
                         ExamDate, Section, Credit, Course, StatusCourse);
+                System.out.println("std => " + StdCode + " RowSeat => " + RowSeat);
             }
 
             if (insetSeat) {

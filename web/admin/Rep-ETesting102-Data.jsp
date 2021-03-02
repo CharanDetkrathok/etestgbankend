@@ -145,59 +145,37 @@
                         <%
                             List<REP_ETEST101> etest101 = (List<REP_ETEST101>) request.getAttribute("repETest101");
                             int recordNo = 1;
-                            int Total_Amount = 0;
-                            String totalAmount = "";
                             
                             for (REP_ETEST101 e : etest101) {
                         %>
                         <tbody>                    
                             <%
                                     recordNo++;
-                                    Total_Amount = Integer.parseInt(e.getTOTAL_AMOUNT());
                                 }
-                                // เตรียมตัวเลขเพื่อ เพิ่ม , ตามหลักของเงิน
-                                totalAmount = String.valueOf(Total_Amount);
                                 
                                 // ลบจำนวนที่ increament จำนวน loop ลง 1 เพราะรอบสุดท้ายมันจะต้องเกินก่อนออก Loop
-                                recordNo = recordNo - 1;
-
-                                // เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน       
-                                switch (totalAmount.length()) {
-                                    case 7:
-                                        totalAmount = totalAmount.substring(0, 4)+ "," + totalAmount.substring(4);
-                                        totalAmount = totalAmount.substring(0, 1)+ "," + totalAmount.substring(1);
-                                        break;
-                                    case 6:
-                                        totalAmount =  totalAmount.substring(0, 3)+ "," + totalAmount.substring(3);
-                                        break;
-                                    case 5:
-                                        totalAmount = totalAmount.substring(0, 2)+ "," + totalAmount.substring(2);
-                                        break;
-                                    case 4:
-                                        totalAmount = totalAmount.substring(0, 1)+ "," + totalAmount.substring(1);
-                                        break;
-                                }
+                                recordNo = recordNo - 1;                             
                             %>
                             <tr class="text-center">
                                 <td>567</td>
                                 <td>eTesting</td>
-                                <td><%= totalAmount%></td>
+                                <td>${sumTotalAmount}</td>
                                 <td>( <%= recordNo%> )</td>
-                                <td><%= totalAmount%></td>  
+                                <td>${sumTotalAmount}</td>  
                             </tr>
                             <tr class="text-center"  style="border-top: 1px solid black; border-bottom: 1px solid black;">
                                 <td style="padding-top:5px; padding-bottom:5px;"><b>Counter totals</b></td>
                                 <td style="padding-top:5px; padding-bottom:5px;"></td>
-                                <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>
+                                <td style="padding-top:5px; padding-bottom:5px;"><b>${sumTotalAmount}</b></td>
                                 <td style="padding-top:5px; padding-bottom:5px;">( <%= recordNo%> )</td>
-                                <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>                            
+                                <td style="padding-top:5px; padding-bottom:5px;"><b>${sumTotalAmount}</b></td>                            
                             </tr>
                             <tr class="text-center"  style="border-bottom: 1px solid black;">
                                 <td style="padding-top:5px; padding-bottom:5px;"><b>Amount Totals All</b></td>
                                 <td style="padding-top:5px; padding-bottom:5px;"></td>
-                                <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>
+                                <td style="padding-top:5px; padding-bottom:5px;"><b>${sumTotalAmount}</b></td>
                                 <td style="padding-top:5px; padding-bottom:5px;">( <%= recordNo%> )</td>
-                                <td style="padding-top:5px; padding-bottom:5px;"><b><%= totalAmount%></b></td>                            
+                                <td style="padding-top:5px; padding-bottom:5px;"><b>${sumTotalAmount}</b></td>                            
                             </tr>
                         <tbody>
                     </table>

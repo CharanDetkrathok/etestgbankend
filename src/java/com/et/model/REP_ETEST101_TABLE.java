@@ -66,5 +66,22 @@ public class REP_ETEST101_TABLE {
     }
     //end find 
     
+    public String RepETest101SumTotalAmount(String year, String semester, String repDate) {
+        String total = "0";
+        String sql = "SELECT CAST(SUM(A.AMOUNT)AS VARCHAR2(10)) AS TOTAL_AMOUNT "
+                + "FROM QR_PAYMENT_CONFIRM_TMB A LEFT JOIN ET_RECEIPT B ON A.QRID = B.REF_KEY "
+                + "WHERE TRUNC(A.INSERT_DATE) = TO_DATE(?, 'MM/DD/YYYY') AND A.YEAR = ? AND A.SEMESTER = ? AND B.RECEIPT_PAY_STATUS = '1'";
+        Map<String, Object> row = db.querySingle(sql, repDate, year, semester);
+
+        if (row != null) {
+            total = (String) row.get("TOTAL_AMOUNT");
+            return total;
+        } else {
+            return "null data";
+        }
+
+    }
+    //end find 
+    
     
 }

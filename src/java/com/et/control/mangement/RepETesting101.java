@@ -89,8 +89,9 @@ public class RepETesting101 extends HttpServlet {
             // เรียกข้อมูลวันที่มีการจ่ายเงิน (จากการลงทะเบียน)
             REP_ETEST101_TABLE getRepETest101 = new REP_ETEST101_TABLE(db);
             List<REP_ETEST101> repETest = getRepETest101.RepETest101(YEAR, SEMESTER, registerDate);
-            System.out.println(repETest);
-
+            
+            String sumTotalAmount = getRepETest101.RepETest101SumTotalAmount(YEAR, SEMESTER, registerDate);
+            
             // เตรียม Lists ไว้เก็บข้อมูลที่จะทำการจัดเรียงใหม่ สำหรับออกรายงาน
             ArrayList<REP_ETEST101> repETest101 = new ArrayList<REP_ETEST101>();
 
@@ -147,6 +148,8 @@ public class RepETesting101 extends HttpServlet {
 
                 request.setAttribute("registerDate", changeDateThaiFormate2(registerDate));
                 request.setAttribute("repETest101", repETest101);
+                
+                request.setAttribute("sumTotalAmount", additionalSemicolon(String.valueOf(sumTotalAmount)) );
 
                 RequestDispatcher rs = request.getRequestDispatcher("admin/Rep-ETesting101-Data.jsp");
                 rs.forward(request, response);
@@ -191,6 +194,30 @@ public class RepETesting101 extends HttpServlet {
 
         db.close();
 
+    }
+    
+    public String additionalSemicolon(String tempStr) {
+
+        String tempTotalAmount = tempStr;
+
+        // เพิ่ม , หลัก พัน เหมื่อน แสน ล้าน
+        switch (tempTotalAmount.length()) {
+            case 7:
+                tempTotalAmount = tempTotalAmount.substring(0, 4) + "," + tempTotalAmount.substring(4);
+                tempTotalAmount = tempTotalAmount.substring(0, 1) + "," + tempTotalAmount.substring(1);
+                break;
+            case 6:
+                tempTotalAmount = tempTotalAmount.substring(0, 3) + "," + tempTotalAmount.substring(3);
+                break;
+            case 5:
+                tempTotalAmount = tempTotalAmount.substring(0, 2) + "," + tempTotalAmount.substring(2);
+                break;
+            case 4:
+                tempTotalAmount = tempTotalAmount.substring(0, 1) + "," + tempTotalAmount.substring(1);
+                break;
+        }
+
+        return tempTotalAmount;
     }
 
     public String changeDateThaiFormate(String Exam_Date) throws ParseException {

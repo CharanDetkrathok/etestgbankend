@@ -49,7 +49,9 @@ public class ReceiptManagementData extends HttpServlet {
 
         // ----- สถานะการจ่ายเงิน เพื่อไปแสดง ----------------------------------------
         List<ET_RECEIPT> ReceiptData = getReceiptTable.findAllDateAllSection(YEAR, SEMESTER);// --- ค้นข้อมูลทั้งหมด ทุก
-
+        
+        System.out.println("ReceiptData => " + ReceiptData);
+        
         if (!ReceiptData.isEmpty()) {
 
             request.setAttribute("year", YEAR);
