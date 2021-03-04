@@ -44,9 +44,9 @@ public class GenerateExamSeat extends HttpServlet {
 
             String year = request.getParameter("year");
             String semester = request.getParameter("sem");
+            String examDate = changeDateUnitedStateFormate(request.getParameter("etExamSeatExamDate"));
 
             GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeat = new GENERATE_ET_EXAM_SEAT_TABLE(db);
-            List<GENERATE_ET_EXAM_SEAT> etExamSeat = getGenerateEtExamSeat.findExamDate(year, semester);
 
             List<GENERATE_ET_EXAM_SEAT> studentData = null;
 
@@ -60,104 +60,91 @@ public class GenerateExamSeat extends HttpServlet {
             // นับจำนวน นศ. ลงทะเบียน
             int countStudents = 0;
 
-            int ttt = 0;
-
-            // boolean checkDeleteBeforeInsertExamSeat =
-            // getGenerateEtExamSeat.deleteBeforeInsertExamSeat(year, semester);
             // หยอดนักศึกษาลงเก้าอีและแถวสอบ ตามวันที่เปิดสอบ
-            for (GENERATE_ET_EXAM_SEAT generate_et_exam_seat : etExamSeat) {
+            // หยอด นศ. ตามคาบสอบ มีทั้งหมด 4 คาบ
+            for (int sectionTemp = 1; sectionTemp < 5; sectionTemp++) {
 
-                // หยอด นศ. ตามคาบสอบ มีทั้งหมด 4 คาบ
-                for (int sectionTemp = 1; sectionTemp < 5; sectionTemp++) {
+                // ค้นหาข้อมูล นศ. ตามวันและคาบสอบ ค้นที่ละคาบของวันสอบ
+                // ที่ลงทะเบียนและจ่ายเงินแล้ว
+                studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester,
+                        examDate, String.valueOf(sectionTemp));
+                System.out.println(studentData);
 
-                    // ค้นหาข้อมูล นศ. ตามวันและคาบสอบ ค้นที่ละคาบของวันสอบ
-                    // ที่ลงทะเบียนและจ่ายเงินแล้ว
-                    studentData = getGenerateEtExamSeat.findExamDateAndSectionForStudents(year, semester,
-                            generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
+                // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
+                if (!studentData.isEmpty()) {
 
-                    //จำนวนที่นั่งสอบของคาบสอบนั้นๆ
-                    String seatThisExamdateAndPeriod = getGenerateEtExamSeat.getSeatThisExamdateAndPeriod(year, semester, generate_et_exam_seat.getEXAM_DATE(), String.valueOf(sectionTemp));
+                    // กำหนดที่นั่ง เริ่มต้น ที่โต๊ะหรือเก้าอี้สอบตัวแรก
+                    int countSeatRow = 1;
 
-//                    System.out.println("วันสอบ => " + generate_et_exam_seat.getEXAM_DATE() + " " + sectionTemp);
+                    // Loop จนกว่าจะจัดที่นั่งให้ นศ. จนครบทั้งหมดใน วันและคาบสอบนั้นๆ
+                    for (int i = 0; i < studentData.size(); i++) {
+                        // นับ นศ.
+                        countStudents++;
 
-                    // ผลการค้นข้อมูล ถ้ามี นศ. สอบตรงกับคาบและวันสอบ จริงทำการจัดที่นั่งสอบให้ นศ.
-                    if (!studentData.isEmpty()) {
+                        // ส่ง นศ. ไป insert ที่นั่งสอบใน Method setExamSeat ลงฐานข้อมูล
+                        String Year = year;
+                        String Semester = semester;
+                        String RowSeat = "";
 
-                        // กำหนดที่นั่ง เริ่มต้น ที่โต๊ะหรือเก้าอี้สอบตัวแรก
-                        int countSeatRow = 1;
+                        String StdCode = studentData.get(i).getSTD_CODE();
+                        String ExamDate = changeDate(studentData.get(i).getEXAM_DATE());
+                        String Section = studentData.get(i).getSECTION_NO().toString();
+                        String Credit = studentData.get(i).getCREDIT().toString();
+                        String Course = studentData.get(i).getCOURSE_NO();
+                        String StatusCourse = "O";
 
-                        // Loop จนกว่าจะจัดที่นั่งให้ นศ. จนครบทั้งหมดใน วันและคาบสอบนั้นๆ
-                        for (int i = 0; i < studentData.size(); i++) {                            
-                            // นับ นศ.
-                            countStudents++;
+                        boolean insetSeat = false;
+                        for (int j = 0; j < getBuildRow.size(); j++) {
 
-                            // ส่ง นศ. ไป insert ที่นั่งสอบใน Method setExamSeat ลงฐานข้อมูล
-                            setExamSeat(year, semester, countSeatRow, studentData.get(i), getBuildRow, getGenerateEtExamSeat, Integer.parseInt(seatThisExamdateAndPeriod));
+                            int countSeatThisRow = getGenerateEtExamSeat.getCounterSeatThisRow(Year, Semester,
+                                    changeFormatDate(ExamDate), Section, getBuildRow.get(j).getROW_EXAM() + "%");
+
+                            if (countSeatThisRow >= getBuildRow.get(j).getSEAT_EXAM().intValue()) {
+
+                            } else {
+                                countSeatThisRow += 1;
+                                RowSeat = getBuildRow.get(j).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
+                                insetSeat = getGenerateEtExamSeat.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode,
+                                        ExamDate, Section, Credit, Course, StatusCourse);
+//                                System.out.println("std => " + StdCode + " RowSeat => " + RowSeat);
+                            }
+
+                            if (insetSeat) {
+                                break;
+                            }
 
                         }
-
-//                        System.out.println("มี นศ. ลงทะเบียน จำนวน นศ. ได้ที่นั่งแล้ว = " + countStudents);
-                    } else {
-//                        System.out.println("ไม่มี นศ. ลงทะเบียน " + etExamSeat.get(ttt).getEXAM_DATE() + " คาบที่ " + sectionTemp);
                     }
+
                 }
 
-                ttt++;
-            }
+            }// end for
+
             System.out.println("countStudents => " + countStudents);
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('ทำการสร้างข้อมูลเรียบร้อย');");
             out.println("location='GenerateExamSeat';");
             out.println("</script>");
+
         } else {
 
+            String year = getCounterData.getSTUDY_YEAR();
+            String semester = getCounterData.getSTUDY_SEMESTER();
+
+            GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeat = new GENERATE_ET_EXAM_SEAT_TABLE(db);
+            List<GENERATE_ET_EXAM_SEAT> etExamSeatExamDate = getGenerateEtExamSeat.findExamDate(year, semester);
+
+            for (int k = 0; k < etExamSeatExamDate.size(); k++) {
+                etExamSeatExamDate.get(k).setEXAM_DATE(changeDate(etExamSeatExamDate.get(k).getEXAM_DATE()));
+            }
+
+            request.setAttribute("etExamSeatExamDate", etExamSeatExamDate);
             RequestDispatcher rs = request.getRequestDispatcher("admin/Generate-Exam-Seat.jsp");
             rs.forward(request, response);
-
         }
+        
         db.close();
-
-    }
-
-    public void setExamSeat(String year, String semester, int countSeatRow, GENERATE_ET_EXAM_SEAT students,
-            List<ET_BUILE_ROW> buileRow, GENERATE_ET_EXAM_SEAT_TABLE getGenerateEtExamSeatInsert, int seatThisExamdateAndPeriod)
-            throws ParseException {
-
-        int count = countSeatRow;
-        String Year = year;
-        String Semester = semester;
-        String RowSeat = "";
-        String StdCode = students.getSTD_CODE();
-        String ExamDate = changeDate(students.getEXAM_DATE());
-        String Section = students.getSECTION_NO().toString();
-        String Credit = students.getCREDIT().toString();
-        String Course = students.getCOURSE_NO();
-        String StatusCourse = "O";
-
-        boolean insetSeat = false;
-        for (int i = 0; i < buileRow.size(); i++) {
-
-            int countSeatThisRow = getGenerateEtExamSeatInsert.getCounterSeatThisRow(Year, Semester,
-                    changeFormatDate(ExamDate), Section, buileRow.get(i).getROW_EXAM() + "%");
-            
-            
-
-            if (countSeatThisRow >= buileRow.get(i).getSEAT_EXAM().intValue()) {
-
-            } else {
-                countSeatThisRow += 1;
-                RowSeat = buileRow.get(i).getROW_EXAM() + "" + String.valueOf(countSeatThisRow);
-                insetSeat = getGenerateEtExamSeatInsert.InsertAndGenerateEtExamSeat(Year, Semester, RowSeat, StdCode,
-                        ExamDate, Section, Credit, Course, StatusCourse);
-                System.out.println("std => " + StdCode + " RowSeat => " + RowSeat);
-            }
-
-            if (insetSeat) {
-                break;
-            }
-
-        }
 
     }
 
@@ -210,6 +197,37 @@ public class GenerateExamSeat extends HttpServlet {
         // --- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
         final String OLD_FORMAT = "yyyy-MM-dd";
         final String NEW_FORMAT = "dd/MM/yyyy";
+        String oldDateString = TEMP_EXAM_DATEe.toString();
+        String NEW_EXAM_DATE;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        Date d = sdf.parse(oldDateString);
+        sdf.applyPattern(NEW_FORMAT);
+        NEW_EXAM_DATE = sdf.format(d);
+
+        return NEW_EXAM_DATE;
+    }
+
+    public String changeDateUnitedStateFormate(String Exam_Date) throws ParseException {
+
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน
+        final String TEMP_OLD_FORMAT = "dd/MM/yyyy";
+        final String TEMP_NEW_FORMAT = "yyyy-MM-dd";
+        String TEMP_OldDateString = Exam_Date;
+        String TEMP_EXAM_DATE;
+
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (เปลี่ยนรูปแบบเพื่อแปลง)
+        SimpleDateFormat temp_sdf = new SimpleDateFormat(TEMP_OLD_FORMAT, Locale.US);
+        Date temp_d = temp_sdf.parse(TEMP_OldDateString);
+        temp_sdf.applyPattern(TEMP_NEW_FORMAT);
+        TEMP_EXAM_DATE = temp_sdf.format(temp_d);
+
+        // --- เปลี่ยน พ.ศ. ให้เป็น ค.ศ. ก่อน (ลบ 2563-543 = 2020)
+        LocalDate TEMP_EXAM_DATEe = LocalDate.parse(TEMP_EXAM_DATE).minus(543, ChronoUnit.YEARS);
+
+        // --- เปลี่ยนรูปแบบเพื่อค้นหาข้อมูลที่ต้องการแก้ไข
+        final String OLD_FORMAT = "yyyy-MM-dd";
+        final String NEW_FORMAT = "MM/dd/yyyy";
         String oldDateString = TEMP_EXAM_DATEe.toString();
         String NEW_EXAM_DATE;
 

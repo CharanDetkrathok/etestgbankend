@@ -66,7 +66,23 @@
                             </div>
                             <hr>
                             <br/>
-                            <div class="row text-center" style="display: block;  align-items: center; justify-content: center; margin-top: 20px;"> 
+                            <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                                <div class="col-3" style="">
+                                    <label for="etExamSeatExamDate">เลือก วัน/เดือน/ปี :</label>
+                                    <select class="form-control" name="etExamSeatExamDate" required="true" style="height: 50px; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); border: none; border-radius: 0;">
+                                        <c:forEach items="${etExamSeatExamDate}" var = "etExamSeatExamDate" varStatus="count">
+                                            <option  value="${etExamSeatExamDate.EXAM_DATE}"> ${etExamSeatExamDate.EXAM_DATE} </option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-4" style="text-align: left; margin: 32px 0 0 0; padding: 0 0 0 0;">
+                                    <button type="submit" class="btn btn-success"
+                                            style="height: 50px; width: 40%; border-radius: 0; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5); color: #fff;">
+                                        <i class="fa fa-file-excel-o"></i>&nbsp; สร้างที่นั่งสอบ 
+                                    </button>                                    
+                                </div>                                
+                            </div>
+<!--                            <div class="row text-center" style="display: block;  align-items: center; justify-content: center; margin-top: 20px;"> 
                                 <div class="col-12 text-center" style="text-align: center;">
                                     <h3 style="color: #000;">คลิกที่ปุ่มเพื่อ จัดแถวและที่นั่งสำหรับสอบ</h3><br>
                                     <button type="submit" class="btn btn-success" onclick="return confirm('คุณต้องการ สร้างที่นั่งใช่หรือไม่?');"
@@ -74,7 +90,7 @@
                                         <i class="fa fa-address-card-o"></i> สร้างที่นั่งสอบ 
                                     </button> 
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </form>
                 </div>

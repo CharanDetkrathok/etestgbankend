@@ -58,7 +58,7 @@ public class GetSlipt extends HttpServlet {
         //byte[] decodedtmpyear = Base64.getDecoder().decode(tmpyear);
         //String year = new String(decodedtmpyear);
         //tmp stmt
-/*--- ปิดใบเสร็จ ---       
+     
         String getfiscal = "";
         String gsubStrfiscal = "";
         String tmpSem = "";
@@ -77,8 +77,7 @@ public class GetSlipt extends HttpServlet {
         boolean checkupdaterepno = false;
         String tmp = "";
         String repNumcourse = "";
-*/ // --- ปิดใบเสร็จ ---
-/* --- ปิดใบเสร็จ ---
+
         ArrayList<String> arrAmount = new ArrayList<String>();
         // ArrayList<String> arrRepSlip = new ArrayList<String>();
 
@@ -119,7 +118,7 @@ public class GetSlipt extends HttpServlet {
                     AddSlipNo.setSEMESTER((sem));
                     AddSlipNo.setYEAR((year));
                     AddSlipNo.setREF_KEY((refkey));
-                     checkupdaterepno = getSlipTable.updateSlipt(AddSlipNo);
+//                     checkupdaterepno = getSlipTable.updateSlipt(AddSlipNo);
                     if (checkupdaterepno) {
                         db.commit();
                         checkVal = true;
@@ -178,10 +177,9 @@ public class GetSlipt extends HttpServlet {
                             getRepSlip.add(getMockSlip);
                         }*/
 
-/* --- ปิดใบเสร็จ ---
+
                         }
-*/ // --- ปิดใบเสร็จ ---
-/* --- ปิดใบเสร็จ ---
+
                         if (tmpTotal != null) {
                             strTotalThai = ThaiBaht(tmpTotal);
                             slipNo = refkey.substring(15);

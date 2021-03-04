@@ -113,13 +113,13 @@ public class ExportETSTDC extends HttpServlet {
 
             }
             // นับจำนวน นศ.
-            System.out.println("countStudents => " + countStudents);
+//            System.out.println("countStudents => " + countStudents);
 
             if (!lists.isEmpty()) {
-                System.out.println("get 1 => " + response.getCharacterEncoding());
+//                System.out.println("get 1 => " + response.getCharacterEncoding());
                 response.reset();
                 response.setCharacterEncoding("US-ASCII");
-                System.out.println("get 2 => " + response.getCharacterEncoding());
+//                System.out.println("get 2 => " + response.getCharacterEncoding());
                 response.setContentType("text/plain");
                 response.setHeader("Content-Disposition", "attachment; filename=\"ET_STDC.TXT\"");
                 try {
